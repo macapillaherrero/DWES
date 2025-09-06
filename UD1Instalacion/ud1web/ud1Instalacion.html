@@ -15,33 +15,7 @@
         2. Report Info: Content of `docker-compose.yml`, `Dockerfile`, `nginx.conf`, `index.php`. -> Goal: Inform/Organize. -> Viz/Presentation: Interactive File Explorer with Code Viewer. -> Interaction: User clicks on a filename to display its content and a detailed explanation. -> Justification: This component makes learning active instead of passive. It breaks down the complex configuration into manageable pieces, allowing users to focus on one file at a time, which is a superior learning experience. -> Library/Method: Vanilla JavaScript for click handling and content switching.
         3. Report Info: Docker commands. -> Goal: Inform. -> Viz/Presentation: Code blocks with copy buttons. -> Interaction: User clicks a button to copy the command. -> Justification: Improves usability by making it easy for the student to use the commands in their own terminal without typos. -> Library/Method: Vanilla JavaScript. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* gray-50 */
-            color: #1F2937; /* gray-800 */
-        }
-       .code-block {
-            background-color: #1F2937;
-            color: #F3F4F6;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            font-family: Consolas, "Courier New", monospace;
-            font-size: 0.875rem;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .explanation-card {
-            background-color: #F3F4F6; /* gray-200 */
-            border-left: 4px solid #3B82F6; /* sky-500 */
-        }
-        .active-file {
-            background-color: #DBEAFE; /* sky-100 */
-            color: #1E40AF; /* sky-800 */
-            font-weight: 600;
-        }
-    </style>
+<link rel="stylesheet" href="../../css/style.css">
 </head>
 <body class="bg-sky-50 text-gray-800">
 
@@ -53,7 +27,7 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="/index.html" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
+                        <a href="../index.html" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
                         <a href="#objetivo" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Objetivo</a>
                         <a href="#arquitectura" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Arquitectura</a>
                         <a href="#configuracion" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Configuración</a>
