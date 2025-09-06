@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Estudio de PHP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Fresh Green & Earth Tones -->
+    <!-- Application Structure Plan: The SPA is a single-page, vertically scrolling study guide. The primary information architecture is a linear progression through PHP concepts, from basic syntax to advanced topics like cookies and sessions. This structure directly mirrors the logical flow of the original presentation, making it an ideal format for a self-paced learning tool. A sticky sidebar navigation is implemented to allow for quick access to any section, which is crucial for a document of this length. Each section contains a mix of text, formatted code blocks, and visual elements (icons) to break up the content and improve readability. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: PHP's main features (open source, simplicity, etc.). -> Goal: Inform. -> Viz/Presentation: Bulleted list with icons. -> Interaction: None, it's a static list. -> Justification: A list is the most direct way to present these key points. -> Library/Method: HTML with Tailwind.
+        2. Report Info: Code examples for variables, functions, loops, etc. -> Goal: Inform/Demonstrate. -> Viz/Presentation: Formatted code blocks. -> Interaction: None. -> Justification: The code itself is the primary content, and presenting it in a clear, monospaced format is essential for a programming guide. -> Library/Method: HTML divs styled with Tailwind for code blocks.
+        3. Report Info: Naming conventions. -> Goal: Organize/Inform. -> Viz/Presentation: List of different cases (snake, camel, etc.) with examples. -> Interaction: None. -> Justification: Simple lists are effective for comparative information. -> Library/Method: HTML with Tailwind.
+        4. Report Info: Superglobal variables, forms, cookies, and sessions. -> Goal: Inform. -> Viz/Presentation: Headings and paragraphs with code examples. -> Interaction: None. -> Justification: These concepts are best explained sequentially with contextual code snippets. -> Library/Method: HTML with Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7FEE7;
+            color: #1F2937;
+        }
+        .code-block {
+            background-color: #1F2937;
+            color: #F3F4F6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .highlight {
+            background-color: #ECFDF5;
+            border-left: 4px solid #10B981;
+        }
+        .sidebar {
+            background-color: #ECFDF5;
+        }
+        .sidebar a:hover {
+            background-color: #D1FAE5;
+        }
+        .caja-con-fondo {
+            background-color: #e0f7fa; /* Color de fondo azul claro */
+            color: #333; /* Color del texto gris oscuro */
+            padding: 20px; /* Espacio interior entre el texto y el borde */
+            border: 1px solid #b0bec5; /* Borde sutil */
+            border-radius: 8px; /* Bordes redondeados */
+           /* width: 300px;  Ancho de la caja */
+            text-align: center; /* Centra el texto horizontalmente */
+            /* font-family: Arial, sans-serif; Tipo de letra */
+            font-size: 16px; /* Tamaño de la letra */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        }
+    </style>
+</head>
+<body class="bg-lime-50 text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-emerald-600">Guía de PHP</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-emerald-200">
+                <h3 class="text-lg font-bold mb-4 text-emerald-800">Contenido</h3>
+                <ul class="space-y-2">
+                    <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
+                    <li><a href="#caracteristicas" class="block p-2 rounded-md font-medium text-gray-600">Características</a></li>
+                    <li><a href="#bloques-codigo" class="block p-2 rounded-md font-medium text-gray-600">Bloques de código</a></li>
+                    <li><a href="#comentarios" class="block p-2 rounded-md font-medium text-gray-600">Comentarios</a></li>
+                    <li><a href="#convenciones" class="block p-2 rounded-md font-medium text-gray-600">Convenciones de formato</a></li>
+                    <li><a href="#tipos-datos" class="block p-2 rounded-md font-medium text-gray-600">Tipos de datos</a></li>
+                    <li><a href="#casting" class="block p-2 rounded-md font-medium text-gray-600">Casting</a></li>
+                    <li><a href="#constantes" class="block p-2 rounded-md font-medium text-gray-600">Constantes</a></li>
+                    <li><a href="#control-flujo" class="block p-2 rounded-md font-medium text-gray-600">Control de flujo</a></li>
+                    <li><a href="#bucles" class="block p-2 rounded-md font-medium text-gray-600">Bucles</a></li>
+                    <li><a href="#funciones" class="block p-2 rounded-md font-medium text-gray-600">Funciones</a></li>
+                    <li><a href="#ambito" class="block p-2 rounded-md font-medium text-gray-600">Ámbito de variables</a></li>
+                    <li><a href="#variables-variables" class="block p-2 rounded-md font-medium text-gray-600">Variables variables</a></li>
+                    <li><a href="#control-errores" class="block p-2 rounded-md font-medium text-gray-600">Control de errores</a></li>
+                    <li><a href="#redirecciones" class="block p-2 rounded-md font-medium text-gray-600">Redirecciones</a></li>
+                    <li><a href="#inclusiones" class="block p-2 rounded-md font-medium text-gray-600">Inclusiones</a></li>
+                    <li><a href="#arrays" class="block p-2 rounded-md font-medium text-gray-600">Arrays</a></li>
+                    <li><a href="#superglobales" class="block p-2 rounded-md font-medium text-gray-600">Variables superglobales</a></li>
+                    <li><a href="#cookies-sesiones" class="block p-2 rounded-md font-medium text-gray-600">Cookies y Sesiones</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="w-full lg:w-3/4">
+
+            <section id="introduccion" class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Introducción al lenguaje PHP</h1>
+                <p class="text-lg text-gray-600">Este documento cubre los conceptos fundamentales de PHP para el desarrollo web en entorno servidor. Desde las características del lenguaje hasta el manejo de errores y datos.</p>
+            </section>
+
+            <section id="caracteristicas" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Características principales</h2>
+                <ul class="space-y-2 text-gray-700">
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🌱</span> Open source</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">✍️</span> Sencillez</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🌐</span> Multiplataforma</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🧩</span> Orientado a objetos (v5)</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🚨</span> Gestión de errores (excepciones)</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">📄</span> Lectura de XML</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🗄️</span> Acceso a Bases de datos</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🔌</span> Conexión con otros servicios</li>
+                    <li class="flex items-start"><span class="mr-2 text-2xl">🛒</span> Sistemas de comercio electrónico</li>
+                </ul>
+            </section>
+            
+            <section id="bloques-codigo" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Bloques de código PHP</h2>
+                <p class="text-gray-700 mb-4">El código PHP se escribe entre las etiquetas <code>&lt;?php ... ?&gt;</code>.</p>
+                
+                <img src="/imagenesUD1/imagen1.png" alt="bloques de código" class="w-full max-w-md mx-auto mb-4 rounded-lg shadow-md border border-gray-200">
+            
+               <div class="caja-con-fondo mt-4 text-gray-600">Se recomienda evitar el "código espagueti" y no escribir HTML dentro de las etiquetas PHP.</div> 
+            </section>
+
+            <section id="comentarios" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Comentarios</h2>
+                <p class="text-gray-700 mb-4">Para hacer comentarios en PHP, se usa:</p>
+                <ul class="space-y-2 text-gray-700 mb-4">
+                    <li><code>//</code> o <code>#</code> para una sola línea.</li>
+                    <li><code>/* ... */</code> para varias líneas.</li>
+                </ul>
+                     <img src="/imagenesUD1/imagen2.png" alt="bloques de código" class="w-full max-w-md mx-auto mb-4 rounded-lg shadow-md border border-gray-200">
+
+            </section>
+
+            <section id="convenciones" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Convenciones de formato</h2>
+                <p class="text-gray-700 mb-4">Distinguimos entre varios tipos de escritura para nombrar elementos:</p>
+                <ul class= "list-disc list-inside space-y-2 text-gray-700">
+                    <li> <span class="mr-2 text-2xl">🐪 </span>   PascalCase/UpperCamelCase : <code>MiElemento</code></li>
+                    <li> <span class="mr-2 text-2xl">🐫 </span>camelCase/lowerCamelCase : <code>miElemento</code></li>
+                    <li> <span class="mr-2 text-2xl">🐍</span> snake_case : <code>mi_elemento</code></li>
+                    <li> <span class="mr-2 text-2xl">🍢</span> kebab-case : <code>mi-elemento</code></li>
+                </ul>
+                <p class="text-gray-700 mt-4"> Reglas comunes: </p> <br>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li>Funciones y variables: snake_case</li>
+                    <li>Métodos: camelCase</li>
+                    <li>Clases: PascalCase</li>
+                </ul>
+               <div class="caja-con-fondo mt-4 text-gray-600">Se recomienda usar una indentación consistente, ya sean espacios* o tabulaciones. <a class="highlight" href="https://www.youtube.com/watch?v=ussOk-ilK_8
+">Ver video</a></div>
+            </section>
+
+            <section id="tipos-datos" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Tipos de datos y variables</h2>
+                <p class="text-gray-700 mb-4">PHP es un lenguaje historicamente no tipado o de tipado dinámibo,lo que significa que no es necesario especificar el tipo de dato de una variable, y se determinará en tiempo de 
+                    ejecucioón, esto, además permite cambiar el tipo de una variable dinámicamente.
+                <p class="text-gray-700 mb-4"> Desde la versión 7.01 ha habido algunas modificaciones que permiten declarar tipos en según qué datos</p>
+                <p class="text-gray-700 mb-4"> <a class="highlight" href="https://www.php.net/manual/es/language.types.intro.php">Más info sobre los tipos de datos</a></p>
+                    Eso no significa que no existan los tipos de datos:</p>
+                <ul class="list-disc list-inside space-y-1 text-gray-700">
+                    <li><a class="highlight" href="https://www.php.net/manual/es/language.types.boolean.php">Booleanos</a></li>
+                    <li><a class="highlight" href="https://www.php.net/manual/es/language.types.integer.php">Números enteros (Integers)</a></li>
+                    <li><a class="highlight" href="https://www.php.net/manual/es/language.types.float.php">Números de punto flotante (Floats)</a></li>
+                    <li><a class="highlight" href="https://www.php.net/manual/es/language.types.string.php">Cadenas de caracteres (Strings)</a></li>
+                    <li><a class="highlight" href="https://www.php.net/manual/es/language.types.object.php">Objetos</a></li>
+                    <li><a class="highlight" href="https://www.php.net/manual/es/language.types.null.php">NULO</a></li>
+                </ul>
+            </section>
+
+            <section id="casting" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Casting</h2>
+                <p class="text-gray-700 mb-4">Puedes forzar la conversión de tipos usando el <a class="highlight" href="https://www.php.net/manual/es/language.types.type-juggling.php"> casting.</a></p>
+                <div class="code-block">
+                <pre>
+                <code>
+&lt;?php
+    $foo = 10; // integer
+    $bar = (boolean) $foo; // boolean
+    $str = "$foo"; // string
+    $fst = (string) $foo; // string
+?&gt;</code></pre>
+                </div>
+            </section>
+
+            <section id="constantes" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Constantes</h2>
+                <p class="text-gray-700 mb-4">Se declaran en mayúsculas y no pueden ser modificadas.</p>
+                <div class="code-block">
+                <pre>
+                <code>
+define("CONSTANTE", "Hola mundo.");
+const CONSTANTE = 'Hola Mundo';
+                </code>
+                </pre>
+                </div>
+            </section>
+
+            <section id="control-flujo" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Control de flujo: Condicionales</h2>
+                <p class="text-gray-700 mb-4">Se usan las estructuras <code>if</code>, <code>if...else</code>, <code>if...elseif...else</code> y <code>switch...case</code> para ejecutar código bajo ciertas condiciones.</p>
+                <div class="code-block">
+                <pre>
+                <code>
+// IF
+
+if (condicion) {
+    // instrucciones
+}
+
+// IF ... ELSE
+
+if (condicion) {
+    // instrucciones
+} else {
+    // instrucciones
+}
+
+// IF ... ELSEIF ... ELSE
+
+if (condicion)
+{
+    // instrucciones
+}elseif(condición2){
+    // instrucciones
+}else{
+     // instrucciones
+}
+
+// SWITCH CASE
+
+switch (variable) {
+    case 0:
+        // instrucciones
+        break;
+    case 1:
+        // instrucciones
+        break;
+    default:
+        // instrucciones
+}
+
+                </code>
+                </pre>
+            </div>
+            </section>
+
+            <section id="bucles" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Bucles</h2>
+                <p class="text-gray-700 mb-4">Para repetir bloques de código, se usan los bucles:</p>
+                <ul class="list-disc list-inside space-y-4 text-gray-700">
+                    <li> <code>for</code> : Ideal cuando conoces el número de iteraciones.</li>
+                    <li> <code>foreach</code> : Para recorrer arrays.</li>
+                    <li> <code>while</code> : Se ejecuta mientras la condición sea verdadera.</li>
+                    <li> <code>do...while</code> : Se ejecuta al menos una vez, y luego evalúa la condición.</li>
+                </ul>
+                <div class="code-block">
+// FOR
+for ($i = 0; $i < count($lista); $i++) {
+    echo $lista[$i];
+}
+
+// FOREACH
+foreach ($lista as $elemento) {
+    echo $elemento;
+}
+
+// WHILE
+$numero = 1;
+while ($numero < 10) {
+    echo $numero;
+    $numero++;
+}
+
+// DO...WHILE
+$numero = 1;
+do {
+    echo $numero;
+    $numero++;
+} while ($numero < 10);
+                </div>
+            </section>
+            
+            <section id="funciones" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Funciones</h2>
+                <p class="text-gray-700 mb-4">Una función es un bloque de código reutilizable. Pueden tener parámetros y devolver valores.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Función simple</h3>
+                        <p class="text-gray-600 mb-4">Sin parámetros ni retorno.</p>
+                        <div class="code-block">
+// Función sin parámetros
+function saluda() {
+    echo "Hola, caracola";
+}
+saluda();
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Por valor y por retorno</h3>
+                        <p class="text-gray-600 mb-4">Con parámetros por valor y un valor de retorno.</p>
+                        <div class="code-block">
+// Función con parámetro por valor
+function saluda($nombre) {
+    echo "Hola, " . $nombre;
+}
+saluda('Pepe');
+
+// Función con return
+function sumaNumeros($a, $b) {
+    return ($a + $b);
+}
+$resultado = sumaNumeros(3, 10);
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-1">
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Por referencia</h3>
+                        <p class="text-gray-600 mb-4">El parámetro modifica la variable original.</p>
+                        <div class="code-block">
+// Función con parámetros por referencia
+function sumaNumeros(&$n1, &$n2, &$resultado) {
+    $resultado = $n1 + $n2;
+}
+
+$resultado = 0;
+sumaNumeros(3, 30, $resultado);
+// $resultado ahora es 33
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-1">
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Por defecto</h3>
+                        <p class="text-gray-600 mb-4">Los parámetros pueden tener valores predefinidos.</p>
+                        <div class="code-block">
+// Función con parámetros por defecto
+function datosAlumno($nombre, $telefono, $nota = 0) {
+    // ...
+}
+
+// Posibles llamadas
+datosAlumno('Marián', '6584', 8);
+datosAlumno('Marián', '6584');
+                        </div>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mt-8 mb-2">Funciones Nativas</h3>
+                <p class="text-gray-700 mb-2">PHP incluye una gran cantidad de funciones predefinidas para manejar textos, fechas, ficheros, etc.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="flex flex-col">
+                        <h4 class="font-semibold text-lg text-gray-800 mb-2">Textos</h4>
+                        <a href="http://php.net/manual/es/ref.strings.php" target="_blank" class="text-blue-600 hover:underline mb-2">Ver documentación</a>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li>`strlen`, `substr`</li>
+                            <li>`strtoupper`, `strtolower`</li>
+                            <li>`trim`, `ltrim`, `rtrim`</li>
+                            <li>`strcmp`, `str_replace`</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-semibold text-lg text-gray-800 mb-2">Fecha y hora</h4>
+                        <a href="https://www.php.net/manual/es/ref.datetime.php" target="_blank" class="text-blue-600 hover:underline mb-2">Ver documentación</a>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li>`time`, `checkdate`</li>
+                            <li>`date`</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-semibold text-lg text-gray-800 mb-2">Expresiones regulares</h4>
+                        <a href="https://www.php.net/manual/es/book.regex.php" target="_blank" class="text-blue-600 hover:underline mb-2">Ver documentación</a>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li>`ereg`, `ereg_replace`</li>
+                            <li>`split`</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-semibold text-lg text-gray-800 mb-2">Manejo de ficheros</h4>
+                        <a href="https://www.php.net/manual/es/ref.filesystem.php" target="_blank" class="text-blue-600 hover:underline mb-2">Ver documentación</a>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700">
+                            <li>`Readfile`, `file`</li>
+                            <li>`file_get_contents`</li>
+                            <li>`file_put_contents`</li>
+                            <li>`file_exists`, `filesize`</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+                       <section id="ambito" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Ámbito de las variables</h2>
+                <p class="text-gray-700 mb-4">El ámbito de una variable determina dónde puede ser accedida. PHP define tres ámbitos principales para las variables:</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Variables Locales</h3>
+                        <p class="text-gray-600 mb-4">Las variables declaradas dentro de una función tienen un ámbito local y no se pueden acceder fuera de esa función.</p>
+                        <div class="code-block">
+&lt;?php
+function test() {
+    $a = 1; // Ámbito local
+    echo $a; 
+}
+test(); // Muestra 1
+// echo $a; // Esto daría un error
+?&gt;
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Variables Globales</h3>
+                        <p class="text-gray-600 mb-4">Las variables globales se pueden acceder desde cualquier ámbito usando la palabra clave `global` o el array `$GLOBALS`.</p>
+                        <div class="code-block">
+&lt;?php
+$a = 1; // Ámbito global
+function suma() {
+    global $a;
+    $b = 2; // Ámbito local
+    $b = $a + $b; // Accede a la variable global $a
+}
+suma();
+echo $b; // Muestra 2
+// O usando $GLOBALS
+$GLOBALS['b'] = $GLOBALS['a'] + $GLOBALS['b'];
+?&gt;
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Variables Estáticas</h3>
+                        <p class="text-gray-600 mb-4">Una variable estática conserva su valor entre llamadas a una función, en lugar de ser destruida al finalizar.</p>
+                        <div class="code-block">
+&lt;?php
+function contador() {
+    static $a = 0;
+    echo $a;
+    $a++;
+}
+contador(); // Muestra 0
+contador(); // Muestra 1
+contador(); // Muestra 2
+?&gt;
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="variables-variables" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Variables</h2>
+                <p class="text-gray-700 mb-4">Una variable variable es una variable cuyo nombre se puede determinar y cambiar dinámicamente. Esto es útil para acceder a variables cuyo nombre se construye en tiempo de ejecución. </p>
+                <div class="code-block">
+&lt;?php
+    $texto_es = "Bienvenido";
+    $texto_en = "Welcome";
+    $idioma = "es";
+    $texto = "texto_" . $idioma; // $texto ahora contiene el string "texto_es"
+    echo $$texto; 
+?&gt;
+                </div>
+                <p class="mt-4 text-gray-600">
+                    En este ejemplo, <code>$$texto</code> se evalúa en dos pasos:
+                    <br>
+                    1. PHP toma la variable <code>$texto</code> y obtiene su valor, que es la cadena `"texto_es"`.
+                    <br>
+                    2. Luego, PHP busca una variable cuyo nombre sea `"texto_es"`, que en este caso es <code>$texto_es</code>.
+                    <br>
+                    El resultado final es el valor de <code>$texto_es</code>, que es "Bienvenido". Es una forma avanzada de programación que te permite usar el valor de una variable para obtener el nombre de otra.
+                </p>
+            </section>            
+
+
+            <section id="control-errores" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Control de errores</h2>
+                <p class="text-gray-700 mb-4">Se pueden manejar los errores para mejorar la experiencia del usuario y evitar que se muestren mensajes de error feos.</p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li> <code>@</code> : Operador que se coloca delante de una expresión para suprimir los errores que pueda generar.</li>
+                    <li> <code>die()</code> : Detiene la ejecución del script.</li>
+                    <li> Excepciones : Usando los bloques <code>try...catch</code>, que son una forma estructurada y moderna de manejar errores.</li>
+                </ul>
+                <div class="code-block">
+try {
+    if (!file_exists("fich1.txt")) {
+        throw new Exception("El fichero de entrada no existe");
+    }
+    $contenido = file_get_contents("fich1.txt");
+} catch (Exception $e) {
+    echo 'Se ha producido un error: ' . $e-&gt;getMessage();
+}
+                </div>
+            </section>
+
+            <section id="redirecciones" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Redirecciones</h2>
+                <p class="text-gray-700 mb-4">Se utilizan para enviar al usuario a otra página. Deben ejecutarse  <b>siempre</b>  antes de que se envíe cualquier contenido al navegador.</p>
+                <div class="code-block">
+&lt;?php
+header("Location: login.php");
+// o con un retardo
+header("Refresh: 5; url=index.php");
+exit()
+?&gt;
+                </div>
+                <p class="mt-4 text-gray-600">El uso de <code>exit()</code> después de una redirección es una buena práctica para asegurarse de que no se ejecute ningún código adicional después de la redirección.</p>
+                <p class="mt-4 text-gray-600">En el futuro hablaremos más sobre las redirecciones.</p>
+            </section>
+
+            <section id="inclusiones" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Inclusiones de Archivos</h2>
+                <p class="text-gray-700 mb-4">Para incluir y reutilizar código de otros archivos, se usan las siguientes directivas:</p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li> <code>include</code> : Si el archivo no se encuentra, genera una advertencia (`warning`) y el script continúa.</li>
+                    <li> <code>include_once</code> : Como <code>include</code>, pero evita que el mismo archivo se incluya más de una vez.</li>
+                    <li> <code>require</code> : Si el archivo no se encuentra, genera un error fatal (`fatal error`) y detiene la ejecución del script.</li>
+                    <li> <code>require_once</code> : Como <code>require</code>, pero evita inclusiones duplicadas.</li>
+                </ul>
+            </section>
+
+            <section id="arrays" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Arrays</h2>
+                <p class="text-gray-700 mb-4">Un array es un mapa ordenado que asocia valores con claves.</p>
+                <ul class="list-disc list-inside space-y-4 text-gray-700">
+                    <li> Numéricos : Claves numéricas. Se crean con <code>array()</code> o corchetes <code>[]</code>.</li>
+                    <li> Asociativos : Claves de texto. Ideales para datos con etiquetas.</li>
+                    <li> Multidimensionales : Arrays que contienen otros arrays.</li>
+                </ul>
+                <div class="code-block">
+// Numérico
+$vector = ['Uno', 'Dos', 'Tres'];
+echo $vector[1]; // "Dos"
+
+// Asociativo
+$notas = ['Manuel García' => 8.5, 'Ana López' => 7];
+echo $notas['Manuel García']; // 8.5
+
+// Multidimensional
+$tabla = [
+    ['nombre' => 'Juan', 'dni' => '1111A'],
+    ['nombre' => 'Ana', 'dni' => '2222B']
+];
+echo $tabla[0]['nombre']; // "Juan"
+                </div>
+                <p class="mt-4 text-gray-600">Para recorrer arrays, el bucle <code>foreach</code> es el más común y recomendado.</p>
+            </section>
+
+            <section id="superglobales" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Variables Superglobales</h2>
+                <p class="text-gray-700 mb-4">Son arrays predefinidos por PHP que están disponibles en todos los ámbitos del script.</p>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                        <li><code>$GLOBALS</code></li>
+                        <li><code>$_SERVER</code></li>
+                        <li><code>$_ENV</code></li>
+                        <li><code>$_GET</code></li>
+                        <li><code>$_POST</code></li>
+                        <li><code>$_REQUEST</code></li>
+                        <li><code>$_COOKIE</code></li>
+                        <li><code>$_SESSION</code></li>
+                        <li><code>$_FILES</code></li>
+                    </ul>
+                </div>
+                <p class="mt-4 text-gray-600">Las variables <code>$_GET</code> y <code>$_POST</code> se usan para recibir datos de formularios.</p>
+            </section>
+
+            <section id="cookies-sesiones" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Cookies y Sesiones</h2>
+                <p class="text-gray-700 mb-4">Ambos se usan para almacenar información del usuario, pero las cookies se guardan en el cliente (navegador) y las sesiones en el servidor.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Cookies</h3>
+                        <div class="code-block">
+// Crear una cookie
+setcookie("nombre", "Pepito", time() + 3600);
+
+// Leer una cookie
+echo $_COOKIE["nombre"];
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Sesiones</h3>
+                        <div class="code-block">
+// Iniciar una sesión
+session_start();
+
+// Guardar un dato en la sesión
+$_SESSION["loginUsuario"] = "usuario123";
+
+// Eliminar un dato
+unset($_SESSION["loginUsuario"]);
+
+// Eliminar toda la sesión
+session_destroy();
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
