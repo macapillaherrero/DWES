@@ -16,54 +16,15 @@
         3. Report Info: Naming conventions. -> Goal: Organize/Inform. -> Viz/Presentation: List of different cases (snake, camel, etc.) with examples. -> Interaction: None. -> Justification: Simple lists are effective for comparative information. -> Library/Method: HTML with Tailwind.
         4. Report Info: Superglobal variables, forms, cookies, and sessions. -> Goal: Inform. -> Viz/Presentation: Headings and paragraphs with code examples. -> Interaction: None. -> Justification: These concepts are best explained sequentially with contextual code snippets. -> Library/Method: HTML with Tailwind. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F7FEE7;
-            color: #1F2937;
-        }
-        .code-block {
-            background-color: #1F2937;
-            color: #F3F4F6;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            font-family: Consolas, "Courier New", monospace;
-            font-size: 0.875rem;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .highlight {
-            background-color: #ECFDF5;
-            border-left: 4px solid #10B981;
-        }
-        .sidebar {
-            background-color: #ECFDF5;
-        }
-        .sidebar a:hover {
-            background-color: #D1FAE5;
-        }
-        .caja-con-fondo {
-            background-color: #e0f7fa; /* Color de fondo azul claro */
-            color: #333; /* Color del texto gris oscuro */
-            padding: 20px; /* Espacio interior entre el texto y el borde */
-            border: 1px solid #b0bec5; /* Borde sutil */
-            border-radius: 8px; /* Bordes redondeados */
-           /* width: 300px;  Ancho de la caja */
-            text-align: center; /* Centra el texto horizontalmente */
-            /* font-family: Arial, sans-serif; Tipo de letra */
-            font-size: 16px; /* Tamaño de la letra */
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-        }
-    </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
-<body class="bg-lime-50 text-gray-800">
+<body class="bg-sky-50 text-gray-800">
 
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <span class="text-xl font-bold text-emerald-600">Guía de PHP</span>
+                    <span class="text-xl font-bold text-sky-600"><a href="../index.html"> Guía de PHP</a></span>
                 </div>
             </div>
         </nav>
@@ -71,8 +32,8 @@
 
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
         <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
-            <nav class="sidebar p-6 rounded-xl shadow-md border border-emerald-200">
-                <h3 class="text-lg font-bold mb-4 text-emerald-800">Contenido</h3>
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
                 <ul class="space-y-2">
                     <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
                     <li><a href="#caracteristicas" class="block p-2 rounded-md font-medium text-gray-600">Características</a></li>
@@ -90,9 +51,7 @@
                     <li><a href="#control-errores" class="block p-2 rounded-md font-medium text-gray-600">Control de errores</a></li>
                     <li><a href="#redirecciones" class="block p-2 rounded-md font-medium text-gray-600">Redirecciones</a></li>
                     <li><a href="#inclusiones" class="block p-2 rounded-md font-medium text-gray-600">Inclusiones</a></li>
-                    <li><a href="#arrays" class="block p-2 rounded-md font-medium text-gray-600">Arrays</a></li>
-                    <li><a href="#superglobales" class="block p-2 rounded-md font-medium text-gray-600">Variables superglobales</a></li>
-                    <li><a href="#cookies-sesiones" class="block p-2 rounded-md font-medium text-gray-600">Cookies y Sesiones</a></li>
+             
                 </ul>
             </nav>
         </aside>
@@ -334,7 +293,9 @@ sumaNumeros(3, 30, $resultado);
 // $resultado ahora es 33
                         </div>
                     </div>
-                    <div class="md:col-span-2 lg:col-span-1">
+                   
+                </div>
+                 <div class="md:col-span-2 lg:col-span-1">
                         <h3 class="font-semibold text-xl text-gray-900 mb-2">Por defecto</h3>
                         <p class="text-gray-600 mb-4">Los parámetros pueden tener valores predefinidos.</p>
                         <div class="code-block">
@@ -348,7 +309,6 @@ datosAlumno('Marián', '6584', 8);
 datosAlumno('Marián', '6584');
                         </div>
                     </div>
-                </div>
                 <h3 class="text-xl font-bold text-gray-900 mt-8 mb-2">Funciones Nativas</h3>
                 <p class="text-gray-700 mb-2">PHP incluye una gran cantidad de funciones predefinidas para manejar textos, fechas, ficheros, etc.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -515,87 +475,27 @@ exit()
                 </ul>
             </section>
 
-            <section id="arrays" class="mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Arrays</h2>
-                <p class="text-gray-700 mb-4">Un array es un mapa ordenado que asocia valores con claves.</p>
-                <ul class="list-disc list-inside space-y-4 text-gray-700">
-                    <li> Numéricos : Claves numéricas. Se crean con <code>array()</code> o corchetes <code>[]</code>.</li>
-                    <li> Asociativos : Claves de texto. Ideales para datos con etiquetas.</li>
-                    <li> Multidimensionales : Arrays que contienen otros arrays.</li>
-                </ul>
-                <div class="code-block">
-// Numérico
-$vector = ['Uno', 'Dos', 'Tres'];
-echo $vector[1]; // "Dos"
 
-// Asociativo
-$notas = ['Manuel García' => 8.5, 'Ana López' => 7];
-echo $notas['Manuel García']; // 8.5
-
-// Multidimensional
-$tabla = [
-    ['nombre' => 'Juan', 'dni' => '1111A'],
-    ['nombre' => 'Ana', 'dni' => '2222B']
-];
-echo $tabla[0]['nombre']; // "Juan"
-                </div>
-                <p class="mt-4 text-gray-600">Para recorrer arrays, el bucle <code>foreach</code> es el más común y recomendado.</p>
-            </section>
-
-            <section id="superglobales" class="mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Variables Superglobales</h2>
-                <p class="text-gray-700 mb-4">Son arrays predefinidos por PHP que están disponibles en todos los ámbitos del script.</p>
-                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
-                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-                        <li><code>$GLOBALS</code></li>
-                        <li><code>$_SERVER</code></li>
-                        <li><code>$_ENV</code></li>
-                        <li><code>$_GET</code></li>
-                        <li><code>$_POST</code></li>
-                        <li><code>$_REQUEST</code></li>
-                        <li><code>$_COOKIE</code></li>
-                        <li><code>$_SESSION</code></li>
-                        <li><code>$_FILES</code></li>
-                    </ul>
-                </div>
-                <p class="mt-4 text-gray-600">Las variables <code>$_GET</code> y <code>$_POST</code> se usan para recibir datos de formularios.</p>
-            </section>
-
-            <section id="cookies-sesiones" class="mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Cookies y Sesiones</h2>
-                <p class="text-gray-700 mb-4">Ambos se usan para almacenar información del usuario, pero las cookies se guardan en el cliente (navegador) y las sesiones en el servidor.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Cookies</h3>
-                        <div class="code-block">
-// Crear una cookie
-setcookie("nombre", "Pepito", time() + 3600);
-
-// Leer una cookie
-echo $_COOKIE["nombre"];
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Sesiones</h3>
-                        <div class="code-block">
-// Iniciar una sesión
-session_start();
-
-// Guardar un dato en la sesión
-$_SESSION["loginUsuario"] = "usuario123";
-
-// Eliminar un dato
-unset($_SESSION["loginUsuario"]);
-
-// Eliminar toda la sesión
-session_destroy();
-                        </div>
-                    </div>
-                </div>
-            </section>
 
         </main>
     </div>
-
+<footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+        <div style="flex: 1 1 100%; margin-bottom: 20px;">
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marián Capilla Herrero. Publicada bajo licencia</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+            </a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+            <img src="logos/LOGO_DAW_Pres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+            <img src="logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+            <img src="logos/gv_conselleria_educacio_cmyk_val.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+            <img src="logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+        </div>
+    </div>
+</footer>
 </body>
 </html>

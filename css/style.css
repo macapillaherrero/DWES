@@ -1,0 +1,38 @@
+body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7FEE7;
+            color: #1F2937;
+        }
+        .code-block {
+            background-color: #1F2937;
+            color: #F3F4F6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .highlight {
+            background-color: #ECFDF5;
+            border-left: 4px solid #107bb9;
+        }
+        .sidebar {
+            background-color: #ECFDF5;
+        }
+        .sidebar a:hover {
+            background-color: #D1FAE5;
+        }
+        .caja-con-fondo {
+            background-color: #e0f7fa; /* Color de fondo azul claro */
+            color: #333; /* Color del texto gris oscuro */
+            padding: 20px; /* Espacio interior entre el texto y el borde */
+            border: 1px solid #b0bec5; /* Borde sutil */
+            border-radius: 8px; /* Bordes redondeados */
+           /* width: 300px;  Ancho de la caja */
+            text-align: center; /* Centra el texto horizontalmente */
+            /* font-family: Arial, sans-serif; Tipo de letra */
+            font-size: 16px; /* Tamaño de la letra */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        }

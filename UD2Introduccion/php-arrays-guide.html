@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Arrays PHP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Fresh Green & Earth Tones -->
+    <!-- Application Structure Plan: The SPA is a single-page, vertically scrolling study guide. The primary information architecture is a linear progression through PHP concepts. A sticky sidebar navigation is implemented to allow for quick access to any section, which is crucial for a document of this length. Each section contains a mix of text, formatted code blocks, and visual elements (icons) to break up the content and improve readability. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: PHP's main features (open source, simplicity, etc.). -> Goal: Inform. -> Viz/Presentation: Bulleted list with icons. -> Interaction: None, it's a static list. -> Justification: A list is the most direct way to present these key points. -> Library/Method: HTML with Tailwind.
+        2. Report Info: Code examples for variables, functions, loops, etc. -> Goal: Inform/Demonstrate. -> Viz/Presentation: Formatted code blocks. -> Interaction: None. -> Justification: The code itself is the primary content, and presenting it in a clear, monospaced format is essential for a programming guide. -> Library/Method: HTML divs styled with Tailwind for code blocks.
+        3. Report Info: Naming conventions. -> Goal: Organize/Inform. -> Viz/Presentation: List of different cases (snake, camel, etc.) with examples. -> Interaction: None. -> Justification: Simple lists are effective for comparative information. -> Library/Method: HTML with Tailwind.
+        4. Report Info: Superglobal variables, forms, cookies, and sessions. -> Goal: Inform. -> Viz/Presentation: Headings and paragraphs with code examples. -> Interaction: None. -> Justification: These concepts are best explained sequentially with contextual code snippets. -> Library/Method: HTML with Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+   <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-sky-50 text-gray-800">
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-xl font-bold text-sky-600">Guía de PHP</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                    <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción a los Arrays</a></li>
+                    <li><a href="#numericos" class="block p-2 rounded-md font-medium text-gray-600">Arrays Numéricos</a></li>
+                    <li><a href="#asociativos" class="block p-2 rounded-md font-medium text-gray-600">Arrays Asociativos</a></li>
+                    <li><a href="#multidimensionales" class="block p-2 rounded-md font-medium text-gray-600">Arrays Multidimensionales</a></li>
+                    <li><a href="#recorrido" class="block p-2 rounded-md font-medium text-gray-600">Recorrido de Arrays</a></li>
+                    <li><a href="#funciones-arrays" class="block p-2 rounded-md font-medium text-gray-600">Funciones para Arrays</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="w-full lg:w-3/4">
+            <section id="introduccion" class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Arrays en PHP (UD 2-2)</h1>
+                <p class="text-lg text-gray-600">Un array en PHP es un mapa ordenado que asocia valores a claves. Son una herramienta fundamental para almacenar y manipular colecciones de datos.</p>
+            </section>
+
+            <section id="numericos" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Arrays Numéricos</h2>
+                <p class="text-gray-700 mb-4">Un array numérico utiliza enteros como claves. Las claves se asignan automáticamente comenzando desde 0.</p>
+                <h3 class="font-semibold text-xl text-gray-900 mb-2">Creación de Arrays Numéricos</h3>
+                <div class="code-block mb-4">
+// Opción 1
+$vector = array('Uno', 'Dos', 'Tres');
+
+// Opción 2
+$vector[0] = 'Uno';
+$vector[1] = 'Dos';
+$vector[2] = 'Tres';
+
+// Opción 3 (forma más moderna)
+$vector[] = 'Uno';
+$vector[] = 'Dos';
+$vector[] = 'Tres';
+                </div>
+                <h3 class="font-semibold text-xl text-gray-900 mb-2">Acceso a un elemento</h3>
+                <div class="code-block">
+echo $vector[1]; // Muestra "Dos"
+                </div>
+            </section>
+            
+            <section id="asociativos" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Arrays Asociativos</h2>
+                <p class="text-gray-700 mb-4">Utilizan cadenas de texto como claves. Son ideales para representar datos con etiquetas descriptivas.</p>
+                <h3 class="font-semibold text-xl text-gray-900 mb-2">Creación de Arrays Asociativos</h3>
+                <div class="code-block mb-4">
+// Opción 1
+$notas = array('Manuel García' => 8.5, 'Ana López' => 7, 'Juan Solís' => 9);
+
+// Opción 2
+$notas['Manuel García'] = 8.5;
+$notas['Ana López'] = 7;
+$notas['Juan Solís'] = 9;
+                </div>
+                <h3 class="font-semibold text-xl text-gray-900 mb-2">Acceso a un elemento</h3>
+                <div class="code-block">
+echo $notas['Manuel García']; // Muestra 8.5
+                </div>
+            </section>
+            
+            <section id="multidimensionales" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Arrays Multidimensionales</h2>
+                <p class="text-gray-700 mb-4">Arrays que contienen otros arrays. Puedes combinarlos con claves numéricas y asociativas.</p>
+                <h3 class="font-semibold text-xl text-gray-900 mb-2">Ejemplos de creación</h3>
+                <div class="code-block">
+// Numérico
+$tabla[0][0] = 34.1;
+$tabla[0][1] = 141;
+
+// Asociativo
+$tabla2 = array(
+    array('nombre' => 'Juan', 'dni' => '1111A'),
+    array('nombre' => 'Ana', 'dni' => '2222B')
+);
+
+// Mixto
+$tabla2[0]['nombre'] = 'Juan García';
+$tabla2[0]['dni'] = '11111111A';
+$tabla2[0]['idiomas'][0] = 'inglés';
+$tabla2[0]['idiomas'][1] = 'valenciano';
+                </div>
+            </section>
+            
+            <section id="recorrido" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Recorrido de Arrays</h2>
+                <p class="text-gray-700 mb-4">El bucle `foreach` es la forma más común y legible de iterar sobre arrays. También se pueden usar `while` o `for`.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Con `foreach`</h3>
+                        <div class="code-block mb-4">
+// Solo valores
+foreach ($notas as $nota) {
+    echo $nota;
+}
+
+// Claves y valores
+foreach ($notas as $alumno => $nota) {
+    echo "El alumno $alumno tiene un $nota";
+}
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-xl text-gray-900 mb-2">Con otros bucles</h3>
+                        <div class="code-block mb-4">
+// Con `while`
+while(list($alumno, $nota) = each($notas)) {
+    echo "El alumno $alumno tiene un $nota";
+}
+
+// Con `for` para arrays numéricos
+for ($i = 0; $i < count($tabla); $i++) {
+    for ($j = 0; $j < count($tabla[$i]); $j++) {
+        echo $tabla[$i][$j];
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="funciones-arrays" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Funciones para Arrays</h2>
+                <p class="text-gray-700 mb-4">PHP tiene una gran cantidad de funciones nativas para manipular arrays, como ordenar, contar y buscar.</p>
+                <div class="code-block">
+// contar elementos
+count($array)
+
+// ordenar
+sort($array) // ordena por valor
+asort($array) // ordena por valor, manteniendo la clave
+ksort($array) // ordena por clave
+                </div>
+                <a href="https://www.php.net/manual/es/ref.array.php" target="_blank" class="text-blue-600 hover:underline mt-4 block">Ver documentación completa</a>
+            </section>
+        </main>
+    </div>
+    
+<footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+        <div style="flex: 1 1 100%; margin-bottom: 20px;">
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marián Capilla Herrero. Publicada bajo licencia</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+            </a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+            <img src="../logos/LOGO_DAW_Pres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+            <img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+            <img src="../logos/gv_conselleria_educacio_cmyk_val.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+            <img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+        </div>
+    </div>
+</footer>
+</body>
+</html>

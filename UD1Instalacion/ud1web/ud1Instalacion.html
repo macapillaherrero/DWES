@@ -34,30 +34,31 @@
         }
         .explanation-card {
             background-color: #F3F4F6; /* gray-200 */
-            border-left: 4px solid #3B82F6; /* blue-500 */
+            border-left: 4px solid #3B82F6; /* sky-500 */
         }
         .active-file {
-            background-color: #DBEAFE; /* blue-100 */
-            color: #1E40AF; /* blue-800 */
+            background-color: #DBEAFE; /* sky-100 */
+            color: #1E40AF; /* sky-800 */
             font-weight: 600;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-sky-50 text-gray-800">
 
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <span class="text-xl font-bold text-blue-600">Docker + PHP</span>
+                    <span class="text-xl font-bold text-sky-600">Docker + PHP</span>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#objetivo" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Objetivo</a>
-                        <a href="#arquitectura" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Arquitectura</a>
-                        <a href="#configuracion" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Configuración</a>
-                        <a href="#ejecucion" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Ejecución</a>
-                        <a href="/index.html" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
+                        <a href="/index.html" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
+                        <a href="#objetivo" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Objetivo</a>
+                        <a href="#arquitectura" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Arquitectura</a>
+                        <a href="#configuracion" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Configuración</a>
+                        <a href="#ejecucion" class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium">Ejecución</a>
+                        
                     </div>
                 </div>
             </div>
@@ -87,13 +88,13 @@
                 
                 <div class="text-gray-400 font-mono text-2xl transform rotate-90 md:rotate-0">&lt;--&gt;</div>
                 
-                <div class="w-full md:w-1/3 p-6 bg-white rounded-xl shadow-lg border-2 border-blue-500 relative">
+                <div class="w-full md:w-1/3 p-6 bg-white rounded-xl shadow-lg border-2 border-sky-500 relative">
                     <span class="absolute -top-3 -left-3 flex h-6 w-6">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-6 w-6 bg-blue-500 text-white items-center justify-center text-xs font-bold">1</span>
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-6 w-6 bg-sky-500 text-white items-center justify-center text-xs font-bold">1</span>
                     </span>
                     <div class="text-5xl mb-3">📦</div>
-                    <h3 class="font-bold text-lg text-blue-700">Contenedor Nginx</h3>
+                    <h3 class="font-bold text-lg text-sky-700">Contenedor Nginx</h3>
                     <p class="text-sm text-gray-600">Recibe la petición y si es un archivo `.php`, la envía al contenedor de PHP.</p>
                 </div>
 
@@ -220,10 +221,10 @@ services:
                         <h4 class="font-bold text-lg mb-2 text-gray-900">docker-compose.yml</h4>
                         <p class="text-sm text-gray-700 mb-4">Este archivo es el director de orquesta. Define los servicios (contenedores) que componen tu aplicación y cómo se conectan entre sí.</p>
                         <ul class="text-sm space-y-3 text-gray-800">
-                            <li><b class="text-blue-700">services.nginx</b>: Define el contenedor del servidor web. Usa una imagen oficial de Nginx, mapea el puerto 8080 de tu PC al 80 del contenedor y sincroniza el código y la configuración.</li>
-                            <li><b class="text-blue-700">services.php</b>: Define el contenedor de PHP. En lugar de usar una imagen pre-hecha, le decimos que la construya (<code>build</code>) usando nuestro <code>Dockerfile</code>.</li>
-                            <li><b class="text-blue-700">volumes</b>: Sincroniza carpetas entre tu máquina y el contenedor. Los cambios en tu código se reflejan al instante.</li>
-                            <li><b class="text-blue-700">depends_on</b>: Asegura que el contenedor de PHP se inicie antes que el de Nginx.</li>
+                            <li><b class="text-sky-700">services.nginx</b>: Define el contenedor del servidor web. Usa una imagen oficial de Nginx, mapea el puerto 8080 de tu PC al 80 del contenedor y sincroniza el código y la configuración.</li>
+                            <li><b class="text-sky-700">services.php</b>: Define el contenedor de PHP. En lugar de usar una imagen pre-hecha, le decimos que la construya (<code>build</code>) usando nuestro <code>Dockerfile</code>.</li>
+                            <li><b class="text-sky-700">volumes</b>: Sincroniza carpetas entre tu máquina y el contenedor. Los cambios en tu código se reflejan al instante.</li>
+                            <li><b class="text-sky-700">depends_on</b>: Asegura que el contenedor de PHP se inicie antes que el de Nginx.</li>
                         </ul>
                     </div>
                 `
@@ -239,8 +240,8 @@ RUN docker-php-ext-install pdo_mysql opcache`,
                         <h4 class="font-bold text-lg mb-2 text-gray-900">Dockerfile</h4>
                         <p class="text-sm text-gray-700 mb-4">Este archivo es la receta para construir nuestra imagen de PHP personalizada.</p>
                         <ul class="text-sm space-y-3 text-gray-800">
-                            <li><b class="text-blue-700">FROM</b>: Especifica la imagen base sobre la que construiremos. <code>php:8.3-fpm-alpine</code> es una excelente opción: es oficial, usa PHP 8.3, incluye FPM (para comunicarse con Nginx) y es muy ligera (Alpine Linux).</li>
-                            <li><b class="text-blue-700">RUN</b>: Ejecuta comandos durante el proceso de construcción de la imagen. Aquí usamos un script de ayuda (<code>docker-php-ext-install</code>) para instalar extensiones de PHP comunes como la de MySQL y Opcache.</li>
+                            <li><b class="text-sky-700">FROM</b>: Especifica la imagen base sobre la que construiremos. <code>php:8.3-fpm-alpine</code> es una excelente opción: es oficial, usa PHP 8.3, incluye FPM (para comunicarse con Nginx) y es muy ligera (Alpine Linux).</li>
+                            <li><b class="text-sky-700">RUN</b>: Ejecuta comandos durante el proceso de construcción de la imagen. Aquí usamos un script de ayuda (<code>docker-php-ext-install</code>) para instalar extensiones de PHP comunes como la de MySQL y Opcache.</li>
                         </ul>
                     </div>
                 `
@@ -266,9 +267,9 @@ RUN docker-php-ext-install pdo_mysql opcache`,
                         <h4 class="font-bold text-lg mb-2 text-gray-900">nginx.conf</h4>
                         <p class="text-sm text-gray-700 mb-4">Define cómo Nginx debe manejar las peticiones entrantes.</p>
                         <ul class="text-sm space-y-3 text-gray-800">
-                            <li><b class="text-blue-700">root</b>: Establece el directorio raíz donde Nginx buscará los archivos. Coincide con el volumen que montamos.</li>
-                            <li><b class="text-blue-700">location ~ \\.php$</b>: Es la regla más importante. Le dice a Nginx qué hacer cuando una petición es para un archivo que termina en <code>.php</code>.</li>
-                            <li><b class="text-blue-700">fastcgi_pass php:9000</b>: Pasa la petición al servicio llamado 'php' (el nombre de nuestro servicio en <code>docker-compose.yml</code>) en el puerto 9000, que es el puerto por defecto de PHP-FPM.</li>
+                            <li><b class="text-sky-700">root</b>: Establece el directorio raíz donde Nginx buscará los archivos. Coincide con el volumen que montamos.</li>
+                            <li><b class="text-sky-700">location ~ \\.php$</b>: Es la regla más importante. Le dice a Nginx qué hacer cuando una petición es para un archivo que termina en <code>.php</code>.</li>
+                            <li><b class="text-sky-700">fastcgi_pass php:9000</b>: Pasa la petición al servicio llamado 'php' (el nombre de nuestro servicio en <code>docker-compose.yml</code>) en el puerto 9000, que es el puerto por defecto de PHP-FPM.</li>
                         </ul>
                     </div>
                 `
@@ -335,5 +336,29 @@ echo "La versión de PHP es: " . phpversion();
         updateDisplay('compose');
 
     </script>
+ <section class="mb-16">
+    <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">¡Feliz codificación con Docker y PHP! 🚀</h2>
+        <p class="text-md text-gray-600 max-w-2xl mx-auto"> <a  class="text-gray-600 hover:text-sky-800 px-3 py-2 rounded-md text-sm font-medium" href="https://github.com/ltamarit/curso-docker/blob/main/index.md"> Más info de docker</a> </p>
+    </div>
+ </section>
+ <footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+        <div style="flex: 1 1 100%; margin-bottom: 20px;">
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marián Capilla Herrero. Publicada bajo licencia</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+             <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+            </a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+            <img src="../../logos/LOGO_DAW_Pres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+            <img src="../../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+            <img src="../../logos/gv_conselleria_educacio_cmyk_val.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+            <img src="../../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+        </div>
+    </div>
+</footer>
 </body>
 </html>
