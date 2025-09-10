@@ -1,0 +1,143 @@
+<!-- Paleta: Brilliant Blues -->
+<!-- Plan: The infographic will present a clear visual timeline of the 2025-2026 academic year for DAW students. The structure will be a main title, a clear legend for color-coding, followed by a grid of monthly calendars from September 2025 to June 2026. Key dates such as evaluations, holidays, the "RETO" week, and the start of company training (FCT/FE) will be visually highlighted. This narrative provides a chronological overview of the academic year, allowing students to quickly identify important periods. A summary card will reiterate the most critical dates for quick reference. The entire layout will be responsive. NEITHER Mermaid JS NOR SVG were used. -->
+<!-- Visualization Choices: The main calendar will be built using structured HTML and Tailwind CSS Grid to achieve the goal of "Organizing" and showing "Change" over time. This method is chosen over a chart library for better readability and direct representation of a calendar, adhering to the NO SVG constraint. A simple list format will be used in the summary section to "Inform" users of key dates. NEITHER Mermaid JS NOR SVG were used. -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Académico 2025-2026 - 2º DAW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .calendar-day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+        }
+        .day-name {
+            font-weight: 600;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Calendario Académico 2025-2026</h1>
+            <p class="text-xl text-gray-600 mt-2">Guía Visual para 2º de Desarrollo de Aplicaciones Web</p>
+            <p class="text-xl text-gray-600 mt-2">DWES</p>
+        </header>
+
+        <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+            <h2 class="text-xl font-bold mb-4 text-center">Leyenda de Colores</h2>
+            <div class="flex flex-wrap justify-center items-center gap-4 md:gap-6 text-sm">
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-red-500"></div><span>Evaluación</span></div>
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-purple-500"></div><span>Semana de RETO</span></div>
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-green-500"></div><span>Inicio Formación en Empresa</span></div>
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-blue-500"></div><span>Festivo / No Lectivo</span></div>
+            </div>
+        </div>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="calendar-container">
+        </main>
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('calendar-container');
+            const months = [
+                { name: 'Septiembre', year: 2025, month: 8 },
+                { name: 'Octubre', year: 2025, month: 9 },
+                { name: 'Noviembre', year: 2025, month: 10 },
+                { name: 'Diciembre', year: 2025, month: 11 },
+                { name: 'Enero', year: 2026, month: 0 },
+                { name: 'Febrero', year: 2026, month: 1 },
+                { name: 'Marzo', year: 2026, month: 2 },
+                { name: 'Abril', year: 2026, month: 3 },
+                { name: 'Mayo', year: 2026, month: 4 },
+                { name: 'Junio', year: 2026, month: 5 }
+            ];
+
+            const specialDates = {
+                'evaluation': ['2025-12-01', '2025-12-02', '2026-02-25', '2026-02-26', '2026-06-09', '2026-06-10', '2026-06-22'],
+                'holiday': ['2025-10-09','2025-10-10', '2025-11-01', '2025-12-06', '2025-12-08','2025-12-22', '2025-12-23', '2025-12-24', '2025-12-25', '2025-12-26', '2025-12-27', '2025-12-28', '2025-12-29', '2025-12-30', '2025-12-31', '2026-01-01', '2026-01-02', '2026-01-03', '2026-01-04', '2026-01-05', '2026-01-05', '2026-03-17', '2026-03-18', '2026-03-19','2026-04-03', '2026-04-09', '2026-04-10', '2026-04-11', '2026-04-12', '2026-04-13', '2026-04-06', '2026-04-07', '2026-04-08', '2026-04-02', '2026-04-18', '2026-04-19', '2026-05-01'],
+                'reto': ['2026-02-23', '2026-02-24', '2026-02-25', '2026-02-26','2026-02-27'],
+                'fe_start': ['2026-03-04'],
+                'cu_start_fin': ['2025-09-08','2026-06-19']
+            };
+
+            const dayNames = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
+
+            months.forEach(({ name, year, month }) => {
+                const monthCard = document.createElement('div');
+                monthCard.className = 'bg-white p-4 rounded-2xl shadow-lg';
+                
+                let calendarHtml = `<h3 class="text-xl font-bold text-center mb-4">${name} ${year}</h3>`;
+                calendarHtml += '<div class="calendar-grid mb-2">';
+                dayNames.forEach(day => {
+                    calendarHtml += `<div class="day-name text-center text-xs">${day}</div>`;
+                });
+                calendarHtml += '</div>';
+                calendarHtml += '<div class="calendar-grid">';
+
+                const firstDayOfMonth = new Date(year, month, 1);
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                let startingDay = firstDayOfMonth.getDay();
+                startingDay = startingDay === 0 ? 6 : startingDay-1; // Adjust for Monday start;
+
+                for (let i = 0; i < startingDay; i++) {
+                    calendarHtml += `<div></div>`;
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const currentDate = new Date(year, month, day);
+                    //const dateString = currentDate.toISOString().split('T')[0];
+                    const año = currentDate.getFullYear();
+                    const mes = String(currentDate.getMonth() + 1).padStart(2, '0'); // Sumamos 1 porque los meses son de 0-11, y 'padStart' asegura dos dígitos
+                    const dia = String(currentDate.getDate()).padStart(2, '0'); // 'padStart' asegura dos dígitos para el día
+
+                    const dateString = `${año}-${mes}-${dia}`;
+                    let classes = 'calendar-day ';
+
+                    if (specialDates.fe_start.includes(dateString)) {
+                        classes += 'bg-green-500 text-white font-bold';
+                    } else if (specialDates.reto.includes(dateString)) {
+                        classes += 'bg-purple-500 text-white';
+                    }else if (specialDates.cu_start_fin.includes(dateString)) {
+                        classes += 'bg-lime-500 text-white';
+                    
+                    } else if (specialDates.evaluation.includes(dateString)) {
+                        classes += 'bg-red-500 text-white font-bold';                    
+                    }else if (specialDates.holiday.includes(dateString) || currentDate.getDay() === 0 || currentDate.getDay() === 6) { 
+                        classes += 'bg-blue-500 text-white font-bold';    
+                    }else {
+                        classes += 'bg-gray-100';
+                    }
+                    
+                    calendarHtml += `<div class="${classes}">${day}</div>`;
+                }
+                
+                calendarHtml += '</div>';
+                monthCard.innerHTML = calendarHtml;
+                container.appendChild(monthCard);
+            });
+        });
+    </script>
+</body>
+</html>
