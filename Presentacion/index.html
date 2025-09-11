@@ -58,6 +58,10 @@
                 <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-purple-500"></div><span>Semana de RETO</span></div>
                 <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-green-500"></div><span>Inicio Formación en Empresa</span></div>
                 <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-blue-500"></div><span>Festivo / No Lectivo</span></div>
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-lime-500"></div><span>Inicio / Fin de curso</span></div>
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-orange-500"></div><span>Anulación de matricula sin justificación</span></div>
+                <div class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-orange-800"></div><span>Anulación de matricula justificada</span></div>
+
             </div>
         </div>
 
@@ -107,9 +111,11 @@
             const specialDates = {
                 'evaluation': ['2025-12-01', '2025-12-02', '2026-02-25', '2026-02-26', '2026-06-09', '2026-06-10', '2026-06-22'],
                 'holiday': ['2025-10-09','2025-10-10', '2025-11-01', '2025-12-06', '2025-12-08','2025-12-22', '2025-12-23', '2025-12-24', '2025-12-25', '2025-12-26', '2025-12-27', '2025-12-28', '2025-12-29', '2025-12-30', '2025-12-31', '2026-01-01', '2026-01-02', '2026-01-03', '2026-01-04', '2026-01-05', '2026-01-05', '2026-03-17', '2026-03-18', '2026-03-19','2026-04-03', '2026-04-09', '2026-04-10', '2026-04-11', '2026-04-12', '2026-04-13', '2026-04-06', '2026-04-07', '2026-04-08', '2026-04-02', '2026-04-18', '2026-04-19', '2026-05-01'],
-                'reto': ['2026-02-23', '2026-02-24', '2026-02-25', '2026-02-26','2026-02-27'],
+                'reto': ['2026-02-23', '2026-02-24','2026-02-27'],
                 'fe_start': ['2026-03-04'],
-                'cu_start_fin': ['2025-09-08','2026-06-19']
+                'cu_start_fin': ['2025-09-08','2026-06-19'],
+                'anulacion':['2025-12-19'],
+                'anulacionj':['2026-03-02']
             };
 
             const dayNames = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
@@ -151,12 +157,15 @@
                     } else if (specialDates.reto.includes(dateString)) {
                         classes += 'bg-purple-500 text-white';
                     }else if (specialDates.cu_start_fin.includes(dateString)) {
-                        classes += 'bg-lime-500 text-white';
-                    
+                        classes += 'bg-lime-500 text-white';                    
                     } else if (specialDates.evaluation.includes(dateString)) {
                         classes += 'bg-red-500 text-white font-bold';                    
                     }else if (specialDates.holiday.includes(dateString) || currentDate.getDay() === 0 || currentDate.getDay() === 6) { 
                         classes += 'bg-blue-500 text-white font-bold';    
+                    }else if (specialDates.anulacion.includes(dateString) ) { 
+                        classes += 'bg-orange-500 text-white font-bold';  
+                   }else if (specialDates.anulacionj.includes(dateString) ) { 
+                        classes += 'bg-orange-800 text-white font-bold';    
                     }else {
                         classes += 'bg-gray-100';
                     }
