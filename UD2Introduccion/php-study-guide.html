@@ -75,7 +75,7 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Bloques de código PHP</h2>
                 <p class="text-gray-700 mb-4">El código PHP se escribe entre las etiquetas <code>&lt;?php ... ?&gt;</code>.</p>
                 
-                <img src="/imagenesUD1/imagen1.png" alt="bloques de código" class="w-full max-w-md mx-auto mb-4 rounded-lg shadow-md border border-gray-200">
+                <img src="imagenesUD2/imagen1.png" alt="bloques de código" class="w-full max-w-md mx-auto mb-4 rounded-lg shadow-md border border-gray-200">
             
                <div class="caja-con-fondo mt-4 text-gray-600">Se recomienda evitar el "código espagueti" y no escribir HTML dentro de las etiquetas PHP.</div> 
             </section>
@@ -87,7 +87,7 @@
                     <li><code>//</code> o <code>#</code> para una sola línea.</li>
                     <li><code>/* ... */</code> para varias líneas.</li>
                 </ul>
-                     <img src="/imagenesUD1/imagen2.png" alt="bloques de código" class="w-full max-w-md mx-auto mb-4 rounded-lg shadow-md border border-gray-200">
+                     <img src="imagenesUD2/imagen2.png" alt="bloques de código" class="w-full max-w-md mx-auto mb-4 rounded-lg shadow-md border border-gray-200">
 
             </section>
 
@@ -131,14 +131,12 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Casting</h2>
                 <p class="text-gray-700 mb-4">Puedes forzar la conversión de tipos usando el <a class="highlight" href="https://www.php.net/manual/es/language.types.type-juggling.php"> casting.</a></p>
                 <div class="code-block">
-                <pre>
-                <code>
 &lt;?php
     $foo = 10; // integer
     $bar = (boolean) $foo; // boolean
     $str = "$foo"; // string
     $fst = (string) $foo; // string
-?&gt;</code></pre>
+?&gt;
                 </div>
             </section>
 
@@ -146,12 +144,8 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Constantes</h2>
                 <p class="text-gray-700 mb-4">Se declaran en mayúsculas y no pueden ser modificadas.</p>
                 <div class="code-block">
-                <pre>
-                <code>
 define("CONSTANTE", "Hola mundo.");
 const CONSTANTE = 'Hola Mundo';
-                </code>
-                </pre>
                 </div>
             </section>
 
@@ -159,8 +153,6 @@ const CONSTANTE = 'Hola Mundo';
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Control de flujo: Condicionales</h2>
                 <p class="text-gray-700 mb-4">Se usan las estructuras <code>if</code>, <code>if...else</code>, <code>if...elseif...else</code> y <code>switch...case</code> para ejecutar código bajo ciertas condiciones.</p>
                 <div class="code-block">
-                <pre>
-                <code>
 // IF
 
 if (condicion) {
@@ -197,11 +189,7 @@ switch (variable) {
         break;
     default:
         // instrucciones
-}
-
-                </code>
-                </pre>
-            </div>
+}         </div>
             </section>
 
             <section id="bucles" class="mb-12">
