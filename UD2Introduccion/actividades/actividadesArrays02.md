@@ -1,30 +1,56 @@
-# Ejercicios avanzados de arrays en PHP
+---
+marp: true
+theme: default
+class:
+ - lead
+style: |
+  footer {
+    text-align: center;
+  }
+---
+# UD1 Introducción Desarrollo Web en Entorno Servidor
 
 <p>IES CAMP DE MORVEDRE</p>
 <p>Prof:<a  href="mailto:ma.capillaherrero@edu.gva.es"> ma.capillaherrero@edu.gva.es</a></p>
 
+<img src="../../logos/europa.jpg" alt="Logo Europa" width="8%">
+<img src="../../logos/camp.png" alt="Logo Camp" width="20%">
+<img src="../../logos/LOGO_DAW_Pres.png" alt="Logo Dam" width="20%">
 
-## 1. Matriz de notas y búsqueda
-- Crea una matriz con los nombres de 3 alumnos y, para cada uno, sus notas en 4 módulos.
-- Desarrolla una función que reciba el nombre de un alumno y devuelva su nota media y el módulo donde obtuvo su mejor nota.
+---
 
-## 2. Catálogo de productos agrupado
-- Crea un array multidimensional con varias categorías (Ej: "Electrónica", "Libros"), 
-  cada una con varios productos asociados (nombre, precio, stock).
-- Escribe una función que, dado el nombre de una categoría, muestre todos sus productos, ordenados por precio.
+<!-- paginate: true -->
 
-## 3. Búsqueda recursiva de valores en arrays
-- Crea un array mixto con varias dimensiones e índices asociativos y numéricos.
-- Implementa una función recursiva que busque el valor "PHP" en cualquier nivel del array y devuelva la ruta (índices/claves) para acceder a él.
+# Ejercicios de arrays en PHP
 
-## 4. Filtrar y transformar una matriz
-- Crea una matriz de empleados, cada uno con nombre, edad y salario.
-- Utiliza `array_filter` y `array_map` para, primero, filtrar los empleados mayores de 30 años, y luego obtener un array con sus nombres en mayúscula y sus salarios incrementados en un 10%.
+## 1. Creación e inserción
 
-## 5. Análisis de matriz tridimensional
-- Crea un array tridimensional que guarde, para 2 cursos DAW y para cada curso, las notas de sus alumnos en 3 evaluaciones.
-- Desarrolla una rutina para mostrar el nombre del alumno con mejor nota global (suma de todas sus evaluaciones) en cada curso.
+- Crea un array llamado `$nombres` con cinco nombres de persona.
+- Inserta el nombre "Carlos" en la tercera posición del array.
+- Crea un array vacío llamado `$numeros` e inserta 10 números del 1 al 10 utilizando un bucle.
 
+## 2. Recorrido de arrays
+
+- Recorre el array `$nombres` mostrando el mensaje: "Conozco a alguien llamado X".
+- Recorre el array `$numeros` y muestra el doble de cada número.
+- Crea una función que recorra un array asociativo de países y capitales, mostrando: "La capital de X es Y".
+
+## 3. Extracción de datos
+
+- Crea una función `getFirstElement` que reciba un array y devuelva el primer elemento.
+- Extrae el último elemento del array `$numeros` y muéstralo por pantalla.
+- A partir de un array de números enteros, extrae todos los números positivos en un nuevo array usando un bucle.
+
+## 4. Arrays multidimensionales y asociativos
+
+- Crea un array asociativo que vincule módulos de DAW a su profesor.
+- Recorre el array y muestra cada módulo y su docente.
+- Crea un array bidimensional con las notas de tres alumnos en tres asignaturas. Muestra la media de cada alumno utilizando bucles anidados.
+
+## 5. Manipulación y ordenación
+
+- Utiliza `array_splice()` para insertar el valor 'PHP' en la posición 2 de un array de tecnologías.
+- Haz un array asociativo de frutas y precios. Ordena y muestra el array por clave y por valor usando `ksort`, `asort`.
 
 <p>IES CAMP DE MORVEDRE</p>
 <p>Prof: <a  href="mailto:ma.capillaherrero@edu.gva.es"> ma.capillaherrero@edu.gva.es</a></p>
