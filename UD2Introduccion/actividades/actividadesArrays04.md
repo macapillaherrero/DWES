@@ -13,9 +13,11 @@ style: |
 <p>IES CAMP DE MORVEDRE</p>
 <p>Prof:<a  href="mailto:ma.capillaherrero@edu.gva.es"> ma.capillaherrero@edu.gva.es</a></p>
 
-<img src="../../logos/europa.jpg" alt="Logo Europa" width="8%">
-<img src="../../logos/camp.png" alt="Logo Camp" width="20%">
-<img src="../../logos/LOGO_DAW_Pres.png" alt="Logo Dam" width="20%">
+<div style="display:flex; align-items:center;">
+  <img src="https://macapillaherrero.github.io/DWES/logos/europa.jpg" alt="Logo Europa" style="height:64px;margin-right:32px">
+  <img src="https://macapillaherrero.github.io/DWES/logos/camp.png" style="height:64px;margin-right:32px">
+  <img src="https://macapillaherrero.github.io/DWES/logos/LOGO_DAW_Pres.png" alt="Logo Daw" style="height:64px;margin-right:32px">
+</div>
 
 ---
 

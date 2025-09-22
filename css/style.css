@@ -14,6 +14,46 @@ body {
             white-space: pre-wrap;
             word-break: break-all;
         }
+
+        /* --- Estilos para el botón de copiar con la clase .code-block --- */
+
+/* 1. Hacemos que tu bloque de código sea el contenedor */
+.code-block {
+  position: relative; /* Clave para posicionar el botón dentro */
+}
+
+/* 2. Estilo del botón "Copiar" (sin cambios) */
+.btn-copiar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 5px 10px;
+  font-size: 0.8em;
+  font-family: system-ui, sans-serif;
+  color: #333;
+  background-color: #e9e9e9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0; /* Oculto hasta que pases el ratón */
+  transition: opacity 0.2s ease-in-out, background-color 0.2s;
+}
+
+/* 3. Muestra el botón al pasar el ratón sobre el bloque */
+.code-block:hover .btn-copiar {
+  opacity: 1;
+}
+
+.btn-copiar:hover {
+  background-color: #dcdcdc;
+}
+
+/* 4. Estilo de confirmación "Copiado" (sin cambios) */
+.btn-copiar.copiado {
+  background-color: #a5d6a7;
+  color: #111;
+}
+
         .highlight {
             background-color: #ECFDF5;
             border-left: 4px solid #107bb9;
@@ -36,3 +76,17 @@ body {
             font-size: 16px; /* Tamaño de la letra */
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
         }
+        /* --- Estilo para enlaces externos de referencia --- */
+        .enlace-externo {
+        color: #0b6efd; /* Usa el color azul principal para que sea reconocible */
+        text-decoration: none; /* Quitamos el subrayado por defecto para un look más limpio */
+        font-weight: 600; /* Le damos un poco más de peso para que destaque del texto normal */
+        transition: text-decoration 0.2s ease-in-out; /* Animación suave para el subrayado */
+        }
+
+        .enlace-externo:hover,
+        .enlace-externo:focus {
+        text-decoration: underline; /* Aparece el subrayado al pasar el ratón o al seleccionarlo con el teclado */
+        }
+
+        

@@ -52,7 +52,32 @@ foreach ($arrayPaises as $clave => $valor) {
     echo "La capital de $clave es $valor<br>";
 }
 
+/*$notas = [
+    "Pedro" => [7, 8, 6],
+    "Lucía" => [9, 7, 8],
+    "Eva" => [6, 5, 8]
+];
 
+$notas = array(
+    "Pedro" => array(7, 8, 6),
+    "Lucía" => array(9, 7, 8),
+    "Eva" => array(6, 5, 8)
+);
+*/
+$notas = [
+    "Pedro" => ["matematicas" => [7,8,9], "lengua" => 8, "historia" => 6],
+    "Lucía" => [9, 7, 8],
+    "Eva" => [6, 5, 8]
+];
+
+foreach ($notas as $alumno => $arrayNotas) {
+
+    foreach ($arrayNotas as $asignatura => $nota) {
+        echo "La nota de $alumno en $asignatura es $nota<br>";
+    }
+  /*  $media = array_sum($arrayNotas)/count($arrayNotas);
+    echo "La media de $alumno es $media<br>";*/
+}
 
 
 /*

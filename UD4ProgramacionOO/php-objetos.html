@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Apuntes PHP 8.3 - Unidad Completa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+<style>
+
+
+</style>
+</head>
+<body class="bg-sky-50 text-gray-800">
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../UD2Introduccion/index.html" class="text-xl font-bold text-sky-600">Guía de PHP</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                    <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
+                    <li><a href="#poo" class="block p-2 rounded-md font-medium text-gray-600">POO</a></li>
+                    <li><a href="#herencia" class="block p-2 rounded-md font-medium text-gray-600">Herencia</a></li>
+                    <li><a href="#clases-abstractas" class="block p-2 rounded-md font-medium text-gray-600">Clases Abstractas</a></li>
+                    <li><a href="#palabra-final" class="block p-2 rounded-md font-medium text-gray-600">Palabra Clave Final</a></li>
+                </ul>
+            </nav>
+        </aside>
+ 
+<main class="w-full lg:w-3/4">
+
+<section id="poo">
+    <h2>Programación Orientada a Objetos (POO) en PHP</h2>
+
+    <article id="clases-objetos">
+      <h3>Las Clases y Objetos</h3>
+      <pre class="code-block"><code class="language-php">&lt;?php
+class Caja {
+  public $color = 'rojo';
+  public $alto = 10;
+  public $ancho = 10;
+  public function mostrarCaja() {
+    echo "Mi caja es de color: {$this->color}";
+    echo " y mide {$this->alto} x {$this->ancho}";
+  }
+}
+$miCaja = new Caja();
+$miCaja->mostrarCaja();
+?&gt;
+</code></pre>
+    </article>
+
+    <article id="constructores-destructores">
+      <h3>Constructores y Destructores</h3>
+      <pre class="code-block"><code class="language-php">&lt;?php
+class Persona {
+  public $nombre;
+  public $apellido;
+  public $edad;
+  
+  public function __construct($nombre, $apellido, $edad) {
+    $this->nombre = $nombre;
+    $this->apellido = $apellido;
+    $this->edad = $edad;
+  }
+  
+  public function saludar() {
+    return "Hola, soy $this->nombre $this->apellido y tengo $this->edad años.";
+  }
+  
+  public function __destruct() {
+    echo "Objeto destruido";
+  }
+}
+$persona = new Persona("Pepita", "Pérez", 26);
+echo $persona->saludar();
+unset($persona);
+?&gt;
+</code></pre>
+    </article>
+
+    <article id="visibilidad">
+      <h3>Visibilidad (public, private, protected)</h3>
+      <p>Define acceso a propiedades y métodos para proteger datos y comportamientos.</p>
+      <pre class="code-block"><code class="language-php">&lt;?php
+class MyClass {
+  public $public = "público";
+  protected $protected = "protegido";
+  private $private = "privado";
+  
+  public function imprimir() {
+    echo $this->public;
+    echo $this->protected;
+    echo $this->private;
+  }
+}
+$obj = new MyClass();
+echo $obj->public;    // OK
+// echo $obj->protected; // Error
+// echo $obj->private;   // Error
+$obj->imprimir();
+?&gt;
+</code></pre>
+    </article>
+
+    <article id="metodos-magicos">
+      <h3>Métodos Mágicos __get y __set</h3>
+      <p>Permiten manejar propiedades inaccesibles directamente.</p>
+      <pre class="code-block"><code class="language-php">&lt;?php
+class Example {
+  private $data = [];
+  
+  public function __get($name) {
+    return $this->data[$name] ?? null;
+  }
+  
+  public function __set($name, $value) {
+    $this->data[$name] = $value;
+  }
+}
+$obj = new Example();
+$obj->foo = "bar";
+echo $obj->foo; // bar
+?&gt;
+</code></pre>
+    </article>
+
+    <article id="constantes">
+      <h3>Constantes de Clase</h3>
+      <pre class="code-block"><code class="language-php">&lt;?php
+class MiClase {
+  const CONSTANTE = "valor constante";
+
+  function mostrarConstante() {
+    echo self::CONSTANTE;
+  }
+}
+echo MiClase::CONSTANTE;
+$clase = new MiClase();
+$clase->mostrarConstante();
+?&gt;
+</code></pre>
+    </article>
+
+    <article id="static-palabra">
+      <h3>Palabra Reservada Static</h3>
+      <pre class="code-block"><code class="language-php">&lt;?php
+class Foo {
+  public static function metodoEstatico() {
+    echo "Método estático llamado";
+  }
+}
+Foo::metodoEstatico();
+?&gt;
+</code></pre>
+    </article>
+  </section>
+
+  <section id="herencia">
+    <h2>Herencia</h2>
+    <p>Permite que una clase herede propiedades y métodos de otra usando <code>extends</code>.</p>
+    <pre class="code-block"><code class="language-php">&lt;?php
+class Animal {
+  private $peso;
+  private $color;
+  
+  public function __construct($peso, $color) {
+    $this->peso = $peso;
+    $this->color = $color;
+  }
+  
+  public function getColor() {
+    return $this->color;
+  }
+}
+
+class Gato extends Animal {
+  private $raza;
+  
+  public function __construct($peso, $color, $raza) {
+    parent::__construct($peso, $color);
+    $this->raza = $raza;
+  }
+}
+
+$gato = new Gato(5, "blanco", "persa");
+echo $gato->getColor();
+?&gt;
+</code></pre>
+  </section>
+
+  <section id="clases-abstractas">
+    <h2>Clases Abstractas</h2>
+    <p>Clases que no se pueden instanciar directamente, pero que definen métodos que las clases hijas deben implementar.</p>
+    <pre class="code-block"><code class="language-php">&lt;?php
+abstract class ProductoLacteo {
+  abstract public function conservarse();
+  abstract public function consumirse();
+}
+
+class Leche extends ProductoLacteo {
+  public function conservarse() {
+    echo "Conservar en la nevera.";
+  }
+  public function consumirse() {
+    echo "Beber el producto.";
+  }
+}
+?&gt;
+</code></pre>
+  </section>
+
+  <section id="palabra-final">
+    <h2>Palabra Clave Final</h2>
+    <p>Impide que las clases hijas sobrescriban un método o extiendan una clase final.</p>
+    <pre class="code-block"><code class="language-php">&lt;?php
+final class ImposibleHeredar {
+  public function test() {
+    echo "Llamada a ImposibleHeredar::test()";
+  }
+
+  final public function moreTesting() {
+    echo "Llamada a ImposibleHeredar::moreTesting()";
+  }
+}
+
+// Esto genera error:
+// class IntentoHeredar extends ImposibleHeredar {}
+
+class ParcialHeredar {
+  public function test() {
+    echo "Llamada a ParcialHeredar::test()";
+  }
+
+  final public function moreTesting() {
+    echo "Llamada a ParcialHeredar::moreTesting()";
+  }
+}
+
+class IntentoHeredar extends ParcialHeredar {
+  // Error al intentar sobreescribir método final
+  // public function moreTesting() {}
+}
+?&gt;
+</code></pre>
+  </section>
+  </main>
+</div>
+<footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+        <div style="flex: 1 1 100%; margin-bottom: 20px;">
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marián Capilla Herrero. Publicada bajo licencia</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+            </a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+            <img src="../logos/LOGO_DAW_Pres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+            <img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+            <img src="../logos/gv_conselleria_educacio_cmyk_val.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+            <img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Busca todos los elementos con la clase "code-block"
+    const bloquesCodigo = document.querySelectorAll('.code-block');
+
+    bloquesCodigo.forEach(bloque => {
+      // 2. Crea el botón de copiar
+      const btnCopiar = document.createElement('button');
+      btnCopiar.className = 'btn-copiar';
+      btnCopiar.textContent = 'Copiar';
+
+      // 3. Añade el botón al bloque de código
+      bloque.appendChild(btnCopiar);
+
+      // 4. Añade el evento de clic
+      btnCopiar.addEventListener('click', () => {
+        // --- LA CORRECCIÓN MÁS ROBUSTA ESTÁ AQUÍ ---
+
+        // 1. Clona el bloque de código en memoria (sin afectar a lo que se ve)
+        const clon = bloque.cloneNode(true);
+
+        // 2. Del clon, elimina el botón que acabamos de crear
+        clon.querySelector('.btn-copiar').remove();
+
+        // 3. Ahora, obtén el texto del clon, que ya no tiene el botón
+        const codigoACopiar = clon.innerText;
+
+        // 4. Copia el texto limpio al portapapeles
+        navigator.clipboard.writeText(codigoACopiar).then(() => {
+          // Muestra confirmación al usuario
+          btnCopiar.textContent = '¡Copiado!';
+          btnCopiar.classList.add('copiado');
+
+          // Vuelve al estado original después de 2 segundos
+          setTimeout(() => {
+            btnCopiar.textContent = 'Copiar';
+            btnCopiar.classList.remove('copiado');
+          }, 2000);
+        }).catch(err => {
+          console.error('Error al copiar el código: ', err);
+          btnCopiar.textContent = 'Error';
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

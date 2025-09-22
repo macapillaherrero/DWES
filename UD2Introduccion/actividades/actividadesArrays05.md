@@ -3,6 +3,12 @@
 <p>IES CAMP DE MORVEDRE</p>
 <p>Prof:<a  href="mailto:ma.capillaherrero@edu.gva.es"> ma.capillaherrero@edu.gva.es</a></p>
 
+<div style="display:flex; align-items:center;">
+  <img src="https://macapillaherrero.github.io/DWES/logos/europa.jpg" alt="Logo Europa" style="height:64px;margin-right:32px">
+  <img src="https://macapillaherrero.github.io/DWES/logos/camp.png" style="height:64px;margin-right:32px">
+  <img src="https://macapillaherrero.github.io/DWES/logos/LOGO_DAW_Pres.png" alt="Logo Daw" style="height:64px;margin-right:32px">
+</div>
+
 
 ## 1. Matriz de notas y búsqueda
 - Crea una matriz con los nombres de 3 alumnos y, para cada uno, sus notas en 4 módulos.

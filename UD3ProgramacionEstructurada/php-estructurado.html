@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Apuntes PHP 8.3 - Unidad Completa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+<style>
+
+
+</style>
+</head>
+<body class="bg-sky-50 text-gray-800">
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../UD2Introduccion/index.html" class="text-xl font-bold text-sky-600">Guía de PHP</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                  <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
+                    <li><a href="#funciones-nativas" class="block p-2 rounded-md font-medium text-gray-600">Funciones Nativas</a></li>
+                    <li><a href="#funciones-definidas" class="block p-2 rounded-md font-medium text-gray-600">Funciones Definidas</a></li>
+                    <li><a href="#ambito-variables" class="block p-2 rounded-md font-medium text-gray-600">Ámbito de Variables</a></li>
+                    <li><a href="#variables-static" class="block p-2 rounded-md font-medium text-gray-600">Variables Static</a></li>
+                </ul>
+            </nav>
+        </aside>
+ 
+<main class="w-full lg:w-3/4">
+ <section id="introduccion" class="mb-12">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Programación Estructurada en PHP</h1>
+    <p class="text-lg text-gray-600 mb-8">La programación estructurada en PHP 8.3 es un paradigma que organiza el código en bloques lógicos y secuenciales, utilizando principalmente funciones y estructuras de control como <code>if</code>, <code>for</code> y <code>while</code>. Aunque PHP es un lenguaje que soporta múltiples paradigmas, la programación estructurada constituye su base y es fundamental para escribir código claro, eficiente y fácil de mantener, especialmente en proyectos de pequeña a mediana escala.</p>
+
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Principios Fundamentales</h2>
+    <div class="space-y-4 text-gray-700">
+        <p>El paradigma se basa en el teorema del programa estructurado, que establece que cualquier programa puede ser escrito utilizando únicamente tres tipos de estructuras de control:</p>
+        <ul class="list-disc list-inside space-y-2 pl-4">
+            <li><strong>Secuencia:</strong> Las instrucciones del código se ejecutan en orden, una después de la otra, de arriba hacia abajo.</li>
+            <li><strong>Selección (o Condicional):</strong> Permite que el programa tome decisiones y ejecute diferentes bloques de código según se cumpla o no una condición. En PHP, esto se implementa con las estructuras <code>if-else</code> y <code>switch</code>.</li>
+            <li><strong>Iteración (o Bucle):</strong> Permite repetir un bloque de código varias veces mientras se cumpla una condición. Las estructuras utilizadas en PHP son los bucles <code>for</code>, <code>while</code>, y <code>do-while</code>.</li>
+        </ul>
+        <p>Un pilar adicional es la <strong>Modularización</strong>: el programa se divide en módulos o bloques más pequeños, conocidos como <strong>funciones</strong>, que realizan tareas específicas. Esto fomenta la reutilización del código y simplifica la lógica general.</p>
+    </div>
+
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Ejemplo en la Práctica</h2>
+    <p class="text-gray-700 mb-4">Un script estructurado en PHP para verificar números pares podría verse así:</p>
+    <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+        <pre class="code-block"><code class="language-php">&lt;?php
+
+// Definición de una función (Modularización)
+function esPar($numero) {
+    // Uso de selección para tomar una decisión
+    if ($numero % 2 === 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Bucle que recorre números del 1 al 10 (Iteración)
+for ($i = 1; $i <= 10; $i++) {
+    // El código se ejecuta en secuencia
+    echo "El número $i ";
+    if (esPar($i)) {
+        echo "es par ";
+    } else {
+        echo "es impar";
+    }
+}
+
+?&gt;
+</code></pre>
+    </div>
+
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Relevancia en PHP Moderno</h2>
+    <p class="text-gray-700 mb-4">Aunque la programación estructurada es perfectamente funcional en PHP 8.3, en el desarrollo de aplicaciones complejas, el paradigma dominante es la <strong>Programación Orientada a Objetos (POO)</strong>. La POO ofrece un nivel superior de organización al agrupar datos y funciones en "objetos".</p>
+    
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-6">
+        <table class="w-full text-sm text-left text-gray-500">
+            <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
+                Comparativa: Programación Estructurada vs. POO
+            </caption>
+            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                    <th scope="col" class="py-3 px-6">Característica</th>
+                    <th scope="col" class="py-3 px-6">Programación Estructurada</th>
+                    <th scope="col" class="py-3 px-6">Programación Orientada a Objetos (POO)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">Enfoque</th>
+                    <td class="py-4 px-6">En procedimientos y funciones lógicas.</td>
+                    <td class="py-4 px-6">En entidades (objetos) que tienen datos y comportamiento.</td>
+                </tr>
+                <tr class="bg-gray-50 border-b">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">Unidad principal</th>
+                    <td class="py-4 px-6">Funciones y estructuras de control.</td>
+                    <td class="py-4 px-6">Clases y objetos.</td>
+                </tr>
+                <tr class="bg-white border-b">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">Reusabilidad</th>
+                    <td class="py-4 px-6">A través de funciones que se pueden llamar.</td>
+                    <td class="py-4 px-6">A través de herencia y polimorfismo.</td>
+                </tr>
+                <tr class="bg-gray-50">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">Ideal para</th>
+                    <td class="py-4 px-6">Scripts, utilidades, y aplicaciones pequeñas.</td>
+                    <td class="py-4 px-6">Aplicaciones complejas, grandes sistemas y frameworks.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+  
+
+  <section id="funciones-nativas" class="mb-12">
+     <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Funciones Nativas</h2>
+
+    <section id="funciones-de-strings">
+      <h3 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Funciones de Strings</h3>
+
+      <article id="strlen">
+        <h4><a href="https://www.php.net/manual/es/function.strlen.php" class="enlace-externo" target="_blank" rel="noopener noreferrer">strlen </a></h4>
+        <p>Obtiene la longitud de una cadena, es decir, el número de caracteres.</p>
+         <pre class="code-block"><code class="language-php">
+          &lt;?php
+            $cad = "cadena"; 
+            $n = strlen($cad);
+            echo "La longitud de la cadena es: $n";
+          ?&gt;
+         </code></pre>
+      </article>
+
+      <article id="substr">
+        <h4><a href="https://www.php.net/manual/es/function.substr.php" class="enlace-externo" target="_blank" rel="noopener noreferrer"> substr </a></h4>
+        <p>Devuelve una subcadena, tomando:</p>
+        <ul class="grid grid-cols-1 gap-4 text-gray-700">
+          <li>Cadena original</li>
+          <li>Posición inicial</li>
+          <li>Cantidad de caracteres (opcional)</li>
+        </ul>
+        <pre class="code-block"><code class="language-php">
+          &lt;?php
+            $cad = "cadena";
+            $sub1 = substr($cad, 2);
+            $sub2 = substr($cad, 2, 2);
+            echo "Subcadena 1: $sub1 \n";
+            echo "Subcadena 2: $sub2";
+          ?&gt;
+       </code></pre>
+      </article>
+
+      <article id="strtoupper">
+        <h4><a href="https://www.php.net/manual/es/function.strtoupper.php" class="enlace-externo" target="_blank" rel="noopener noreferrer"> strtoupper </a></h4>
+        <p>Convierte un string a mayúsculas.</p>
+       <pre class="code-block"><code class="language-php">
+          &lt;?php
+          $str = "Mi mamá me mima";
+          $str = strtoupper($str);
+          echo $str; // MI MAMÁ ME MIMA
+          ?&gt;
+       </code></pre>
+      </article>
+    </section>
+
+    <section id="funciones-manejo-variables">
+      <h3 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Funciones de Manejo de Variables</h3>
+      <ul>
+        <li>is_array - Comprueba si un valor es un array</li>
+        <li>is_bool - Comprueba si es boolean</li>
+        <li>isset - Verifica que la variable está definida y no es NULL</li>
+        <li>print_r - Imprime información legible</li>
+        <li>var_dump - Detalla tipo y valor de variable</li>
+      </ul>
+    </section>
+
+
+
+  <section id="funciones-definidas">
+     <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Funciones Definidas por el Usuario</h2>
+
+    <article id="paso-parametros">
+      <h3 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Paso de Parámetros y Retorno</h3>
+      <pre class="code-block"><code class="language-php">
+        &lt;?php
+        function cuadrado($num) {
+          return $num * $num;
+        }
+        echo cuadrado(4); // 16
+        ?&gt;
+    </code></pre>
+    </article>
+
+    <article id="variables-referencia-valor">
+      <h3 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Variables por Referencia y Valor</h3>
+      <p> <span class="font-bold"> Valor:  </span> copia el valor en nueva zona. Modificaciones no afectan la variable original.</p>
+      <p><span class="font-bold">Referencia: </span> variable nueva apunta a la misma zona de memoria que la original. Modificaciones afectan a ambas.</p>
+      <pre class="code-block"><code class="language-php">
+      &lt;?php
+        $a = 5;
+        $b =& $a; // referencia
+        $c = $a;  // valor
+        $b = 6;
+        echo "$a, $b, $c"; // 6, 6, 5
+      ?&gt;
+    </code></pre>
+    </article>
+
+    <article id="parametros-predeterminados">
+      <h3 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Uso de Parámetros Predeterminados</h3>
+      <pre class="code-block"><code class="language-php">
+      &lt;?php
+        function hacer_cafe($tipo = "capuchino") {
+          return "Preparando una taza de $tipo.";
+        }
+        echo hacer_cafe();        // capuchino
+        echo hacer_cafe("espresso"); // espresso
+      ?&gt;
+    </code></pre>
+    </article>
+  </section>
+
+  <section id="ambito-variables">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Ámbito de las Variables</h2>
+    <p>El ámbito es el contexto donde una variable está definida. Variables dentro de una función tienen ámbito local, fuera tienen alcance global. Variables globales se deben declarar explícitamente con palabra clave <code>global</code> o usando <code>$GLOBALS</code>.</p>
+    <pre class="code-block"><code class="language-php">
+      &lt;?php
+        $a = 1;
+        function test() {
+          global $a;
+          echo $a;
+        }
+        test();
+       ?&gt;
+    </code></pre>
+  </section>
+
+  <section id="variables-static">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Uso de Variables Static</h2>
+    <p>Variables estáticas mantienen su valor entre llamadas a función.</p>
+    <pre class="code-block"><code class="language-php">
+      &lt;?php
+        function contador() {
+          static $count = 0;
+          $count++;
+          echo $count;
+        }
+        contador(); // 1
+        contador(); // 2
+      ?&gt;
+    </code></pre>
+  </section>
+
+  
+</main>
+</div>
+<footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+        <div style="flex: 1 1 100%; margin-bottom: 20px;">
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marián Capilla Herrero. Publicada bajo licencia</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+            </a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+            <img src="../logos/LOGO_DAW_Pres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+            <img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+            <img src="../logos/gv_conselleria_educacio_cmyk_val.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+            <img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+        </div>
+    </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Busca todos los elementos con la clase "code-block"
+    const bloquesCodigo = document.querySelectorAll('.code-block');
+
+    bloquesCodigo.forEach(bloque => {
+      // 2. Crea el botón de copiar
+      const btnCopiar = document.createElement('button');
+      btnCopiar.className = 'btn-copiar';
+      btnCopiar.textContent = 'Copiar';
+
+      // 3. Añade el botón al bloque de código
+      bloque.appendChild(btnCopiar);
+
+      // 4. Añade el evento de clic
+      btnCopiar.addEventListener('click', () => {
+        // --- LA CORRECCIÓN MÁS ROBUSTA ESTÁ AQUÍ ---
+
+        // 1. Clona el bloque de código en memoria (sin afectar a lo que se ve)
+        const clon = bloque.cloneNode(true);
+
+        // 2. Del clon, elimina el botón que acabamos de crear
+        clon.querySelector('.btn-copiar').remove();
+
+        // 3. Ahora, obtén el texto del clon, que ya no tiene el botón
+        const codigoACopiar = clon.innerText;
+
+        // 4. Copia el texto limpio al portapapeles
+        navigator.clipboard.writeText(codigoACopiar).then(() => {
+          // Muestra confirmación al usuario
+          btnCopiar.textContent = '¡Copiado!';
+          btnCopiar.classList.add('copiado');
+
+          // Vuelve al estado original después de 2 segundos
+          setTimeout(() => {
+            btnCopiar.textContent = 'Copiar';
+            btnCopiar.classList.remove('copiado');
+          }, 2000);
+        }).catch(err => {
+          console.error('Error al copiar el código: ', err);
+          btnCopiar.textContent = 'Error';
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
