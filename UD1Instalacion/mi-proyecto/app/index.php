@@ -8,6 +8,7 @@
 <body>
    
    <a href="formularios.php">Ir a Formularios</a><br>
+   <a href="soluciones-actividades-arrays03/index.php">Soluciones Actividades arrays 02</a><br>
    <a href="soluciones-actividades-arrays03/index.php">Ir a Soluciones Actividades Arrays 03</a><br>
 
         
