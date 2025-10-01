@@ -7,29 +7,20 @@
 </head>
 <body>
    
-    <?php
-        echo "<h1> Hola Mundo </h1>";        
-    ?>
-   
-    <div>
-    <?php
-        $foo = 10; // integer
-        echo "foo ".$foo."<br>"; 
-        $bar = (boolean) $foo; // boolean
-        echo $bar."<br>"; 
-        $str = "$foo"; // string
-        echo $str."<br>";
-        $fst = (string) $foo; // string
-        echo $fst."<br>";
-        $foo = "Hola";
-        echo $foo."<br>";
+   <a href="formularios.php">Ir a Formularios</a><br>
+   <a href="soluciones-actividades-arrays03/index.php">Ir a Soluciones Actividades Arrays 03</a><br>
 
-        $j = "5a" . "10"; 
-        echo $j."<br>";
-        $p = $j - 5;
-        echo $p."<br>";
-    ?>
-    </div>
+        
+      <?php
+       $x = 10;
+        $a = &$x; // referencia
+        $b = &$a; // referencia
+        $c = $a;  // valor
+        $b = 6;
+        $x = 20;
+        echo "$a, $b, $c, $x" ; // 6, 6, 5
+      ?>
+    
 
     <!-- Comentario en HTML -->
 </body>
