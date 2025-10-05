@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=<?php 
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <?php 
 $notasAlumnos = [
     "Juan" => [
         "Desarrollo Web en Entorno Servidor" => 8,
@@ -100,10 +104,6 @@ $notasAlumnos = [
         return $mejorNota . " en " . $mejorModulo; 
 
     }
-    ?>, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
+    ?>
 </body>
 </html>

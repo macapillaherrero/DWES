@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Arrays PHP</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+
+
+    <!-- Chosen Palette: Fresh Green & Earth Tones -->
+    <!-- Application Structure Plan: The SPA is a single-page, vertically scrolling study guide. The primary information architecture is a linear progression through PHP concepts. A sticky sidebar navigation is implemented to allow for quick access to any section, which is crucial for a document of this length. Each section contains a mix of text, formatted code blocks, and visual elements (icons) to break up the content and improve readability. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: PHP's main features (open source, simplicity, etc.). -> Goal: Inform. -> Viz/Presentation: Bulleted list with icons. -> Interaction: None, it's a static list. -> Justification: A list is the most direct way to present these key points. -> Library/Method: HTML with Tailwind.
+        2. Report Info: Code examples for variables, functions, loops, etc. -> Goal: Inform/Demonstrate. -> Viz/Presentation: Formatted code blocks. -> Interaction: None. -> Justification: The code itself is the primary content, and presenting it in a clear, monospaced format is essential for a programming guide. -> Library/Method: HTML divs styled with Tailwind for code blocks.
+        3. Report Info: Naming conventions. -> Goal: Organize/Inform. -> Viz/Presentation: List of different cases (snake, camel, etc.) with examples. -> Interaction: None. -> Justification: Simple lists are effective for comparative information. -> Library/Method: HTML with Tailwind.
+        4. Report Info: Superglobal variables, forms, cookies, and sessions. -> Goal: Inform. -> Viz/Presentation: Headings and paragraphs with code examples. -> Interaction: None. -> Justification: These concepts are best explained sequentially with contextual code snippets. -> Library/Method: HTML with Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+   <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-sky-50 text-gray-800">
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-xl font-bold text-sky-600">Guía de PHP</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+ <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                 
+                    <li><a href="#operadores-especiales" class="block p-2 rounded-md font-medium text-gray-600">Operadores Especiales</a></li>
+                    <li><a href="#prioridad-operadores" class="block p-2 rounded-md font-medium text-gray-600">Prioridad de Operadores</a></li>
+                    <li><a href="#casos-trampa" class="block p-2 rounded-md font-medium text-gray-600">Casos Trampa y Soluciones</a></li>
+
+                  </ul>
+            </nav>
+        </aside>
+ 
+<main class="w-full lg:w-3/4">
+ <section id="operadores-especiales" class="mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Operadores Especiales en PHP (Diferencias con Java)</h2>
+    <p class="text-lg text-gray-600 mb-8">PHP posee una serie de operadores que simplifican el código y ofrecen funcionalidades que no existen de forma nativa en Java, o que se implementan de manera diferente. A continuación, se detallan algunos de los más relevantes para un desarrollador que viene de Java.</p>
+
+    <!-- Operador de Identidad -->
+    <article id="operador-identidad" class="mb-10">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Operador de Identidad <code>===</code> y Desigualdad Estricta <code>!==</code></h3>
+        <p class="text-gray-700 mb-4">
+            Esta es una de las diferencias más importantes. Mientras que en Java el operador <code>==</code> compara si dos referencias de objeto apuntan a la misma instancia (y se usa <code>.equals()</code> para comparar valores), en PHP la situación es distinta:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-4 text-gray-700">
+            <li><b>Operador de Igualdad (<code>==</code>):</b> Compara solo los valores, realizando conversión de tipos si es necesario. Por ejemplo, <code>"5" == 5</code> evalúa a <code>true</code>.</li>
+            <li><b>Operador de Identidad (<code>===</code>):</b> Es mucho más estricto. Devuelve <code>true</code> únicamente si los operandos son del mismo tipo y tienen el mismo valor. Es la forma más segura de comparar.</li>
+        </ul>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto mt-4">
+            <pre class="code-block"><code class="language-php">
+&lt;?php
+$a = 5;
+$b = "5";
+
+var_dump($a == $b);  // bool(true) - Compara solo valor
+var_dump($a === $b); // bool(false) - Compara valor Y tipo
+?&gt;
+            </code></pre>
+        </div>
+    </article>
+
+    <!-- Operador Nave Espacial -->
+    <article id="operador-nave-espacial" class="mb-10">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Operador de Nave Espacial (Spaceship) <code>&lt;=&gt;</code></h3>
+        <p class="text-gray-700 mb-4">Introducido en PHP 7, este operador es perfecto para funciones de comparación, como en <code>usort</code>. Compara dos expresiones y devuelve <code>-1</code>, <code>0</code> o <code>1</code> si el valor de la izquierda es menor, igual o mayor que el de la derecha. Java no tiene un operador equivalente; allí se usan métodos como <code>Integer.compare()</code>.</p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre class="code-block"><code class="language-php">
+&lt;?php
+// Ejemplo de uso
+echo 10 &lt;=&gt; 20; // Devuelve -1
+echo 20 &lt;=&gt; 20; // Devuelve 0
+echo 30 &lt;=&gt; 20; // Devuelve 1
+
+// Ideal para ordenar arrays
+$numeros = [4, 2, 8, 6];
+usort($numeros, fn($a, $b) =&gt; $a &lt;=&gt; $b);
+// $numeros ahora es [2, 4, 6, 8]
+?&gt;
+            </code></pre>
+        </div>
+    </article>
+
+    <!-- Operador de Fusión de Null -->
+    <article id="operador-fusion-null" class="mb-10">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Operador de Fusión de Null <code>??</code></h3>
+        <p class="text-gray-700 mb-4">Este operador es un atajo muy potente para verificar si una variable es <code>null</code> o no está definida. Devuelve su primer operando si existe y no es <code>NULL</code>; de lo contrario, devuelve el segundo. Simplifica enormemente la asignación de valores por defecto.</p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre class="code-block"><code class="language-php">
+&lt;?php
+// Antes se hacía así:
+$nombre = isset($_GET['usuario']) ? $_GET['usuario'] : 'invitado';
+
+// Con el operador de fusión de null:
+$nombre = $_GET['usuario'] ?? 'invitado';
+
+echo $nombre; // Imprime 'invitado' si $_GET['usuario'] no está definido o es null
+?&gt;
+            </code></pre>
+        </div>
+    </article>
+
+    <!-- Operador Nullsafe -->
+    <article id="operador-nullsafe">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Operador Nullsafe <code>?-></code></h3>
+        <p class="text-gray-700 mb-4">Introducido en PHP 8, soluciona un problema muy común: el encadenamiento de llamadas a métodos o propiedades sobre un objeto que podría ser <code>null</code>. Si en cualquier punto de la cadena se encuentra un <code>null</code>, la evaluación se detiene y toda la expresión devuelve <code>null</code>, evitando un error fatal. Aunque Java tiene la clase <code>Optional</code> para un propósito similar, el operador de PHP es más directo y conciso.</p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+           <pre class="code-block"><code class="language-php">
+&lt;?php
+class Usuario {
+    public ?Direccion $direccion = null;
+}
+class Direccion {
+    public function getCalle(): string {
+        return "Calle Falsa 123";
+    }
+}
+
+$usuario = new Usuario();
+
+// Sin nullsafe, esto daría un error si $usuario->direccion es null
+// $calle = $usuario->direccion->getCalle(); 
+
+// Con nullsafe, $calle será null y no habrá error
+$calle = $usuario->direccion?->getCalle();
+
+var_dump($calle); // NULL
+?&gt;
+            </code></pre>
+        </div>
+    </article>
+</section>
+<section id="prioridad-operadores" class="mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Prioridad de Operadores en PHP</h2>
+    <p class="text-lg text-gray-600 mb-6">La precedencia o prioridad de los operadores determina el orden en que se realizan las operaciones cuando en una misma expresión hay varios operadores. Es un concepto fundamental, idéntico al que usamos en matemáticas, y conocerlo evita errores lógicos difíciles de depurar.</p>
+    <p class="text-gray-700 mb-6">En la siguiente tabla se muestran los operadores de PHP ordenados de mayor a menor prioridad. Los operadores que están en la misma fila tienen la misma prioridad y se evalúan según su asociatividad.</p>
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                    <th scope="col" class="py-3 px-6">Asociatividad</th>
+                    <th scope="col" class="py-3 px-6">Operadores</th>
+                    <th scope="col" class="py-3 px-6">Descripción Adicional</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">No asociativo</td><td class="py-4 px-6 font-mono">clone, new</td><td class="py-4 px-6">Clonación y creación de objetos</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Derecha</td><td class="py-4 px-6 font-mono">**</td><td class="py-4 px-6">Exponenciación</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Derecha</td><td class="py-4 px-6 font-mono">++ -- ~ (int) ... @</td><td class="py-4 px-6">Incremento/decremento, operadores de bits, casting, etc.</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">No asociativo</td><td class="py-4 px-6 font-mono">instanceof</td><td class="py-4 px-6">Comprobación de tipo</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Derecha</td><td class="py-4 px-6 font-mono">!</td><td class="py-4 px-6">Lógico (NOT)</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">* / %</td><td class="py-4 px-6">Multiplicación, división, módulo</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">+ - .</td><td class="py-4 px-6">Suma, resta, concatenación</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">&lt;&lt; &gt;&gt;</td><td class="py-4 px-6">Desplazamiento de bits</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">No asociativo</td><td class="py-4 px-6 font-mono">&lt; &lt;= &gt; &gt;=</td><td class="py-4 px-6">Comparación (menor/mayor que)</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">No asociativo</td><td class="py-4 px-6 font-mono">== != === !== &lt;&gt; &lt;=&gt;</td><td class="py-4 px-6">Comparación (igualdad/identidad)</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">&amp;</td><td class="py-4 px-6">AND a nivel de bits (y referencias)</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">^</td><td class="py-4 px-6">XOR a nivel de bits</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">|</td><td class="py-4 px-6">OR a nivel de bits</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">&amp;&amp;</td><td class="py-4 px-6">AND lógico</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">||</td><td class="py-4 px-6">OR lógico</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">??</td><td class="py-4 px-6">Fusión de null</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Derecha</td><td class="py-4 px-6 font-mono">? :</td><td class="py-4 px-6">Ternario</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Derecha</td><td class="py-4 px-6 font-mono">= += -= *= **= ...</td><td class="py-4 px-6">Asignación</td></tr>
+                <tr class="bg-white border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">and</td><td class="py-4 px-6">AND lógico (baja prioridad)</td></tr>
+                <tr class="bg-gray-50 border-b"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">xor</td><td class="py-4 px-6">XOR lógico (baja prioridad)</td></tr>
+                <tr class="bg-white"><td class="py-4 px-6 font-medium">Izquierda</td><td class="py-4 px-6 font-mono">or</td><td class="py-4 px-6">OR lógico (baja prioridad)</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="text-2xl font-semibold text-gray-800 mt-10 mb-3">Caso práctico: <code>and</code> vs <code>&amp;&amp;</code></h3>
+    <p class="text-gray-700 mb-4">Un error muy común proviene de no conocer que los operadores lógicos <code>and</code> y <code>or</code> tienen una prioridad <strong>menor</strong> que el operador de asignación (<code>=</code>), mientras que <code>&amp;&amp;</code> y <code>||</code> tienen una prioridad <strong>mayor</strong>. Esto provoca comportamientos inesperados:</p>
+    <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+        <pre  class="code-block"><code class="language-php">
+&lt;?php
+// Con && (prioridad alta)
+// 1. Se evalúa true && false => false
+// 2. Se asigna el resultado a $bool: $bool = false;
+$bool = true && false;
+var_dump($bool); // Muestra: bool(false), como se espera.
+
+// Con 'and' (prioridad baja)
+// 1. Se evalúa la asignación primero: $bool = true;
+// 2. Luego se ejecuta el 'and': true and false (cuyo resultado no se asigna a nada)
+$bool = true and false;
+var_dump($bool); // Muestra: bool(true), ¡sorpresa!
+?&gt;
+        </code></pre>
+    </div>
+    <p class="mt-6 text-gray-700"><b>NOTA:</b> Para evitar ambigüedades, acostúmbrate a usar siempre los operadores <code>&amp;&amp;</code> y <code>||</code> para operaciones lógicas. Y, ante la duda, ¡usa paréntesis <code>()</code> para forzar el orden de evaluación! Un código claro siempre es mejor que un código "inteligente" pero confuso.</p>
+</section>
+<section id="casos-trampa" class="mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Casos Trampa Comunes en PHP y Cómo Evitarlos</h2>
+    <p class="text-lg text-gray-600 mb-8">La flexibilidad de PHP es una de sus mayores fortalezas, pero también puede ser una fuente de errores sutiles (bugs) si no se comprenden ciertos comportamientos específicos del lenguaje. A continuación, como tu profesor, te presento los "casos trampa" más comunes y, lo más importante, cómo escribir código robusto para evitarlos.</p>
+
+    <!-- Trampa 1: Comparación Débil -->
+    <article class="mb-10 p-6 bg-white rounded-lg shadow-md border-l-4 border-sky-500">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">1. La Comparación Débil con <code>==</code></h3>
+        <p class="text-gray-700 mb-4">
+            <strong>El Problema:</strong> El operador de igualdad <code>==</code> realiza una "comparación débil", convirtiendo los tipos de datos antes de comparar. Esto lleva a que expresiones que lógicamente deberían ser falsas, evalúen a verdadero.
+        </p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre  class="code-block"><code class="language-php">
+&lt;?php
+// Casos que evalúan a 'true' y pueden causar bugs
+var_dump(0 == "a");      // true (en PHP < 8.0)
+var_dump("1" == true);     // true
+var_dump(0 == false);    // true
+var_dump("" == null);      // true
+?&gt;
+            </code></pre>
+        </div>
+        <div class="mt-4 p-4 bg-green-100 text-green-800 rounded-lg">
+            <p class="font-bold">✅ Cómo evitarlo (La Regla de Oro):</p>
+            <p>Utiliza siempre el <strong>operador de identidad <code>===</code></strong>. Este operador realiza una "comparación estricta", verificando que tanto el valor como el tipo de dato sean idénticos. Es más seguro y predecible.</p>
+        </div>
+    </article>
+
+    <!-- Trampa 2: Bucle Foreach con Referencias -->
+    <article class="mb-10 p-6 bg-white rounded-lg shadow-md border-l-4 border-sky-500">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">2. Bucle <code>foreach</code> con Referencias Persistentes</h3>
+        <p class="text-gray-700 mb-4">
+            <strong>El Problema:</strong> Cuando se usa una referencia (<code>&</code>) en un <code>foreach</code>, la variable de referencia (<code>$valor</code> en el ejemplo) permanece "viva" después del bucle, apuntando al último elemento del array. Si se reutiliza esa variable, se modificará el array original sin querer.
+        </p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre  class="code-block"><code class="language-php">
+&lt;?php
+$array = [1, 2, 3];
+foreach ($array as &$valor) {
+    // ... alguna operación
+}
+// Al salir del bucle, $valor sigue apuntando a $array[2]
+
+$valor = 100; // ¡Esto modifica el último elemento del array!
+print_r($array); // Salida: Array ( [0] => 1, [1] => 2, [2] => 100 )
+?&gt;
+            </code></pre>
+        </div>
+        <div class="mt-4 p-4 bg-green-100 text-green-800 rounded-lg">
+            <p class="font-bold">✅ Cómo evitarlo:</p>
+            <p>Destruye la referencia inmediatamente después del bucle con <code>unset()</code>. Es una práctica de seguridad obligatoria al usar referencias en bucles.</p>
+            <pre class="font-mono text-sm mt-2">unset($valor);</pre>
+        </div>
+    </article>
+
+    <!-- Trampa 3: Comportamiento de empty() -->
+    <article class="p-6 bg-white rounded-lg shadow-md border-l-4 border-sky-500">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">3. Lo que <code>empty()</code> considera "vacío"</h3>
+        <p class="text-gray-700 mb-4">
+            <strong>El Problema:</strong> La función <code>empty()</code> es muy útil, pero considera "vacíos" valores que podrían ser válidos en ciertos contextos, como el string <code>"0"</code>. Esto puede llevar a descartar datos enviados por un formulario que son perfectamente legítimos.
+        </p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre  class="code-block"><code class="language-php">
+&lt;?php
+$valor = "0";
+if (empty($valor)) {
+    echo "El valor se considera vacío"; // Esta línea se ejecuta
+}
+
+// empty() devuelve true para: "", 0, "0", null, false, []
+?&gt;
+            </code></pre>
+        </div>
+        <div class="mt-4 p-4 bg-green-100 text-green-800 rounded-lg">
+            <p class="font-bold">✅ Cómo evitarlo:</p>
+            <p>Sé explícito en tu comprobación. Si quieres saber si una variable no está definida o es <code>null</code>, pero quieres permitir el valor <code>"0"</code> o <code>false</code>, usa <code>!isset($var) || is_null($var)</code>. O mejor aún, compara estrictamente con lo que no quieres permitir, como <code>if ($valor !== "")</code>.</p>
+        </div>
+    </article>
+</section>
+
+</main>
+</div>
+<footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+        <div style="flex: 1 1 100%; margin-bottom: 20px;">
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marián Capilla Herrero. Publicada bajo licencia</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+            <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+            </a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+            <img src="../logos/LOGO_DAW_Pres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+            <img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+            <img src="../logos/gv_conselleria_educacio_cmyk_val.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+            <img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+        </div>
+    </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Busca todos los elementos con la clase "code-block"
+    const bloquesCodigo = document.querySelectorAll('.code-block');
+
+    bloquesCodigo.forEach(bloque => {
+      // 2. Crea el botón de copiar
+      const btnCopiar = document.createElement('button');
+      btnCopiar.className = 'btn-copiar';
+      btnCopiar.textContent = 'Copiar';
+
+      // 3. Añade el botón al bloque de código
+      bloque.appendChild(btnCopiar);
+
+      // 4. Añade el evento de clic
+      btnCopiar.addEventListener('click', () => {
+        // --- LA CORRECCIÓN MÁS ROBUSTA ESTÁ AQUÍ ---
+
+        // 1. Clona el bloque de código en memoria (sin afectar a lo que se ve)
+        const clon = bloque.cloneNode(true);
+
+        // 2. Del clon, elimina el botón que acabamos de crear
+        clon.querySelector('.btn-copiar').remove();
+
+        // 3. Ahora, obtén el texto del clon, que ya no tiene el botón
+        const codigoACopiar = clon.innerText;
+
+        // 4. Copia el texto limpio al portapapeles
+        navigator.clipboard.writeText(codigoACopiar).then(() => {
+          // Muestra confirmación al usuario
+          btnCopiar.textContent = '¡Copiado!';
+          btnCopiar.classList.add('copiado');
+
+          // Vuelve al estado original después de 2 segundos
+          setTimeout(() => {
+            btnCopiar.textContent = 'Copiar';
+            btnCopiar.classList.remove('copiado');
+          }, 2000);
+        }).catch(err => {
+          console.error('Error al copiar el código: ', err);
+          btnCopiar.textContent = 'Error';
+        });
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

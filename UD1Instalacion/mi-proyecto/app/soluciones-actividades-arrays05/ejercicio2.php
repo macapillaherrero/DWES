@@ -9,9 +9,6 @@
     <?php
 
 // Versión de PHP: 8.3
-<?php
-
-// Versión de PHP: 8.3
 
 // El array de inventario no cambia.
 $inventario = [
@@ -49,9 +46,9 @@ function compararProductosPorPrecio($a, $b) {
 /**
  * Paso 3: Función principal que utiliza la función de comparación externa.
  */
-function mostrarProductosPorCategoria( $categoria,  $productos) {
+function mostrarProductosPorCategoria($categoria,  $productos) {
     if (!array_key_exists($categoria, $productos)) {
-        echo "Error: La categoría \"$categoria\" no existe en el inventario.\n";
+        echo "Error: La categoría \"$categoria\" no existe en el inventario.<br>";
         return;
     }
 
@@ -62,17 +59,47 @@ function mostrarProductosPorCategoria( $categoria,  $productos) {
     usort($productosCategoria, 'compararProductosPorPrecio');
 
     // El resto del código para mostrar los resultados es exactamente el mismo.
-    echo "--- Productos de la categoría: '$categoria' (ordenados por precio) ---\n";
+    echo "--- Productos de la categoría: '$categoria' (ordenados por precio) ---<br>";
     foreach ($productosCategoria as $producto) {
-        echo "  Nombre: " . $producto['nombre'] . "\n";
-        echo "  - Precio: " . number_format($producto['precio'], 2, ',', '.') . " €\n";
-        echo "  - Stock disponible: " . $producto['stock'] . " unidades\n\n";
+        echo "  Nombre: " . $producto['nombre'] . "<br>";
+        echo "  - Precio: " . number_format($producto['precio'], 2, ',', '.') . " €<br>";
+        echo "  - Stock disponible: " . $producto['stock'] . " unidades<br><br>";
+        echo "------------------------------------<br>";
     }
 }
 
+function mostrarProductosPorCategoriaV2($categoria, $catalogo){
+    if(!array_key_exists($categoria, $catalogo)){   
+         echo "Error: La categoría $categoria no existe en el inventario.";
+         return;
+    }
+
+    $productos = $catalogo[$categoria];
+
+    usort($productos, function($a, $b) {
+        return $a['precio'] <=> $b['precio'];
+    });
+
+     echo "--- Productos de la categoría: '$categoria' (ordenados por precio) ---<br>";
+    // Ejemplo de uso de bucles foreach anidados para mostrar todos los productos
+    foreach ($productosCategoria as $producto) {    
+        // 2. Segundo bucle (anidado): recorre las claves y valores de cada producto
+        foreach ($producto as $clave => $valor) {
+            // Usamos ucfirst() para poner la primera letra de la clave en mayúscula
+            echo ucfirst($clave) . ": " . $valor . "<br>";
+        }    
+    echo "------------------------------------<br>";
+    }
+}
+
+
+
 // --- EJEMPLO DE USO --- (El resultado será exactamente el mismo)
 
-echo "### Mostrando la categoría 'Electronica' ###\n";
+echo "### Mostrando la categoría 'Electronica' <br> ";
+mostrarProductosPorCategoria("Electronica", $inventario);
+
+echo "### Mostrando la categoría 'Libros' <br> ";
 mostrarProductosPorCategoria("Electronica", $inventario);
 ?>
 

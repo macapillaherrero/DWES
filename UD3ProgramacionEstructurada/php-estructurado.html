@@ -9,10 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
-<style>
 
-
-</style>
 </head>
 <body class="bg-sky-50 text-gray-800">
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
@@ -33,10 +30,11 @@
                   <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
                     <li><a href="#funciones-nativas" class="block p-2 rounded-md font-medium text-gray-600">Funciones Nativas</a></li>
                     <li><a href="#funciones-definidas" class="block p-2 rounded-md font-medium text-gray-600">Funciones Definidas</a></li>
-                    <li><a href="#funciones-anonimas" class="block p-2 rounded-md font-medium text-gray-600">Funciones Anónimas</a></li>
+                    <li><a href="#funciones-anonimas" class="block p-2 rounded-md font-medium text-gray-600">Funciones Anónimas</a></li>                  
+                    <li><a href="#arrow-functions" class="block p-2 rounded-md font-medium text-gray-600">Funciones de flecha (Arrow functions)</a></li>
+                    <li><a href="#comparativa" class="block p-2 rounded-md font-medium text-gray-600">Funciones Anónimas vs Arrow functions</a></li>
                     <li><a href="#ambito-variables" class="block p-2 rounded-md font-medium text-gray-600">Ámbito de Variables</a></li>
-                    <li><a href="#variables-static" class="block p-2 rounded-md font-medium text-gray-600">Variables Static</a></li>
- 
+                    <li><a href="#variables-static" class="block p-2 rounded-md font-medium text-gray-600">Variables Static</a></li> 
                   </ul>
             </nav>
         </aside>
@@ -153,7 +151,7 @@ for ($i = 1; $i <= 10; $i++) {
       <article id="substr">
         <h4><a href="https://www.php.net/manual/es/function.substr.php" class="enlace-externo" target="_blank" rel="noopener noreferrer"> substr </a></h4>
         <p>Devuelve una subcadena, tomando:</p>
-        <ul class="grid grid-cols-1 gap-4 text-gray-700">
+        <ul class="list-disc list-inside space-y-2 pl-4">
           <li>Cadena original</li>
           <li>Posición inicial</li>
           <li>Cantidad de caracteres (opcional)</li>
@@ -267,6 +265,225 @@ for ($i = 1; $i <= 10; $i++) {
 
     <p class="text-gray-700">Este recurso te permite mantener el código modular, compacto y claro, especialmente cuando se usa para callbacks o tareas puntuales.</p>
   </section>
+
+ <section id="arrow-functions" class="mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Arrow Functions (Funciones Flecha)</h2>
+    <p class="text-lg text-gray-600 mb-8">Introducidas en <strong>PHP 7.4</strong>, las funciones flecha son una sintaxis más corta y limpia para escribir funciones anónimas. Su principal objetivo es simplificar el código, especialmente cuando se usan como *callbacks* en funciones de arrays como <code>array_map</code> o <code>array_filter</code>.</p>
+
+    <!-- Características -->
+    <article class="mb-10 p-6 bg-white rounded-lg shadow-md border-l-4 border-sky-500">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Características Principales</h3>
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+            <li><strong>Sintaxis concisa:</strong> Se definen con la palabra clave <code>fn</code>, seguida de los parámetros y el operador <code>=></code>.</li>
+            <li><strong>Retorno implícito:</strong> No necesitan la palabra clave <code>return</code>. La expresión que sigue a <code>=></code> es lo que la función devuelve automáticamente.</li>
+            <li><strong>Captura automática del ámbito:</strong> Acceden a las variables del ámbito padre (scope) de forma automática, sin necesidad de usar la cláusula <code>use</code>.</li>
+            <li><strong>Limitación a una expresión:</strong> Solo pueden contener una única expresión. No se pueden escribir múltiples líneas de código o declaraciones complejas.</li>
+        </ul>
+    </article>
+
+    <!-- Comparativa -->
+    <article id="compartiva" class="p-6 bg-white rounded-lg shadow-md">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-3">Comparativa: Función Anónima vs. Arrow Function</h3>
+        <p class="text-gray-700 mb-4">La diferencia es muy visual. Veamos el mismo ejemplo de las dos formas.</p>
+        
+        <h4 class="text-xl font-medium text-gray-700 mt-6 mb-2">1. Sin variables externas</h4>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre class="code-block"><code class="language-php">
+&lt;?php
+$numeros = [1, 2, 3, 4];
+
+// Forma tradicional con función anónima
+$dobles_tradicional = array_map(function($n) {
+    return $n * 2;
+}, $numeros);
+
+// Forma moderna con Arrow Function
+$dobles_flecha = array_map(fn($n) => $n * 2, $numeros);
+?&gt;
+            </code></pre>
+        </div>
+
+        <h4 class="text-xl font-medium text-gray-700 mt-6 mb-2">2. Con variables externas</h4>
+        <p class="text-gray-700 mb-4">Aquí es donde brilla la simplicidad de las funciones flecha, ya que no requieren la cláusula <code>use</code>.</p>
+        <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-sm overflow-x-auto">
+            <pre class="code-block"><code class="language-php">
+&lt;?php
+$multiplicador = 10;
+$numeros = [1, 2, 3, 4];
+
+// Forma tradicional (necesita 'use' para acceder a $multiplicador)
+$resultado_tradicional = array_map(function($n) use ($multiplicador) {
+    return $n * $multiplicador;
+}, $numeros);
+
+// Con Arrow Function (accede a $multiplicador automáticamente)
+$resultado_flecha = array_map(fn($n) => $n * $multiplicador, $numeros);
+?&gt;
+            </code></pre>
+        </div>
+    </article>
+    
+    <!-- Cuándo usar cada una -->
+    <div class="mt-8 p-4 bg-yellow-100 text-yellow-800 rounded-lg">
+        <p class="font-bold">💡 Consejo del profesor:</p>
+        <p>Usa una <strong>Arrow Function</strong> siempre que tu lógica se pueda resolver en una única expresión. Para funciones más complejas que requieran múltiples líneas, condiciones o bucles, sigue usando una <strong>función anónima tradicional</strong> con sus llaves <code>{}</code>.</p>
+    </div>
+  
+    <article class="mt-8 p-6 bg-white rounded-lg shadow-md border-l-4 border-sky-500">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Explicación: ¿Qué es la "Captura Automática del Ámbito"?</h3>
+    <p class="text-gray-700 mb-4">
+        "Capturar el ámbito" significa que una función puede "ver" y utilizar las variables que existen fuera de ella, en el mismo lugar donde fue creada. La diferencia clave entre las funciones anónimas tradicionales y las funciones flecha es cómo lo hacen:
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Columna de Función Anónima Tradicional -->
+        <div class="p-4 border rounded-lg">
+            <h4 class="text-xl font-medium text-gray-700 mb-2">1. Función Anónima (`function`)</h4>
+            <p class="text-sm text-gray-600 mb-3">
+                Por defecto, es una "burbuja" aislada. No puede ver las variables externas. Para darle acceso, debemos pasarle un "permiso" explícito usando la cláusula <strong><code>use</code></strong>.
+            </p>
+            <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-xs overflow-x-auto">
+                <pre  class="code-block"><code class="language-php">
+&lt;?php
+$multiplicador = 10;
+
+// Necesita 'use' para "heredar" $multiplicador
+$funcion = function($n) use ($multiplicador) {
+    return $n * $multiplicador;
+};
+
+echo $funcion(5); // Salida: 50
+?&gt;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- Columna de Arrow Function -->
+        <div class="p-4 border rounded-lg">
+            <h4 class="text-xl font-medium text-gray-700 mb-2">2. Función Flecha (`fn`)</h4>
+            <p class="text-sm text-gray-600 mb-3">
+                Es una "burbuja transparente". <strong>Automáticamente</strong> ve y utiliza las variables de su entorno, sin necesidad de pedir permiso con <code>use</code>.
+            </p>
+            <div class="bg-gray-900 text-white rounded-lg p-4 font-mono text-xs overflow-x-auto">
+                <pre  class="code-block"><code class="language-php">
+&lt;?php
+$multiplicador = 10;
+
+// NO necesita 'use'. Accede a $multiplicador
+// de forma automática.
+$funcionFlecha = fn($n) => $n * $multiplicador;
+
+echo $funcionFlecha(5); // Salida: 50
+?&gt;
+                </code></pre>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg">
+        <p class="font-bold">💡 Nota Importante sobre la Captura:</p>
+        <p>En ambos casos, por defecto, la variable se captura <strong>por valor</strong>. Esto significa que la función utiliza una copia del valor que tenía la variable en el momento en que la función fue definida. Si el valor de la variable externa cambia después, la función no se enterará.</p>
+    </div>
+    <p> 
+       &nbsp;
+    </p>
+    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Una Analogía Final</h3>
+   <p class="text-gray-700 mb-4">
+      Imagina que estás en tu despacho (función anónima) y necesitas un libro que está en la biblioteca (ámbito padre). 
+   </p>
+<ul  class="list-disc list-inside space-y-2 text-gray-700">
+  <li>
+    <strong>Con function y use:</strong> Tienes que rellenar un formulario (use) pidiendo permiso para sacar ese libro específico. Si no lo pides, el bibliotecario no te lo da.
+  </li>
+  <li>
+    <strong>Con fn (arrow function):</strong> Tienes un pase especial que te permite coger cualquier libro de la biblioteca directamente, sin pedir permiso cada vez.
+  </li>
+</ul>
+
+    <div class="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg">
+        <p class="font-bold">💡Importante: </p>
+Esta captura automática es por valor, no por referencia. Esto significa que la función flecha obtiene una copia del valor de la variable en el momento en que se define. Si intentas modificar la variable externa desde dentro de la función flecha, no afectará a la original.   
+    </div>
+<div class="mt-8 overflow-x-auto shadow-md rounded-lg">
+    <table class="w-full text-left text-sm text-gray-700">
+        <thead class="bg-sky-600 text-xs uppercase text-white">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Característica
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Función Anónima (<code>function</code>)
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Función Flecha (<code>fn</code>)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="border-b bg-white hover:bg-gray-50">
+                <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                    Sintaxis
+                </th>
+                <td class="px-6 py-4">
+                    Más verbosa: <code>function() {}</code> con <code>return</code> explícito.
+                </td>
+                <td class="px-6 py-4">
+                    Concisa: <code>fn() => ...</code> con retorno implícito.
+                </td>
+            </tr>
+            <tr class="border-b bg-sky-50 hover:bg-gray-50">
+                <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                    Captura de Ámbito
+                </th>
+                <td class="px-6 py-4">
+                    Requiere permiso explícito con la cláusula <code>use</code>.
+                </td>
+                <td class="px-6 py-4">
+                    Automática. Accede a las variables del padre sin <code>use</code>.
+                </td>
+            </tr>
+            <tr class="border-b bg-white hover:bg-gray-50">
+                <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                    Modificar Ámbito Externo
+                </th>
+                <td class="px-6 py-4">
+                    Sí, pasando variables por referencia con <code>use (&amp;$var)</code>.
+                </td>
+                <td class="px-6 py-4">
+                    No. La captura es siempre por valor (una copia).
+                </td>
+            </tr>
+            <tr class="border-b bg-sky-50 hover:bg-gray-50">
+                <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                    Complejidad del Cuerpo
+                </th>
+                <td class="px-6 py-4">
+                    Permite múltiples líneas, bucles y lógica compleja.
+                </td>
+                <td class="px-6 py-4">
+                    Limitada a <strong>una sola expresión</strong>.
+                </td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+                <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                    Caso de Uso Ideal
+                </th>
+                <td class="px-6 py-4">
+                    Callbacks complejos o que necesiten modificar variables externas.
+                </td>
+                <td class="px-6 py-4">
+                    Callbacks simples y de una sola línea (ej: en <code>array_map</code>, <code>array_filter</code>).
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    
+</article>
+
+</section>
   <section id="ambito-variables">
     <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Ámbito de las Variables</h2>
     <p>El ámbito es el contexto donde una variable está definida. Variables dentro de una función tienen ámbito local, fuera tienen alcance global. Variables globales se deben declarar explícitamente con palabra clave <code>global</code> o usando <code>$GLOBALS</code>.</p>
@@ -281,7 +498,6 @@ for ($i = 1; $i <= 10; $i++) {
        ?&gt;
     </code></pre>
   </section>
-
   <section id="variables-static">
     <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Uso de Variables Static</h2>
     <p>Variables estáticas mantienen su valor entre llamadas a función.</p>
@@ -297,7 +513,7 @@ for ($i = 1; $i <= 10; $i++) {
       ?&gt;
     </code></pre>
   </section>
-  
+ 
 
   
 </main>
