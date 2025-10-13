@@ -8,18 +8,20 @@
 <body>
    
    <a href="formularios.php">Ir a Formularios</a><br>
-   <a href="soluciones-actividades-arrays03/index.php">Soluciones Actividades arrays 02</a><br>
+   <a href="soluciones-actividades-arrays02/index.php">Ir a Soluciones Actividades Arrays 02</a><br>
    <a href="soluciones-actividades-arrays03/index.php">Ir a Soluciones Actividades Arrays 03</a><br>
-  <a href="soluciones-actividades-arrays04/index.php">Ir a Soluciones Actividades Arrays 04</a><br>
-  <a href="soluciones-actividades-arrays05/index.php">Ir a Soluciones Actividades Arrays 05</a><br> 
+   <a href="soluciones-actividades-arrays04/index.php">Ir a Soluciones Actividades Arrays 04</a><br>
+   <a href="soluciones-actividades-arrays05/index.php">Ir a Soluciones Actividades Arrays 05</a><br> 
       <?php
-       $x = 10;
+      /* $x = 10;
         $a = &$x; // referencia
         $b = &$a; // referencia
         $c = $a;  // valor
         $b = 6;
         $x = 20;
         echo "$a, $b, $c, $x" ; // 6, 6, 5
+
+      */
       ?>
     
 
@@ -29,7 +31,7 @@
     <!Variables globales y locales en funciones-->
 
       <?php
-
+  /*
         $GLOBALS['var_nueva'] = 5; 
         $var_global = 1;
         function test() {
@@ -44,10 +46,12 @@
         echo $GLOBALS['var_nueva'];
          echo "<br> var_nueva : ";
         echo $var_nueva; // Notice: Undefined variable
-
+*/
        ?>
 
       <?php
+
+      /*
         function contador() {
           static $count = 0; 
           $count++;
@@ -59,7 +63,51 @@
         contador(); 
         echo "<br> Contador: ";
         contador(); 
+
+        */
       ?>
         
+
+
+<?php
+class Usuario {
+    public ?Direccion $direccion = null;
+}
+class Direccion {
+    public function getCalle(): string {
+        return "Calle Falsa 123";
+    }
+}
+
+$usuario = new Usuario();
+
+// Sin nullsafe, esto daría un error si $usuario->direccion es null
+// $calle = $usuario->direccion->getCalle(); 
+
+// Con nullsafe, $calle será null y no habrá error
+$calle = $usuario->direccion?->getCalle();
+
+var_dump($calle); // NULL
+?>
+
+
+
+<?php
+$numeros = [1, 2, 3, 4];
+
+// Forma tradicional con función anónima
+$dobles_tradicional = array_map(function($n) {
+    return $n * 2;
+}, $numeros);
+
+// Forma moderna con Arrow Function
+$dobles_flecha = array_map(fn($n) => $n * 2, $numeros);
+echo "<pre>";
+var_dump($dobles_tradicional); // [2, 4, 6, 8]
+var_dump($dobles_flecha); // [2, 4, 6, 8]
+echo "</pre>";
+?>
+            
+            
 </body>
 </html>

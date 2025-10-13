@@ -51,9 +51,6 @@
             echo "  - Stock disponible: " . $producto["stock"] . " unidades<br><br>";
         }
     }
-
-
-
     mostrarProductosPorCategoria("Libros", $catalogo);
     ?>
 </body>

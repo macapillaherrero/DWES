@@ -1,15 +1,14 @@
 <?php
-// 1. Creación e inserción
-$nombres = ['Pepe', 'Rosa', 'Luis', 'María', 'Sergio'];
-array_splice($nombres, 2, 0, 'Carlos'); // Inserta en la posición 2
 
-// Mostrar el array actualizado
-print_r($nombres);
-echo "<br>";
+echo "<h1>Soluciones Actividades Arrays 02</h1>";
 
-//1. De otra forma 
+
+
+//1. 
+
+echo "<h2>1. Creación e inserción solución de forma tradicional</h2>";
 // Crear array inicial con 5 nombres
-$nombres = ['Pepe', 'Rosa', 'Luis', 'María', 'Sergio'];
+$nombres = ['Ana', 'Luis', 'María', 'Pedro', 'Sofía'];
 
 // Incrementar el tamaño del array en 1 para hacer espacio
 $nombres[] = ''; // Añade un elemento vacío al final
@@ -26,68 +25,62 @@ $nombres[2] = 'Carlos';
 print_r($nombres);
 echo "<br>";
 
-// 2. Recorrido de arrays
+
+
+
+// 1.2. Crear array vacío llamado $numeros
+$numeros = [];
+
+// Insertar los números del 1 al 10 usando un bucle
+for ($i = 1; $i <= 10; $i++) {
+    $numeros[] = $i;
+}
+
+// Imprimir el resultado
+print_r($numeros);
+
+// 2.1. Recorrido de arrays mostrando nombre y posición
+echo "<h2>2. Recorrido de arrays mostrando nombre y posición</h2>";
 $i = 0;
 foreach ($nombres as $pos) {
     echo $i." Conozco a alguien llamado $pos"."<br>";
     $i++;
 }
 
-
-
-$numeros = [1, 2, 3, 4, 5];
-
+// 2.2. Recorrido de arrays mostrando el doble del valor
+echo "<h2>2. Recorrido de arrays mostrando el doble del valor</h2>";
 foreach ($numeros as $num) {
     echo $num * 2 . "<br>";
 }
 
-
-
-
-
-$arrayPaises = ['España' => 'Madrid', 'Francia' => 'París', 'Italia' => 'Roma'];
-
-
-foreach ($arrayPaises as $clave => $valor) {
-    echo "La capital de $clave es $valor<br>";
-}
-
-/*$notas = [
-    "Pedro" => [7, 8, 6],
-    "Lucía" => [9, 7, 8],
-    "Eva" => [6, 5, 8]
+// 2.3. Recorrido de arrays asociativos mostrando clave y valor
+echo "<h2>2. Recorrido de arrays asociativos mostrando clave y valor</h2>";
+$capitales = [
+    "España" => "Madrid",
+    "Francia" => "París",
+    "Italia"  => "Roma",
+    "Alemania" => "Berlín",
+    "Portugal" => "Lisboa"
 ];
-
-$notas = array(
-    "Pedro" => array(7, 8, 6),
-    "Lucía" => array(9, 7, 8),
-    "Eva" => array(6, 5, 8)
-);
-*/
-$notas = [
-    "Pedro" => ["matematicas" => [7,8,9], "lengua" => 8, "historia" => 6],
-    "Lucía" => [9, 7, 8],
-    "Eva" => [6, 5, 8]
-];
-
-foreach ($notas as $alumno => $arrayNotas) {
-
-    foreach ($arrayNotas as $asignatura => $nota) {
-        echo "La nota de $alumno en $asignatura es $nota<br>";
+function mostrarCapitales($paisesCapitales) {
+    foreach ($paisesCapitales as $pais => $capital) {
+        echo "La capital de $pais es $capital<br>";
     }
-  /*  $media = array_sum($arrayNotas)/count($arrayNotas);
-    echo "La media de $alumno es $media<br>";*/
 }
 
+mostrarCapitales($capitales);
 
-/*
+
 // 3. Extracción de datos
+echo "<h2>3. Extracción de datos</h2>";
 function getFirstElement($arr) {
-    return $arr[0] ?? null;
+    return $arr[0] ?? null; // Devuelve el primer elemento o null si el array está vacío usando el operador fusión de null 
 }
-echo getFirstElement($numeros) . "<br>";
+//https://macapillaherrero.github.io/DWES/UD2Introduccion/php-operators-guide.html#operadores-especiales
 
-echo end($numeros) . "<br>";
+echo "Primer elemento: ".getFirstElement($numeros) . "<br>";
+
+echo "Último elemento: ".end($numeros) . "<br>";
 
 $enteros = [3, -1, 0, 5, 7, -2];
 $positivos = [];
@@ -96,13 +89,18 @@ foreach ($enteros as $valor) {
         $positivos[] = $valor;
     }
 }
+echo "Números positivos: ";
 print_r($positivos);
 
 // 4. Arrays multidimensionales y asociativos
+
+echo "<h2>4. Arrays multidimensionales y asociativos</h2>";
+echo "Array multidimensional:<br>";
 $modulos = [
-    "Programación" => "Silvia",
-    "DWES" => "Macarena",
-    "BD" => "Juan"
+    "Programación" => "Alfonso",
+    "DWES" => "Marián",
+    "BD" => "Mari Carmen",
+    "DIW" => "Ernesto"
 ];
 foreach ($modulos as $modulo => $profe) {
     echo "El módulo $modulo lo imparte $profe<br>";
@@ -113,12 +111,14 @@ $notas = [
     "Lucía" => [9, 7, 8],
     "Eva" => [6, 5, 8]
 ];
+echo "Medias de alumnos:<br>";
 foreach ($notas as $alumno => $arrayNotas) {
     $media = array_sum($arrayNotas)/count($arrayNotas);
     echo "La media de $alumno es $media<br>";
 }
 
 // 5. Manipulación y ordenación
+echo "<h2>5. Manipulación y ordenación</h2>";
 $tecnologias = ['HTML', 'CSS', 'Javascript'];
 array_splice($tecnologias, 2, 0, 'PHP');
 print_r($tecnologias);
@@ -128,11 +128,13 @@ $frutas = [
     "pera" => 1.00,
     "plátano" => 0.80
 ];
+echo "<br>Ordenación por clave y valor:<br>";
+
 ksort($frutas); // Ordena por clave
 print_r($frutas);
 
 asort($frutas); // Ordena por valor
 print_r($frutas);
-*/
+
 
 ?>

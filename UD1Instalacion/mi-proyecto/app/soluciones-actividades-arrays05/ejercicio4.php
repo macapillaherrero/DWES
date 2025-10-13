@@ -43,29 +43,6 @@ echo "<pre>";
 print_r($resultadoFinal);
 echo "</pre>";
 
-/*
-Salida esperada:
-Array
-(
-    [1] => Array
-        (
-            [nombre] => LUIS
-            [salario_incrementado] => 4400
-        )
-
-    [2] => Array
-        (
-            [nombre] => MARTA
-            [salario_incrementado] => 3850
-        )
-
-    [4] => Array
-        (
-            [nombre] => LUCÍA
-            [salario_incrementado] => 4950
-        )
-)
-*/
 
 ?>
 

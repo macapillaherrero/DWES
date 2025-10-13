@@ -42,7 +42,7 @@ function buscarTodas($data, $valorBuscado,  $rutaActual = [], &$resultados = [])
 }
 
 // 3. Ejecución y visualización del resultado (PARTE CORREGIDA)
-$rutas = buscarTodas($data, "Python");
+$rutas = buscarTodas($data, "PHP");
 
 if (!empty($rutas)) {
     echo "Se encontraron " . count($rutas) . " ocurrencias del valor 'PHP': <br><br>";
