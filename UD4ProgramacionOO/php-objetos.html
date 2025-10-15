@@ -42,10 +42,10 @@
 <main class="w-full lg:w-3/4">
 
 <section id="poo">
-    <h2>Programación Orientada a Objetos (POO) en PHP</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Programación Orientada a Objetos (POO) en PHP</h2>
 
     <article id="clases-objetos">
-      <h3>Las Clases y Objetos</h3>
+      <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Las Clases y Objetos</h3>
       <pre class="code-block"><code class="language-php">&lt;?php
 class Caja {
   public $color = 'rojo';
@@ -63,7 +63,7 @@ $miCaja->mostrarCaja();
     </article>
 
     <article id="constructores-destructores">
-      <h3>Constructores y Destructores</h3>
+      <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Constructores y Destructores</h3>
       <pre class="code-block"><code class="language-php">&lt;?php
 class Persona {
   public $nombre;
@@ -92,7 +92,7 @@ unset($persona);
     </article>
 
     <article id="visibilidad">
-      <h3>Visibilidad (public, private, protected)</h3>
+      <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Visibilidad (public, private, protected)</h3>
       <p>Define acceso a propiedades y métodos para proteger datos y comportamientos.</p>
       <pre class="code-block"><code class="language-php">&lt;?php
 class MyClass {
@@ -116,7 +116,7 @@ $obj->imprimir();
     </article>
 
     <article id="metodos-magicos">
-      <h3>Métodos Mágicos __get y __set</h3>
+      <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Métodos Mágicos __get y __set</h3>
       <p>Permiten manejar propiedades inaccesibles directamente.</p>
       <pre class="code-block"><code class="language-php">&lt;?php
 class Example {
@@ -138,7 +138,7 @@ echo $obj->foo; // bar
     </article>
 
     <article id="constantes">
-      <h3>Constantes de Clase</h3>
+      <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Constantes de Clase</h3>
       <pre class="code-block"><code class="language-php">&lt;?php
 class MiClase {
   const CONSTANTE = "valor constante";
@@ -155,7 +155,7 @@ $clase->mostrarConstante();
     </article>
 
     <article id="static-palabra">
-      <h3>Palabra Reservada Static</h3>
+      <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Palabra Reservada Static</h3>
       <pre class="code-block"><code class="language-php">&lt;?php
 class Foo {
   public static function metodoEstatico() {
@@ -169,7 +169,7 @@ Foo::metodoEstatico();
   </section>
 
   <section id="herencia">
-    <h2>Herencia</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Herencia</h2>
     <p>Permite que una clase herede propiedades y métodos de otra usando <code>extends</code>.</p>
     <pre class="code-block"><code class="language-php">&lt;?php
 class Animal {
@@ -202,7 +202,7 @@ echo $gato->getColor();
   </section>
 
   <section id="clases-abstractas">
-    <h2>Clases Abstractas</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Clases Abstractas</h2>
     <p>Clases que no se pueden instanciar directamente, pero que definen métodos que las clases hijas deben implementar.</p>
     <pre class="code-block"><code class="language-php">&lt;?php
 abstract class ProductoLacteo {
@@ -223,7 +223,7 @@ class Leche extends ProductoLacteo {
   </section>
 
   <section id="palabra-final">
-    <h2>Palabra Clave Final</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Palabra Clave Final</h2>
     <p>Impide que las clases hijas sobrescriban un método o extiendan una clase final.</p>
     <pre class="code-block"><code class="language-php">&lt;?php
 final class ImposibleHeredar {
