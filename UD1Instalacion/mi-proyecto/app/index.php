@@ -12,7 +12,9 @@
    <a href="soluciones-actividades-arrays03/index.php">Ir a Soluciones Actividades Arrays 03</a><br>
    <a href="soluciones-actividades-arrays04/index.php">Ir a Soluciones Actividades Arrays 04</a><br>
    <a href="soluciones-actividades-arrays05/index.php">Ir a Soluciones Actividades Arrays 05</a><br> 
-      <?php
+   <a href="objetos/ejemplo-objetos.php">Objetos</a><br> 
+
+<?php
       /* $x = 10;
         $a = &$x; // referencia
         $b = &$a; // referencia

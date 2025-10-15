@@ -120,14 +120,14 @@ $obj->imprimir();
       <p>Permiten manejar propiedades inaccesibles directamente.</p>
       <pre class="code-block"><code class="language-php">&lt;?php
 class Example {
-  private $data = [];
+  private $color;
   
   public function __get($name) {
-    return $this->data[$name] ?? null;
+    return $this->$color ?? null;
   }
   
   public function __set($name, $value) {
-    $this->data[$name] = $value;
+    $this->$color = $value;
   }
 }
 $obj = new Example();
