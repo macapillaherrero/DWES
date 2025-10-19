@@ -13,6 +13,10 @@
    <a href="soluciones-actividades-arrays04/index.php">Ir a Soluciones Actividades Arrays 04</a><br>
    <a href="soluciones-actividades-arrays05/index.php">Ir a Soluciones Actividades Arrays 05</a><br> 
    <a href="objetos/ejemplo-objetos.php">Objetos</a><br> 
+   <a href="formularios/php-server.php">Variables de servidor</a><br>
+   <a href="formularios/formulario-test.php">Formulario Test</a><br> 
+
+    <!-- Referencias y referencias múltiples -->
 
 <?php
       /* $x = 10;
