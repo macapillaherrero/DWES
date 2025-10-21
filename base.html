@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Base</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Highlight.js para el resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <!-- Tu hoja de estilos personalizada -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-sky-50 text-gray-800">
+
+    <!-- Encabezado Fijo -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-xl font-bold text-sky-600">Guía de PHP</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Título Principal -->
+    <h1 class="text-4xl font-bold text-center my-8">Inclusión de ficheros</h1>
+
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+
+        <!-- Barra Lateral de Navegación -->
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                    <!-- Los enlaces a las secciones se añadirían aquí -->
+                    <li><a href="#spaghetti" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">código Spaghetti</a></li>
+                    <li><a href="#seccion-2" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Sección 2</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="w-full lg:w-3/4">
+            
+            <!-- Ejemplo de una sección de contenido -->
+            <section id="spaghetti" class="mb-12">
+                <h2 class="text-3xl font-semibold mb-4">código Spaghetti</h2>
+                <p class="mb-4">
+                    Como el propio nombre indica, el código spaghetti es un código desordenado y difícil de mantener, similar a un plato de espaguetis enredados. 
+                    Este tipo de código suele surgir cuando no se siguen buenas prácticas de programación, como la modularización y la reutilización de código.
+                     A continuación, se muestra un ejemplo de código spaghetti en PHP:
+                </p>
+                
+                <!-- Bloque de código de ejemplo -->
+                <div class="code-block">
+                    <pre><code class="language-php">
+                        <div class="stock-status">
+    <?php if ($stock > 0) { echo "<span>Disponible</span>"; } else { echo "<span style='color:red;'>Agotado</span>"; } ?>
+</div>
+
+                    </code></pre>
+                </div>
+            </section>
+            
+            <section id="seccion-2" class="mb-12">
+                <h2 class="text-3xl font-semibold mb-4">Título de la Sección 2</h2>
+                <p class="mb-4">
+                    Más contenido y explicaciones.
+                </p>
+            </section>
+
+            <!-- Puedes añadir más secciones como esta -->
+
+        </main>
+
+    </div>
+
+    <!-- Pie de Página -->
+    <footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="flex: 1 1 100%; margin-bottom: 20px;">
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marín Capilla Herrero. Publicada bajo licencia</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                    <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+                </a>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+                <img src="../logos/LOGODAWPres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+                <img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+                <img src="../logos/gvconselleriaeducaciocmykval.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+                <img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts para funcionalidades -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const bloquesCodigo = document.querySelectorAll('.code-block');
+            bloquesCodigo.forEach(bloque => {
+                const btnCopiar = document.createElement('button');
+                btnCopiar.className = 'btn-copiar';
+                btnCopiar.textContent = 'Copiar';
+                bloque.appendChild(btnCopiar);
+
+                btnCopiar.addEventListener('click', () => {
+                    const clon = bloque.cloneNode(true);
+                    clon.querySelector('.btn-copiar').remove();
+                    const codigoACopiar = clon.innerText;
+                    
+                    navigator.clipboard.writeText(codigoACopiar).then(() => {
+                        btnCopiar.textContent = 'Copiado!';
+                        btnCopiar.classList.add('copiado');
+                        setTimeout(() => {
+                            btnCopiar.textContent = 'Copiar';
+                            btnCopiar.classList.remove('copiado');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Error al copiar el código: ', err);
+                        btnCopiar.textContent = 'Error';
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

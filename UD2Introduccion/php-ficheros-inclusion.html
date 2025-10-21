@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Base</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Highlight.js para el resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <!-- Tu hoja de estilos personalizada -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-sky-50 text-gray-800">
+
+    <!-- Encabezado Fijo -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-xl font-bold text-sky-600">Guía de PHP</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Título Principal -->
+    <h1 class="text-4xl font-bold text-center my-8">Inclusión de ficheros</h1>
+
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+
+        <!-- Barra Lateral de Navegación -->
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                    <!-- Los enlaces a las secciones se añadirían aquí -->
+                    <li><a href="#spaghetti" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Código Spaghetti</a></li>
+                    <li><a href="#inclusion" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Inclusión de ficheros</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="w-full lg:w-3/4">
+            
+            <!-- Ejemplo de una sección de contenido -->
+            <section id="spaghetti" class="mb-12">
+                <h2 class="text-3xl font-semibold mb-4">Código Spaghetti</h2>
+                <p class="mb-4">
+                    Como el propio nombre indica, el código spaghetti es un código desordenado y difícil de mantener, similar a un plato de espaguetis enredados. 
+                    Este tipo de código suele surgir cuando no se siguen buenas prácticas de programación, como la modularización y la reutilización de código.
+                     A continuación, se muestra un ejemplo de código spaghetti en PHP:
+                </p>
+                
+                <!-- Bloque de código de ejemplo -->
+            
+                    <pre class="code-block"><code class="language-php">&lt;div class="stock-status"&gt;
+&lt;?php 
+    if ($stock > 0) { 
+       echo " &lt;span&gt;Disponible &lt;/span>"; 
+    } else { 
+        echo " &lt;span style='color:red;'>Agotado &lt;/span&gt;"; 
+    } ?&gt;
+&lt;/div&gt;</code></pre>
+                <p>Como podéis observar no es un código distinto del que hemos estado haciendo en clase, pero este tipo de programación es muy complicada de mantener.
+                 Para evitar que esto ocurra, es recomendable utilizar la inclusión de ficheros en PHP, lo que nos permite dividir el código en módulos reutilizables y más fáciles de gestionar.
+                 También facilita la colaboración entre varios desarrolladores, ya que cada uno puede trabajar en diferentes partes del proyecto sin interferir con el trabajo de los demás.
+                 En el futuro también usaremos frameworks que nos ayudarán a mantener un código limpio y organizado.
+                </p>
+           
+            </section>
+            
+            <section id="inclusion" class="mb-12">
+                <h2 class="text-3xl font-semibold mb-4">Inclusión de ficheros</h2>
+                <p class="mb-4">
+                    Más contenido y explicaciones.
+                </p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow-md border border-gray-200">
+                        <thead class="bg-sky-600 text-white">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Función</th>
+                                <th class="py-3 px-4 text-left">Descripción</th>
+                                <th class="py-3 px-4 text-left">Caso de error</th>
+                                <th class="py-3 px-4 text-left">Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b">
+                                <td class="py-3 px-4 font-mono">include ''</td>
+                                <td class="py-3 px-4">Incluye el fichero en cada ocasión.</td>
+                                <td class="py-3 px-4">Da una advertencia, pero continua la ejecución.</td>
+                                <td class="py-3 px-4 font-mono">include 'tu_archivo.php'</td>
+                            </tr>
+                            <tr class="border-b bg-sky-50">
+                                <td class="py-3 px-4 font-mono">include_once ''</td>
+                                <td class="py-3 px-4">Incluye el fichero solo una vez.</td>
+                                <td class="py-3 px-4">Da una advertencia, pero continua la ejecución.</td>
+                                <td class="py-3 px-4 font-mono">include_once 'tu_archivo.php'</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="py-3 px-4 font-mono">require ''</td>
+                                <td class="py-3 px-4">Incluye el fichero en cada ocasión.</td>
+                                <td class="py-3 px-4">Para la ejecución (Error fatal).</td>
+                                <td class="py-3 px-4 font-mono">require 'tu_archivo.php'</td>
+                            </tr>
+                            <tr class="bg-sky-50">
+                                <td class="py-3 px-4 font-mono">require_once ''</td>
+                                <td class="py-3 px-4">Incluye el fichero solo una vez.</td>
+                                <td class="py-3 px-4">Para la ejecución (Error fatal).</td>
+                                <td class="py-3 px-4 font-mono">require_once 'tu_archivo.php'</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p> 
+                    Ejemplo de uso de include:
+                    Código html que se repite en todas las páginas, como el pie de página:
+                </p>     
+                    <pre class="code-block"><code class="language-php">&lt;footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;"&gt;
+    &lt;div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;"&gt;
+        &lt;div style="flex: 1 1 100%; margin-bottom: 20px;"&gt;
+            &lt;p style="margin: 5px 0; color: #555; font-size: 0.9em;"&gt;Este documento se ha realizado por Marín Capilla Herrero. Publicada bajo licencia&lt;/p&gt;
+            &lt;p style="margin: 5px 0; color: #555; font-size: 0.9em;"&gt;Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.&lt;/p&gt;
+            &lt;p style="margin: 5px 0; color: #555; font-size: 0.9em;"&gt;Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar&lt;/p&gt;
+            &lt;a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;"&gt;
+                &lt;img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;"&gt;
+            &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;"&gt;
+            &lt;img src="../logos/LOGODAWPres.png" alt="Logo DAW" style="max-height: 50px; width: auto;"&gt;
+            &lt;img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;"&gt;
+            &lt;img src="../logos/gvconselleriaeducaciocmykval.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;"&gt;
+            &lt;img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;"&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;
+                        </code></pre>
+            <p>Este código lo copiariamos dentro de un fichero con nombre footer.php y luego se incluiría de la siguiente forma </p>
+ <pre class="code-block"><code class="language-php">&lt;?php require_once 'footer.php'; ?&gt; </code>
+</pre>
+<div class="space-y-6 text-gray-800">
+    
+    <h3 class="text-2xl font-semibold text-sky-800">¿Por qué <em>require</em> en lugar de <em>include</em>?</h3>
+
+    <p class="mb-4">
+        Un <strong>footer</strong> (pie de página) es una parte fundamental de la estructura y la interfaz de tu página web. Aunque el contenido principal pueda funcionar sin él, la página estaría visualmente rota o incompleta.
+    </p>
+
+    <ul class="list-disc list-inside space-y-3 pl-4">
+        <li>
+            <strong>require:</strong> Si el fichero <code>footer.php</code> no se encuentra (por un error en la ruta, porque se ha borrado, etc.), <code>require</code> lanzará un <strong class="text-red-600">error fatal</strong> y detendrá la ejecución del script. Esto es bueno. Te obliga a darte cuenta inmediatamente de que algo va mal y a solucionarlo, en lugar de mostrar una página "rota" a los usuarios.
+        </li>
+        <li>
+            <strong>include:</strong> Si usaras <code>include</code>, el script solo mostraría una <strong class="text-orange-500">advertencia</strong> y continuaría ejecutándose. El resultado sería una página sin pie de página, lo que es una mala experiencia para el usuario y un error que podría pasar desapercibido para ti durante más tiempo.
+        </li>
+    </ul>
+
+    <p class="mt-4">
+        En resumen, para componentes esenciales de la plantilla (como la cabecera, el menú o el pie de página), es mejor ser estricto y forzar un error si no se encuentran.
+    </p>
+
+    <h3 class="text-2xl font-semibold text-sky-800 mt-6">¿Por qué añadir el sufijo <em>_once</em>?</h3>
+
+    <p class="mb-4">
+        <strong>require_once:</strong> Esta función garantiza que el fichero <code>footer.php</code> se incluya <strong>una sola vez</strong>, sin importar cuántas veces se llame a la instrucción en el flujo de tu código. En aplicaciones complejas, es posible que un fichero se intente incluir varias veces por accidente. Usar <code>_once</code> previene la duplicación de código (que podría romper el HTML) y ahorra recursos.
+    </p>
+
+    <div class="p-4 bg-sky-100 border-l-4 border-sky-500 mt-6 rounded">
+        <h3 class="text-xl font-bold text-sky-900">Conclusión</h3>
+        <p class="mt-2">
+            Para incluir el <code>footer.php</code>, <code>require_once</code> es la opción más robusta y segura. Te protege contra dos problemas comunes:
+        </p>
+        <ul class="list-disc list-inside space-y-2 mt-2 pl-4">
+            <li><strong>Ficheros no encontrados</strong> (usando <code>require</code>).</li>
+            <li><strong>Inclusiones duplicadas</strong> (usando <code>_once</code>).</li>
+        </ul>
+    </div>
+
+</div>
+
+            </section>
+
+            <!-- Puedes añadir más secciones como esta -->
+
+        </main>
+
+    </div>
+
+    <!-- Pie de Página -->
+    <footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="flex: 1 1 100%; margin-bottom: 20px;">
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marín Capilla Herrero. Publicada bajo licencia</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución/Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;">
+                    <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;">
+                </a>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px;">
+                <img src="../logos/LOGODAWPres.png" alt="Logo DAW" style="max-height: 50px; width: auto;">
+                <img src="../logos/europa.jpg" alt="Logo Unión Europea" style="max-height: 50px; width: auto;">
+                <img src="../logos/gvconselleriaeducaciocmykval.png" alt="Logo Generalitat Valenciana" style="max-height: 50px; width: auto;">
+                <img src="../logos/camp.png" alt="Logo IES Camp de Morvedre" style="max-height: 50px; width: auto;">
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts para funcionalidades -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const bloquesCodigo = document.querySelectorAll('.code-block');
+            bloquesCodigo.forEach(bloque => {
+                const btnCopiar = document.createElement('button');
+                btnCopiar.className = 'btn-copiar';
+                btnCopiar.textContent = 'Copiar';
+                bloque.appendChild(btnCopiar);
+
+                btnCopiar.addEventListener('click', () => {
+                    const clon = bloque.cloneNode(true);
+                    clon.querySelector('.btn-copiar').remove();
+                    const codigoACopiar = clon.innerText;
+                    
+                    navigator.clipboard.writeText(codigoACopiar).then(() => {
+                        btnCopiar.textContent = 'Copiado!';
+                        btnCopiar.classList.add('copiado');
+                        setTimeout(() => {
+                            btnCopiar.textContent = 'Copiar';
+                            btnCopiar.classList.remove('copiado');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Error al copiar el código: ', err);
+                        btnCopiar.textContent = 'Error';
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
