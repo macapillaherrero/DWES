@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Apuntes PHP 8.3 - Persistencia con Cookies y Sesiones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+  
+</head>
+<body class="bg-sky-50 text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold text-sky-600">Guía de PHP 8.3</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
+            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+                <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+                <ul class="space-y-2">
+                    <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
+                    <li><a href="#cookies" class="block p-2 rounded-md font-medium text-gray-600">Cookies</a></li>
+                    <li><a href="#cuando-usar-cookies" class="block p-2 rounded-md font-medium text-gray-600">Cuando usar cookies</a></li>
+                    <li><a href="#sesiones" class="block p-2 rounded-md font-medium text-gray-600">Sesiones</a></li>
+                    <li><a href="#" class="block p-2 rounded-md font-medium text-gray-600"></a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="w-full">
+            <h1 class="text-4xl font-bold text-sky-900 mb-8">UD6: Persistencia de Datos en PHP</h1>
+
+            <section id="introduccion">
+                <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Introducción a la Persistencia Web</h2>
+                <p class="text-lg mb-4">El protocolo HTTP, sobre el que se fundamenta la web, es un protocolo <strong>sin estado</strong> (stateless). Esto significa que cada petición que un navegador hace al servidor es independiente de las anteriores. El servidor no recuerda nada sobre el usuario de una página a otra.</p>
+                <p class="text-lg">Para crear aplicaciones web interactivas (como un carrito de la compra o un sistema de login), necesitamos una forma de "recordar" información del usuario a través de múltiples peticiones. Aquí es donde entran en juego las <strong>cookies</strong> y las <strong>sesiones</strong>.</p>
+            </section>
+
+            <section id="cookies">
+                <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Cookies: Almacenamiento en el Cliente</h2>
+                <p class="text-lg mb-4">Una cookie es un pequeño fichero de texto que el servidor envía al navegador del usuario para que este lo guarde. En cada petición posterior al mismo dominio, el navegador devolverá automáticamente la cookie al servidor.</p>
+                
+                <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Crear una Cookie con `setcookie()`</h3>
+                <p class="mb-4">Para crear una cookie en PHP, utilizamos la función <code>setcookie()</code>. Es <strong>muy importante</strong> llamarla antes de enviar cualquier otra salida al navegador (antes de cualquier etiqueta HTML, texto o incluso un espacio en blanco).</p>
+                <p class="mb-4">La sintaxis ha evolucionado. Aunque se pueden pasar los parámetros uno a uno, la práctica recomendada desde PHP 7.3 es usar un array de opciones, lo que hace el código más legible y mantenible.</p>
+
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+// Forrma tradicional (aún válida)
+setcookie(
+    string $name,
+    string $value = "",
+    int $expires_or_options = 0,
+    string $path = "",
+    string $domain = "",
+    bool $secure = false,
+    bool $httponly = false
+);
+
+// Forma moderna con array de opciones (RECOMENDADA)
+setcookie(string $name, string $value = "", array $options = []);
+?&gt;</code></pre></div>
+
+                <h4 class="text-xl font-semibold mt-6 mb-2">Opciones de la Cookie</h4>
+                <ul class="list-disc list-inside space-y-2 mb-4">
+                    <li><strong>`expires`</strong>: Marca de tiempo Unix que indica cuándo caduca la cookie. Se suele calcular con <code>time()</code> más el número de segundos de vida. Si se omite o es 0, la cookie expira al cerrar el navegador.</li>
+                    <li><strong>`path`</strong>: La ruta del servidor donde la cookie estará disponible. Con <code>'/'</code>, estará disponible en todo el dominio.</li>
+                    <li><strong>`domain`</strong>: El dominio (o subdominio) para el que la cookie es válida.</li>
+                    <li><strong>`secure`</strong>: Si se establece a <code>true</code>, la cookie solo se enviará sobre conexiones seguras HTTPS.</li>
+                    <li><strong>`httponly`</strong>: Si es <code>true</code>, la cookie no será accesible mediante lenguajes de script del lado del cliente, como JavaScript. Es una medida de seguridad crucial para prevenir ataques XSS (Cross-Site Scripting).</li>
+                    <li><strong>`samesite`</strong>: Una medida de seguridad vital contra ataques CSRF (Cross-Site Request Forgery). Puede tener los valores:
+                        <ul class="list-inside list-disc ml-6 mt-2">
+                            <li><strong>`Strict`</strong>: La cookie solo se envía en peticiones originadas desde el mismo sitio.</li>
+                            <li><strong>`Lax`</strong>: (Valor por defecto en PHP 8+) La cookie se envía con la navegación normal al sitio de origen, pero no en peticiones de otros sitios (p.ej. desde un formulario en otra web).</li>
+                            <li><strong>`None`</strong>: La cookie se envía en todas las peticiones, pero <strong>requiere</strong> que la opción `secure` sea <code>true</code>.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-semibold mt-6 mb-2">Ejemplo práctico</h4>
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+// Cookie que dura 1 hora, disponible en todo el sitio,
+// solo por HTTPS, no accesible por JS y con política SameSite estricta.
+$nombre_cookie = 'usuario_preferencias';
+$valor_cookie = json_encode(['tema' => 'oscuro', 'idioma' => 'es']);
+$opciones = [
+    'expires' => time() + 3600, // 1 hora
+    'path' => '/',
+    // 'domain' => '.tudominio.com', // Descomentar si es necesario
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Strict'
+];
+
+setcookie($nombre_cookie, $valor_cookie, $opciones);
+
+// Cookie que se borra al cerrar el navegador
+setcookie('visita_temporal', '1');
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;Página con Cookies&lt;/h1&gt;
+    &lt;p&gt;Se han configurado las cookies.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+
+                <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Leer y Eliminar Cookies</h3>
+                <p class="mb-4">Para acceder al valor de las cookies enviadas por el navegador, usamos el array superglobal <code>$_COOKIE</code>. Un detalle importante: una cookie creada en un script no estará disponible en <code>$_COOKIE</code> hasta la <strong>siguiente petición</strong> HTTP.</p>
+
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+// Comprobar si la cookie de preferencias existe
+if (isset($_COOKIE['usuario_preferencias'])) {
+    $preferencias = json_decode($_COOKIE['usuario_preferencias'], true);
+    echo "Tema preferido: " . htmlspecialchars($preferencias['tema']);
+} else {
+    echo "No se encontraron preferencias de usuario.";
+}
+
+// Para eliminar una cookie, la creamos con una fecha de expiración en el pasado.
+if (isset($_POST['borrar_preferencias'])) {
+    setcookie('usuario_preferencias', '', time() - 3600, '/');
+    // Redirigimos para que el cambio se vea reflejado inmediatamente
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+}
+?&gt;
+</code></pre></div>
+            </section>
+
+
+
+<section id="cuando-usar-cookies">
+    <h2 class="text-3xl font-bold text-gray-800 mt-12 mb-6 border-b pb-2">Cuándo Usar Cookies: Casos de Uso y Ejemplos</h2>
+    <p class="text-lg mb-4">
+        La regla de oro es: usa cookies para almacenar <b>información no sensible</b> que mejore la experiencia del usuario a lo largo de varias visitas, incluso después de que haya cerrado el navegador. Las cookies son ideales para "recordar" preferencias o estados que no comprometen la seguridad.
+    </p>
+    <p class="text-lg mb-6">
+        A diferencia de las sesiones, que son para datos temporales y sensibles (como el estado de autenticación), las cookies son para la <b>persistencia a largo plazo</b>de datos de personalización.
+    </p>
+
+    <!-- CASO DE USO 1: PREFERENCIAS DEL USUARIO -->
+    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-8">
+        <h3 class="text-2xl font-bold text-sky-800 mb-4">1. Almacenar Preferencias del Usuario</h3>
+        <p class="mb-4">
+            Este es el uso más común y recomendado. Permite que tu sitio web se adapte a las elecciones del usuario cada vez que te visita, creando una experiencia más personal y agradable .
+        </p>
+        <ul class="list-disc list-inside space-y-2 mb-4">
+            <li>Preferencia de idioma.</li>
+            <li>Tema del sitio (claro/oscuro).</li>
+            <li>Configuraciones de accesibilidad (tamaño de fuente, contraste).</li>
+            <li>Número de resultados a mostrar por página en una lista.</li>
+        </ul>
+        <h4 class="text-xl font-semibold mt-4 mb-2">Ejemplo: Selector de Tema</h4>
+        <p class="mb-4">Guardamos la elección del tema del usuario en una cookie que dura un año.</p>
+        <div class="code-block"><pre><code class="language-php">&lt;?php
+// Procesar la elección del usuario enviada por un formulario
+if (isset($_POST['tema'])) {
+    $tema_elegido = $_POST['tema'] === 'oscuro' ? 'oscuro' : 'claro';
+
+    // Crear la cookie con duración de 1 año (365 días)
+    $opciones = [
+        'expires' => time() + (365 * 24 * 60 * 60),
+        'path' => '/',
+        'secure' => true, // Siempre que sea posible
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ];
+    setcookie('preferencia_tema', $tema_elegido, $opciones);
+
+    // Redirigir para aplicar el cambio inmediatamente
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Leer la cookie para aplicar el tema
+$tema_actual = $_COOKIE['preferencia_tema'] ?? 'claro'; // 'claro' es el valor por defecto
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es" class="&lt;?= htmlspecialchars($tema_actual) ?&gt;"&gt;
+&lt;!-- El resto del HTML usaría la clase 'claro' u 'oscuro' para estilizar --&gt;
+&lt;body&gt;
+    &lt;h1&gt;Mi Sitio Web&lt;/h1&gt;
+    &lt;p&gt;Actualmente estás usando el tema &lt;?= htmlspecialchars($tema_actual) ?&gt;.&lt;/p&gt;
+    &lt;form method="POST" action=""&gt;
+        &lt;label for="tema"&gt;Elige un tema:&lt;/label&gt;
+        &lt;select name="tema" id="tema" onchange="this.form.submit()"&gt;
+            &lt;option value="claro" &lt;?= $tema_actual === 'claro' ? 'selected' : '' ?&gt;&gt;Claro&lt;/option&gt;
+            &lt;option value="oscuro" &lt;?= $tema_actual === 'oscuro' ? 'selected' : '' ?&gt;&gt;Oscuro&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+    </div>
+
+    <!-- CASO DE USO 2: "RECORDARME" -->
+    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-8">
+        <h3 class="text-2xl font-bold text-sky-800 mb-4">2. Funcionalidad "Recordarme" en el Login</h3>
+        <p class="mb-4">
+            Para evitar que un usuario tenga que iniciar sesión cada vez que visita tu sitio desde su dispositivo de confianza, puedes usar una cookie. <b>¡Atención!</b> Nunca almacenes la contraseña en una cookie. En su lugar, guarda un token aleatorio y seguro.
+        </p>
+        <h4 class="text-xl font-semibold mt-4 mb-2">Ejemplo: Creación de Token "Recordarme"</h4>
+        <p class="mb-4">
+            Cuando el usuario marca "Recordarme", generamos un token, lo guardamos en la base de datos asociado a su ID y también en una cookie.
+        </p>
+        <div class="code-block"><pre><code class="language-php">&lt;?php
+// Tras un login exitoso...
+if ($login_exitoso && isset($_POST['recordarme'])) {
+    $id_usuario = 123; // ID del usuario que se logueó
+    
+    // 1. Generar un token seguro
+    $selector = bin2hex(random_bytes(16));
+    $validador = bin2hex(random_bytes(32));
+    $token_cookie = $selector . ':' . $validador;
+
+    // 2. Guardar el selector y el hash del validador en la BD
+    $validador_hashed = hash('sha256', $validador);
+    $fecha_expiracion = time() + (30 * 24 * 60 * 60); // 30 días
+    // $db->prepare("INSERT INTO tokens_recordarme (selector, validador_hashed, id_usuario, expira) VALUES (?, ?, ?, ?)")
+    //   ->execute([$selector, $validador_hashed, $id_usuario, date('Y-m-d H:i:s', $fecha_expiracion)]);
+
+    // 3. Enviar la cookie al usuario
+    setcookie('recordarme', $token_cookie, [
+        'expires' => $fecha_expiracion,
+        'path' => '/',
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Strict'
+    ]);
+}
+?&gt;
+</code></pre></div>
+        <p class="mt-4">
+            En visitas posteriores, si la cookie `recordarme` existe, se comprueba el token contra la base de datos para autenticar al usuario automáticamente. Este es un patrón de diseño avanzado pero muy seguro.
+        </p>
+    </div>
+
+    <!-- CASO DE USO 3: SEGUIMIENTO BÁSICO -->
+    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+        <h3 class="text-2xl font-bold text-sky-800 mb-4">3. Seguimiento Simple y Mensajes Únicos</h3>
+        <p class="mb-4">
+            Las cookies son útiles para realizar acciones una sola vez por visitante, como mostrar un banner de bienvenida, un aviso sobre la política de cookies, o para un seguimiento anónimo básico.
+        </p>
+        <h4 class="text-xl font-semibold mt-4 mb-2">Ejemplo: Mostrar un Aviso de Bienvenida una sola vez</h4>
+        <div class="code-block"><pre><code class="language-php">&lt;?php
+$mostrar_aviso = false;
+if (!isset($_COOKIE['visitante_recurrente'])) {
+    // Es la primera visita (en mucho tiempo), así que mostramos el aviso
+    $mostrar_aviso = true;
+    
+    // Creamos la cookie para no volver a mostrarlo por un año
+    setcookie('visitante_recurrente', '1', [
+        'expires' => time() + (365 * 24 * 60 * 60),
+        'path' => '/',
+        'samesite' => 'Lax'
+    ]);
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;?php if ($mostrar_aviso): ?&gt;
+        &lt;div style="background: #eef; padding: 1rem; text-align: center;"&gt;
+            &lt;h2&gt;¡Bienvenido por primera vez a nuestro sitio!&lt;/h2&gt;
+            &lt;p&gt;Esperamos que disfrutes de tu visita.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;?php endif; ?&gt;
+
+    &lt;h1&gt;Contenido principal de la página&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+    </div>
+</section>
+
+
+
+            <section id="sesiones">
+                <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Sesiones: Persistencia en el Servidor</h2>
+                <p class="text-lg mb-4">Las sesiones son un mecanismo para almacenar información del usuario en el <strong>servidor</strong>. A diferencia de las cookies, en el cliente solo se guarda un identificador único de sesión (normalmente en una cookie llamada `PHPSESSID`). Esto es más seguro porque los datos sensibles nunca abandonan el servidor.</p>
+                
+                <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">El Ciclo de Vida de una Sesión</h3>
+                <p class="mb-4">El trabajo con sesiones sigue un ciclo sencillo:</p>
+                
+                <h4 class="text-xl font-semibold mt-6 mb-2">1. Iniciar o reanudar una sesión</h4>
+                <p class="mb-4">Se usa la función <code>session_start()</code>. Al igual que <code>setcookie()</code>, debe ser llamada <strong>antes de cualquier salida</strong> al navegador. Esta función comprueba si existe un ID de sesión válido; si lo hay, carga los datos de la sesión; si no, crea una nueva.</p>
+                <p>Es buena práctica comprobar el estado de la sesión antes de intentar iniciarla para evitar errores:</p>
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+// Iniciar sesión solo si no hay una activa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?&gt;</code></pre></div>
+                
+                <h4 class="text-xl font-semibold mt-6 mb-2">2. Almacenar y acceder a datos</h4>
+                <p class="mb-4">Los datos de la sesión se gestionan a través del array superglobal <code>$_SESSION</code>. Podemos leer, escribir y eliminar variables como en cualquier otro array.</p>
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+// (Después de session_start())
+
+// Guardar datos en la sesión
+$_SESSION['id_usuario'] = 123;
+$_SESSION['nombre_usuario'] = 'daw_user';
+$_SESSION['hora_login'] = time();
+
+// Leer datos
+$nombre = $_SESSION['nombre_usuario'] ?? 'Invitado';
+echo "Bienvenido, " . htmlspecialchars($nombre);
+
+// Eliminar una variable de sesión específica
+unset($_SESSION['hora_login']);
+?&gt;</code></pre></div>
+                
+                <h4 class="text-xl font-semibold mt-6 mb-2">3. Destruir la sesión</h4>
+                <p class="mb-4">Cuando el usuario cierra sesión (logout), debemos destruir toda la información de la sesión. El proceso completo y seguro es el siguiente:</p>
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+session_start();
+
+// 1. Eliminar todas las variables de sesión
+$_SESSION = [];
+
+// 2. Borrar la cookie de sesión
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+// 3. Finalmente, destruir la sesión del servidor
+session_destroy();
+
+echo "Sesión cerrada correctamente.";
+// Redirigir al usuario a la página de inicio
+// header('Location: /index.php');
+// exit();
+?&gt;</code></pre></div>
+                <p class="mb-4">Simplemente usar <code>session_destroy()</code> no es suficiente, ya que no borra las variables del array <code>$_SESSION</code> actual ni la cookie del cliente. El método anterior es el más robusto.</p>
+
+                <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Seguridad en las Sesiones</h3>
+                <p class="mb-4">La seguridad es fundamental al manejar sesiones. Aquí tenéis las prácticas más importantes:</p>
+                <ul class="list-disc list-inside space-y-2 mb-4">
+                    <li><strong>Regenerar el ID de sesión</strong>: Para prevenir ataques de fijación de sesión, debemos generar un nuevo ID de sesión con <code>session_regenerate_id(true)</code> después de cualquier cambio de nivel de privilegio, como un login o un cambio de contraseña.</li>
+                    <li><strong>Controlar el tiempo de inactividad (Timeout)</strong>: Es vital cerrar la sesión de un usuario tras un período de inactividad para evitar que quede abierta en un ordenador público.</li>
+                </ul>
+
+                <h4 class="text-xl font-semibold mt-6 mb-2">Ejemplo: Login seguro y Timeout</h4>
+                <div class="code-block"><pre><code class="language-php">&lt;?php
+if (session_status() === PHP_SESSION_NONE) {
+    // Configurar parámetros de la cookie de sesión ANTES de iniciarla
+    session_set_cookie_params([
+        'lifetime' => 1800, // 30 minutos
+        'path' => '/',
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+    session_start();
+}
+
+// --- Lógica de Timeout ---
+const TIMEOUT_INACTIVIDAD = 600; // 10 minutos
+if (isset($_SESSION['ultima_actividad']) && (time() - $_SESSION['ultima_actividad'] > TIMEOUT_INACTIVIDAD)) {
+    // La sesión ha expirado por inactividad
+    session_unset();
+    session_destroy();
+    header('Location: /logout.php?motivo=inactividad');
+    exit();
+}
+$_SESSION['ultima_actividad'] = time(); // Actualizar la marca de tiempo
+
+// --- Lógica de Login ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    // (Aquí iría la validación de usuario y contraseña)
+    $login_exitoso = true; // Simulación
+
+    if ($login_exitoso) {
+        // ¡Importante! Regenerar ID para prevenir fijación de sesión
+        session_regenerate_id(true);
+        $_SESSION['logueado'] = true;
+        $_SESSION['id_usuario'] = 99; // ID del usuario validado
+        $_SESSION['ultima_actividad'] = time();
+    }
+}
+?&gt;</code></pre></div>
+            </section>
+            
+            <section id="comparativa">
+                <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Cookies vs. Sesiones: ¿Cuándo usar cada una?</h2>
+                <p class="text-lg mb-4">La elección depende de la naturaleza de los datos que quieres almacenar.</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-2 px-4 border-b text-left">Característica</th>
+                                <th class="py-2 px-4 border-b text-left">Cookies</th>
+                                <th class="py-2 px-4 border-b text-left">Sesiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-semibold">Almacenamiento</td>
+                                <td class="py-2 px-4 border-b">En el navegador del cliente</td>
+                                <td class="py-2 px-4 border-b">En el servidor</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-semibold">Seguridad</td>
+                                <td class="py-2 px-4 border-b">Menor. Los datos son visibles y modificables por el usuario. No usar para información sensible.</td>
+                                <td class="py-2 px-4 border-b">Mayor. Solo se guarda un ID en el cliente. Ideal para datos sensibles.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-semibold">Capacidad</td>
+                                <td class="py-2 px-4 border-b">Limitada (aprox. 4KB por cookie).</td>
+                                <td class="py-2 px-4 border-b">Mucho mayor, limitada por los recursos del servidor.</td>
+                            </tr>
+                             <tr>
+                                <td class="py-2 px-4 border-b font-semibold">Duración</td>
+                                <td class="py-2 px-4 border-b">Persistente, puede durar días, meses o años.</td>
+                                <td class="py-2 px-4 border-b">Temporal, se destruye al cerrar el navegador por defecto, o por timeout.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-semibold">Caso de uso</td>
+                                <td class="py-2 px-4 border-b">Recordar preferencias (tema, idioma), seguimiento, "Recordarme en este equipo".</td>
+                                <td class="py-2 px-4 border-b">Autenticación de usuarios, carritos de la compra, datos de formularios de varios pasos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+    <!--    <section id="ejercicios">
+                <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Ejercicios Propuestos</h2>
+                <ol class="list-decimal list-inside space-y-4">
+                    <li>
+                        <strong>Selector de Tema</strong>: Crea una página que permita al usuario elegir un color de fondo (ej. 'claro', 'oscuro', 'sepia') mediante un formulario. Guarda la elección en una <strong>cookie</strong> que dure 30 días. En cada visita, la página debe aplicar el color de fondo guardado en la cookie. Añade la opción de "restablecer" que elimine la cookie.
+                    </li>
+                    <li>
+                        <strong>Contador de Visitas con Sesión</strong>: Desarrolla una página que, usando <strong>sesiones</strong>, cuente cuántas veces ha sido visitada por el usuario durante su sesión actual. El contador debe mostrarse en pantalla y reiniciarse si el usuario cierra el navegador y vuelve a entrar.
+                    </li>
+                    <li>
+                        <strong>Login Básico</strong>: Implementa un sistema de login simple con tres páginas:
+                        <ul class="list-disc list-inside ml-6 mt-2">
+                            <li><strong>`login.php`</strong>: Un formulario con campos para usuario y contraseña.</li>
+                            <li><strong>`privado.php`</strong>: Una página de contenido exclusivo. Si el usuario no está logueado (no hay una variable de sesión que lo indique), debe ser redirigido a `login.php`. Si está logueado, le mostrará un mensaje de bienvenida y un enlace para "Cerrar Sesión" (`logout.php`).</li>
+                            <li><strong>`logout.php`</strong>: Página que se encarga de destruir la sesión y redirigir al login.</li>
+                        </ul>
+                        Asegúrate de usar <code>session_regenerate_id(true)</code> después del login y de destruir la sesión correctamente en `logout.php`.
+                    </li>
+                </ol>
+            </section>-->    
+        </main>
+    </div>
+
+    <footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6; margin-top: 3rem;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="flex: 1 1 100%; margin-bottom: 20px;">
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marin Capilla Herrero. Publicada bajo licencia</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución-Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;"><img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.code-block').forEach(bloque => {
+                const btnCopiar = document.createElement('button');
+                btnCopiar.className = 'btn-copiar';
+                btnCopiar.textContent = 'Copiar';
+                bloque.appendChild(btnCopiar);
+
+                btnCopiar.addEventListener('click', () => {
+                    const codeElement = bloque.querySelector('code');
+                    let codigoACopiar = '';
+                    if (codeElement) {
+                         // Clonamos para no modificar el DOM original
+                        const clon = codeElement.cloneNode(true);
+                        // Extraemos el texto
+                        codigoACopiar = clon.textContent || clon.innerText;
+                    }
+
+                    if (codigoACopiar) {
+                        navigator.clipboard.writeText(codigoACopiar).then(() => {
+                            btnCopiar.textContent = 'Copiado!';
+                            btnCopiar.classList.add('copiado');
+                            setTimeout(() => {
+                                btnCopiar.textContent = 'Copiar';
+                                btnCopiar.classList.remove('copiado');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Error al copiar el código: ', err);
+                            btnCopiar.textContent = 'Error';
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
