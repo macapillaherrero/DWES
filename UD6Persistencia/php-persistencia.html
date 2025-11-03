@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apuntes PHP 8.3 - Persistencia con Cookies y Sesiones</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,22 +17,32 @@
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <a href="#" class="text-xl font-bold text-sky-600">Guía de PHP 8.3</a>
+                    <a href="../index.html" class="text-xl font-bold text-sky-600">Guía de PHP 8.3</a>
+                </div>
+                <!-- Botón que solo se muestra en pantallas pequeñas (hasta lg) -->
+                <div class="lg:hidden">
+                    <button id="menu-toggle" class="p-2 rounded-md text-gray-600 hover:text-sky-600 hover:bg-gray-100">
+                        <!-- Icono de hamburguesa (SVG) -->
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </nav>
     </header>
 
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
-        <aside class="w-full lg:w-1/4 sticky top-20 h-fit hidden lg:block">
-            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+            <aside id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-white z-40 shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out lg:sticky lg:top-20 lg:w-1/4 lg:h-fit lg:translate-x-0 lg:bg-transparent lg:shadow-none">            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
                 <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
                 <ul class="space-y-2">
                     <li><a href="#introduccion" class="block p-2 rounded-md font-medium text-gray-600">Introducción</a></li>
                     <li><a href="#cookies" class="block p-2 rounded-md font-medium text-gray-600">Cookies</a></li>
                     <li><a href="#cuando-usar-cookies" class="block p-2 rounded-md font-medium text-gray-600">Cuando usar cookies</a></li>
                     <li><a href="#sesiones" class="block p-2 rounded-md font-medium text-gray-600">Sesiones</a></li>
-                    <li><a href="#" class="block p-2 rounded-md font-medium text-gray-600"></a></li>
+                    <li><a href="#ciclo" class="block p-2 rounded-md font-medium text-gray-600">El ciclo de vida de una sesión</a></li>
+                    <li><a href="#configuracion-cookie-sesion" class="block p-2 rounded-md font-medium text-gray-600">Configuración avanzada de la cookie de sesión</a></li>
+                    <li><a href="#seguridad-sesiones" class="block p-2 rounded-md font-medium text-gray-600">Seguridad en las sesiones</a></li>
                 </ul>
             </nav>
         </aside>
@@ -289,7 +299,8 @@ if (!isset($_COOKIE['visitante_recurrente'])) {
             <section id="sesiones">
                 <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Sesiones: Persistencia en el Servidor</h2>
                 <p class="text-lg mb-4">Las sesiones son un mecanismo para almacenar información del usuario en el <strong>servidor</strong>. A diferencia de las cookies, en el cliente solo se guarda un identificador único de sesión (normalmente en una cookie llamada `PHPSESSID`). Esto es más seguro porque los datos sensibles nunca abandonan el servidor.</p>
-                
+            </section>  
+            <section id="ciclo">             
                 <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">El Ciclo de Vida de una Sesión</h3>
                 <p class="mb-4">El trabajo con sesiones sigue un ciclo sencillo:</p>
                 
@@ -347,7 +358,121 @@ echo "Sesión cerrada correctamente.";
 // exit();
 ?&gt;</code></pre></div>
                 <p class="mb-4">Simplemente usar <code>session_destroy()</code> no es suficiente, ya que no borra las variables del array <code>$_SESSION</code> actual ni la cookie del cliente. El método anterior es el más robusto.</p>
+</section>
+<section id="configuracion-cookie-sesion">
+    <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Configuración Avanzada de la Cookie de Sesión</h2>
+    <p class="text-lg mb-4">
+        Aunque PHP gestiona la cookie de sesión (normalmente <code>PHPSESSID</code>) de forma automática, tenemos control total sobre sus propiedades. Configurar correctamente esta cookie es un paso <strong>fundamental para la seguridad</strong> de la aplicación, especialmente para mitigar ataques como el secuestro de sesión (Session Hijacking) y la fijación de sesión (Session Fixation).
+    </p>
+    <p class="text-lg mb-4">
+        Para ello, disponemos de dos funciones principales: <code>session_set_cookie_params()</code> para establecer los parámetros y <code>session_get_cookie_params()</code> para consultarlos.
+    </p>
 
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Establecer Parámetros con <code>session_set_cookie_params()</code></h3>
+    <p class="text-lg mb-4">
+        Esta función nos permite definir cómo se comportará la cookie de sesión que PHP envía al navegador. La regla más importante es que <strong>debe ser llamada antes de <code>session_start()</code></strong> para que tenga efecto.
+    </p>
+    <p class="text-lg mb-4">
+        Al igual que <code>setcookie()</code>, la forma moderna y recomendada (desde PHP 7.3) es pasar las opciones en un array asociativo. Esto hace que el código sea mucho más claro y seguro.
+    </p>
+    <div class="code-block">
+        <pre><code class="language-php">&lt;?php
+// Definimos un tiempo de vida para la cookie de sesión de 30 minutos (1800 segundos)
+$lifetime = 1800;
+
+// Establecemos los parámetros de la cookie de sesión de forma segura
+session_set_cookie_params([
+    'lifetime' => $lifetime,
+    'path' => '/',
+    'domain' => 'tudominio.com', // Cambiar por tu dominio
+    'secure' => true,      // La cookie solo se enviará sobre HTTPS
+    'httponly' => true,  // No accesible por JavaScript
+    'samesite' => 'Lax'    // 'Strict' o 'Lax'. Lax es un buen equilibrio de seguridad y usabilidad.
+]);
+
+// Ahora sí, iniciamos la sesión. PHP usará la configuración anterior.
+session_start();
+
+// ... el resto de la lógica de tu aplicación ...
+?&gt;</code></pre>
+    </div>
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-6 mb-4" role="alert">
+        <p class="font-bold">¡Importante!</p>
+        <p>Llamar a <code>session_set_cookie_params()</code> después de <code>session_start()</code> no producirá un error, pero <strong>no tendrá ningún efecto</strong> en la sesión actual, ya que las cabeceras de la cookie ya habrán sido enviadas o leídas.</p>
+    </div>
+
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Obtener Parámetros con <code>session_get_cookie_params()</code></h3>
+    <p class="text-lg mb-4">
+        Esta función devuelve un array asociativo con los parámetros de la cookie de sesión. Es especialmente útil cuando necesitamos asegurarnos de que estamos eliminando la cookie correcta del navegador del cliente, ya que nos proporciona la ruta, dominio y otras propiedades con las que fue configurada.
+    </p>
+    <p class="text-lg mb-4">
+        Un detalle clave es que esta función devuelve los parámetros <strong>tal y como están definidos en el fichero <code>php.ini</code></strong> o como fueron establecidos por <code>session_set_cookie_params()</code> en el script actual [12, 17]. No lee los valores de la cookie que el navegador ha enviado.
+    </p>
+
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Caso Práctico: Inicio y Destrucción Segura de una Sesión</h3>
+    <p class="text-lg mb-4">
+        Combinando ambas funciones, podemos crear un ciclo de vida de sesión robusto y seguro. El siguiente ejemplo muestra cómo configurar la sesión al inicio y cómo destruirla por completo al final.
+    </p>
+    <div class="code-block">
+        <pre><code class="language-php">&lt;?php
+// --- INICIO SEGURO DE LA SESIÓN (ej. en un fichero `init.php`) ---
+
+// Solo si no hay una sesión activa
+if (session_status() === PHP_SESSION_NONE) {
+    // Configuramos la cookie para que sea más segura
+    session_set_cookie_params([
+        'lifetime' => 1800,       // 30 minutos de vida
+        'path' => '/',
+        'secure' => true,         // Solo HTTPS
+        'httponly' => true,     // No accesible por JS
+        'samesite' => 'Lax'
+    ]);
+
+    session_start();
+}
+
+// Después de un login exitoso, siempre regeneramos el ID
+// session_regenerate_id(true);
+?&gt;
+
+</code></pre>
+    </div>
+    <div class="code-block mt-6">
+        <pre><code class="language-php">&lt;?php
+// --- DESTRUCCIÓN COMPLETA DE LA SESIÓN (ej. en `logout.php`) ---
+
+// Reanudamos la sesión para poder acceder a ella
+//Si estamos en el logout.php no nos importa que no haya sesión iniciada, si no la hay se inicia, y si ya hay, se continúa.
+session_start();
+
+// 1. Borramos todas las variables de la sesión
+$_SESSION = array();
+
+// 2. Obtenemos los parámetros de la cookie de sesión para poder borrarla
+$params = session_get_cookie_params();
+
+// 3. Borramos la cookie del cliente enviando una con fecha de expiración pasada
+setcookie(
+    session_name(), // Nombre de la cookie de sesión (p.ej. 'PHPSESSID')
+    '',             // Valor vacío
+    time() - 42000, // Tiempo en el pasado
+    $params["path"],
+    $params["domain"],
+    $params["secure"],
+    $params["httponly"]
+);
+
+// 4. Finalmente, destruimos la sesión en el servidor
+session_destroy();
+
+// Redirigimos a la página de inicio o login
+header('Location: /index.php');
+exit;
+?&gt;</code></pre>
+    </div>
+</section>
+
+<section id="seguridad-sesiones">
                 <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Seguridad en las Sesiones</h3>
                 <p class="mb-4">La seguridad es fundamental al manejar sesiones. Aquí tenéis las prácticas más importantes:</p>
                 <ul class="list-disc list-inside space-y-2 mb-4">
@@ -394,7 +519,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     }
 }
 ?&gt;</code></pre></div>
-            </section>
+            
             
             <section id="comparativa">
                 <h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2">Cookies vs. Sesiones: ¿Cuándo usar cada una?</h2>
@@ -472,7 +597,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
 
+            menuToggle.addEventListener('click', function () {
+                mobileMenu.classList.toggle('-translate-x-full');
+            });
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
         hljs.highlightAll();

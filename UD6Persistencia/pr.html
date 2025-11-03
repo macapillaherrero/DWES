@@ -1,0 +1,111 @@
+<section id="mejoras-responsive-design">
+    <h2 class="text-3xl font-bold text-gray-800 mt-12 mb-6 border-b pb-2">Mejorando el HTML con Diseño Responsivo</h2>
+    <p class="text-lg mb-4">
+        Aunque hemos usado Tailwind CSS, que ya nos da muchas herramientas para el diseño responsivo, podemos aplicar algunas mejoras clave para asegurar que nuestros apuntes se vean y funcionen perfectamente tanto en un móvil como en una pantalla grande.
+    </p>
+    <p class="text-lg mb-4">
+        Vamos a centrarnos en los siguientes puntos para lograr una experiencia de usuario óptima en cualquier dispositivo.
+    </p>
+
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">1. La Etiqueta Meta Viewport (Fundamental)</h3>
+    <p class="text-lg mb-4">
+        Este es el paso más importante y el primero que debemos asegurar. Sin esta etiqueta en el <code>&lt;head&gt;</code>, los navegadores móviles intentarán mostrar la página como si fuera una versión de escritorio, haciendo que todo se vea muy pequeño y obligando al usuario a hacer zoom.
+    </p>
+    <p class="text-lg mb-4">
+        Esta línea le dice al navegador que el ancho de la página debe coincidir con el ancho del dispositivo y que la escala inicial debe ser del 100%.
+    </p>
+    <div class="code-block">
+        <pre><code class="language-html">&lt;!-- Asegúrate de que esta línea está en tu &lt;head&gt; --&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></pre>
+    </div>
+
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">2. Navegación Accesible en Móviles (Menú Hamburguesa)</h3>
+    <p class="text-lg mb-4">
+        Actualmente, la barra de navegación lateral (el índice de contenidos) se oculta en pantallas pequeñas con la clase <code>hidden lg:block</code>. Esto es un problema, ya que los usuarios de móvil no pueden navegar por las secciones del documento.
+    </p>
+    <p class="text-lg mb-4">
+        La solución es crear un "menú hamburguesa". Añadiremos un botón en la cabecera que, al pulsarlo, mostrará u ocultará esta barra de navegación lateral.
+    </p>
+    <div class="code-block">
+        <pre><code class="language-html">&lt;!-- 1. Añade un botón "hamburguesa" en el header --&gt;
+&lt;header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200"&gt;
+    &lt;nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"&gt;
+        &lt;div class="flex items-center justify-between h-16"&gt;
+            &lt;div class="flex items-center"&gt;
+                &lt;a href="#" class="text-xl font-bold text-sky-600"&gt;Guía de PHP 8.3&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;!-- Botón que solo se muestra en pantallas pequeñas (hasta lg) --&gt;
+            &lt;div class="lg:hidden"&gt;
+                &lt;button id="menu-toggle" class="p-2 rounded-md text-gray-600 hover:text-sky-600 hover:bg-gray-100"&gt;
+                    &lt;!-- Icono de hamburguesa (SVG) --&gt;
+                    &lt;svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"&gt;
+                        &lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"&gt;&lt;/path&gt;
+                    &lt;/svg&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;!-- 2. Modifica el &lt;aside&gt; para que sea el menú móvil --&gt;
+&lt;!-- Añadimos clases para posicionarlo fuera de la pantalla y transicionarlo --&gt;
+&lt;aside id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-white z-40 shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out lg:sticky lg:top-20 lg:w-1/4 lg:h-fit lg:translate-x-0 lg:bg-transparent lg:shadow-none"&gt;
+    &lt;nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200 lg:shadow-md"&gt;
+        &lt;!-- El contenido de tu &lt;h3&gt; y &lt;ul&gt; del índice va aquí --&gt;
+    &lt;/nav&gt;
+&lt;/aside&gt;
+
+&lt;!-- 3. Añade este script al final de tu &lt;body&gt; para el funcionamiento --&gt;
+&lt;script&gt;
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', function () {
+            mobileMenu.classList.toggle('-translate-x-full');
+        });
+    });
+&lt;/script&gt;</code></pre>
+    </div>
+    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mt-6 mb-4" role="alert">
+        <p class="font-bold">Análisis del cambio:</p>
+        <ul class="list-disc list-inside mt-2">
+            <li>El <code>&lt;aside&gt;</code> ahora es <code>fixed</code> en móviles y se posiciona fuera de la pantalla (<code>-translate-x-full</code>).</li>
+            <li>En pantallas grandes (<code>lg:</code>), vuelve a su comportamiento original (<code>sticky</code>, <code>w-1/4</code>, etc.).</li>
+            <li>El JavaScript simplemente cambia la clase de traslación para mostrar u ocultar el menú.</li>
+        </ul>
+    </div>
+
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">3. Tipografía Adaptable</h3>
+    <p class="text-lg mb-4">
+        Los tamaños de fuente fijos como <code>text-4xl</code> pueden ser demasiado grandes en pantallas pequeñas. Es una buena práctica usar tamaños más pequeños por defecto y aumentarlos en pantallas más grandes usando los prefijos responsivos de Tailwind.
+    </p>
+    <div class="code-block">
+        <pre><code class="language-html">&lt;!-- ANTES --&gt;
+&lt;h1 class="text-4xl font-bold text-sky-900 mb-8"&gt;UD6: Persistencia de Datos en PHP&lt;/h1&gt;
+&lt;h2 class="text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2"&gt;...&lt;/h2&gt;
+
+&lt;!-- DESPUÉS (Recomendado) --&gt;
+&lt;h1 class="text-3xl sm:text-4xl font-bold text-sky-900 mb-6 sm:mb-8"&gt;UD6: Persistencia de Datos en PHP&lt;/h1&gt;
+&lt;h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mt-8 mb-6 border-b pb-2"&gt;...&lt;/h2&gt;
+</code></pre>
+        <p class="mt-4 p-4 bg-gray-100 rounded">
+            <strong>Explicación:</strong> El título principal (<code>h1</code>) será <code>text-3xl</code> en móviles y crecerá a <code>text-4xl</code> en pantallas pequeñas (<code>sm</code>) y superiores. Lo mismo ocurre con el espaciado (<code>mb-6 sm:mb-8</code>).
+        </p>
+    </div>
+
+    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">4. Contenido que Desborda (Tablas y Código)</h3>
+    <p class="text-lg mb-4">
+        Ya gestionas muy bien la tabla comparativa envolviéndola en un <code>&lt;div class="overflow-x-auto"&gt;</code>. ¡Perfecto! Esto evita que la tabla rompa el layout en móviles y permite el desplazamiento horizontal.
+    </p>
+    <p class="text-lg mb-4">
+        Mi recomendación es aplicar la misma técnica a los bloques de código, ya que una línea de código muy larga también podría causar un desbordamiento horizontal.
+    </p>
+    <div class="code-block">
+        <pre><code class="language-html">&lt;!-- Simplemente añade la clase "overflow-x-auto" al contenedor del bloque de código --&gt;
+&lt;div class="code-block overflow-x-auto"&gt;
+    &lt;pre&gt;&lt;code class="language-php"&gt;... tu código php aquí ...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+</section>

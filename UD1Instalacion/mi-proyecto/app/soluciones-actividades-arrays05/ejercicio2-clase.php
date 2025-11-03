@@ -22,36 +22,39 @@
     ];
 
     function ordenar_por_precio($categoria) {
-    $precios = array();
-    foreach ($categoria as $producto => $datos) {
-        $precios[] =+ $datos['precio'];
-    }
-    sort($precios);
-    $categoria_ordenada = array();
-    for ($i = 0; $i < count($categoria) ; $i++) {
+        $precios = array();
+        foreach ($categoria as $producto => $datos) {
+            $precios[] =+ $datos['precio'];
+        }
+        sort($precios);
+        $categoria_ordenada = array();
+        for ($i = 0; $i < count($categoria) ; $i++) {
 
-        foreach ($categoria as $producto => $datos){
-            if ($datos['precio'] === $precios[$i]){
-                $categoria_ordenada[$i] = $producto;
+            foreach ($categoria as $producto => $datos){
+                if ($datos['precio'] === $precios[$i]){
+                    $categoria_ordenada[$i] = $producto;
+                }
+            }
+
+        }
+        function mostrarProductosPorCategoria ($categoria, $catalogo){
+            if(!array_key_exists($categoria, $catalogo)){   
+                echo "Error: La categoría $categoria no existe en el inventario.";
+                return;
+            }
+
+        ordenar_por_precio($categoria);
+
+            foreach ($catalogo[$categoria] as $producto ) {
+                echo "  Nombre: " . $producto["nombre"] . "<br>";
+                echo "  - Precio: " . number_format($producto["precio"], 2, ',', '.') . " €<br>";
+                echo "  - Stock disponible: " . $producto["stock"] . " unidades<br><br>";
             }
         }
 
-    }
-    function mostrarProductosPorCategoria ($categoria, $catalogo){
-        if(!array_key_exists($categoria, $catalogo)){   
-             echo "Error: La categoría $categoria no existe en el inventario.";
-             return;
         }
-
-       ordenar_por_precio($categoria);
-
-        foreach ($catalogo[$categoria] as $producto ) {
-            echo "  Nombre: " . $producto["nombre"] . "<br>";
-            echo "  - Precio: " . number_format($producto["precio"], 2, ',', '.') . " €<br>";
-            echo "  - Stock disponible: " . $producto["stock"] . " unidades<br><br>";
-        }
-    }
-    mostrarProductosPorCategoria("Libros", $catalogo);
+        mostrarProductosPorCategoria("Libros", $catalogo);
+    
     ?>
 </body>
 </html>

@@ -11,7 +11,7 @@
 // Versión de PHP: 8.3
 
 // El array de inventario no cambia.
-$inventario = [
+$catalogo = [
     "Electronica" => [
         ["nombre" => "Televisor LED 4K", "precio" => 499.99, "stock" => 20],
         ["nombre" => "Smartphone X100", "precio" => 299.50, "stock" => 50],
@@ -82,7 +82,10 @@ function mostrarProductosPorCategoriaV2($categoria, $catalogo){
 
      echo "--- Productos de la categoría: '$categoria' (ordenados por precio) ---<br>";
     // Ejemplo de uso de bucles foreach anidados para mostrar todos los productos
-    foreach ($productosCategoria as $producto) {    
+    foreach ($productos as $producto) {    
+         echo "  Nombre: " . $producto['nombre'] . "<br>";
+         echo "  - Precio: " . number_format($producto['precio'], 2, ',', '.') . " €<br>";
+         echo "  - Stock disponible: " . $producto['stock'] . " unidades<br><br>";
         // 2. Segundo bucle (anidado): recorre las claves y valores de cada producto
         foreach ($producto as $clave => $valor) {
             // Usamos ucfirst() para poner la primera letra de la clave en mayúscula
