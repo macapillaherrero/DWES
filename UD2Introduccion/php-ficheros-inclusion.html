@@ -43,6 +43,7 @@
                     <!-- Los enlaces a las secciones se añadirían aquí -->
                     <li><a href="#spaghetti" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Código Spaghetti</a></li>
                     <li><a href="#inclusion" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Inclusión de ficheros</a></li>
+                    <li><a href="#redirecciones-php" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Redirecciones con <code>header()</code></a></li>
                 </ul>
             </nav>
         </aside>
@@ -187,8 +188,69 @@
 </div>
 
             </section>
+<section class="content-section" id="redirecciones-php" class="mb-12">
+    <h2 class="text-3xl font-semibold mb-4">Redirecciones con <code>header()</code></h2>
+    <p>La función <code>header()</code> en PHP es crucial para enviar cabeceras HTTP sin procesar al navegador. Esto nos permite realizar acciones como redirigir al usuario a otra página. Es muy importante recordar que esta función debe ser llamada <strong>antes</strong> de que cualquier contenido (HTML, texto, o incluso espacios en blanco) sea enviado al navegador.</p>
 
-         
+    <div class="table-responsive">
+        <table class="min-w-full bg-white rounded-lg shadow-md border border-gray-200">
+            <thead class="bg-sky-600 text-white">
+                <tr>
+                    <th class="py-3 px-4 text-left">Función</th>
+                    <th class="py-3 px-4 text-left">Descripción</th>
+                    <th class="py-3 px-4 text-left">Caso de uso</th>
+                    <th class="py-3 px-4 text-left">Ejemplo</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr class="border-b">
+                    <td class="py-3 px-4 font-mono"><code>header('Location: ...')</code></td>
+                    <td class="py-3 px-4">Envía una cabecera de redirección HTTP (código 302 por defecto). La redirección es inmediata en el lado del cliente.</td>
+                    <td class="py-3 px-4">Redirigir al usuario tras un inicio de sesión exitoso o el envío de un formulario.</td>
+                   <td class="py-3 px-4 font-mono"><code>header('Location: panel_usuario.php');</code></td>
+                </tr>
+                <tr class="border-b bg-sky-50">
+                    <td class="py-3 px-4 font-mono"><code>header('Refresh: ...')</code></td>
+                   <td class="py-3 px-4">Envía una cabecera que instruye al navegador a recargar la página o redirigir a otra URL después de un número determinado de segundos.</td>
+                    <td class="py-3 px-4">Mostrar un mensaje de "acción completada" y luego redirigir al usuario a la página de inicio tras unos segundos.</td>
+                    <td class="py-3 px-4 font-mono"><code>header('Refresh: 5; url=inicio.php');</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>&nbsp;</p>
+    <h3  class="text-2xl font-semibold text-sky-800"><code>header('Location: ...')</code> y la importancia de <code>exit()</code></h3>
+   <p>&nbsp;</p>
+    <p>Cuando se utiliza <code>header('Location: ...')</code> para redirigir a un usuario, el script de PHP no termina su ejecución automáticamente. El script puede continuar ejecutándose en segundo plano, lo que podría llevar a comportamientos inesperados o vulnerabilidades de seguridad.</p>
+    <p>Por esta razón, es una <strong>buena práctica</strong> y una medida de seguridad llamar a <code>exit()</code> o <code>die()</code> inmediatamente después de una cabecera de redirección. Esto asegura que el script se detenga por completo y no se ejecute código adicional no deseado.</p>
+     <p><strong>Ejemplo correcto:</strong></p>
+    <div class="code-block" id="ejemplo-exit"><pre><code>&lt;?php
+// ... lógica de validación ...
+
+if ($usuario_validado) {
+    header('Location: area_privada.php');
+    exit(); // Detiene la ejecución del script aquí
+}
+
+// Este código no se ejecutará si la redirección ocurre
+echo "Acceso denegado";
+?&gt;</code></pre></div>
+    <p>&nbsp;</p>
+    <h3 class="text-2xl font-semibold text-sky-800">El error común: "Headers already sent"</h3>
+    <p>&nbsp;</p>
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-6 mb-4" role="alert">
+            <p class="font-bold">¡Importante!</p>
+        <p>Uno de los errores más frecuentes al trabajar con <code>header()</code> es el <code>Warning: Cannot modify header information - headers already sent</code>. Este error ocurre porque las cabeceras HTTP deben ser lo primero que el servidor envía al navegador, antes de cualquier otro contenido.</p>
+        <p>El error aparece si intentas llamar a <code>header()</code> después de haber enviado cualquier tipo de salida, como:</p>
+        <ul>
+            <li>Texto HTML (incluso un espacio en blanco antes de la etiqueta <code>&lt;?php</code>).</li>
+            <li>Salida desde PHP con <code>echo</code> o <code>print</code>.</li>
+            <li>Un error o advertencia de PHP.</li>
+        </ul>
+        <p><strong>Solución:</strong> Asegúrate de que tus llamadas a <code>header()</code>, <code>setcookie()</code> y otras funciones que modifiquen las cabeceras se ejecuten antes de cualquier salida. Estructura tu código para que toda la lógica de negocio (procesamiento de formularios, validaciones, redirecciones) ocurra al principio del script.</p>
+    </div>
+</section>
+
 
         </main>
 
