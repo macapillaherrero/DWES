@@ -83,6 +83,29 @@
                     <h3 class="font-bold text-lg text-green-700">Contenedor PHP-FPM</h3>
                     <p class="text-sm text-gray-600">Procesa el código PHP y devuelve el resultado a Nginx.</p>
                 </div>
+
+                <!-- Flecha -->
+                <div class="text-gray-400 font-mono text-2xl transform rotate-90 md:rotate-0">&lt;--&gt;</div>
+
+                <!-- MySQL -->
+                <div class="w-full md:w-1/3 p-6 bg-white rounded-xl shadow-lg border-2 border-orange-400 relative">
+                    <span class="absolute -top-3 -left-3 flex h-6 w-6">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-6 w-6 bg-orange-500 text-white items-center justify-center text-xs font-bold">3</span>
+                    </span>
+                    <div class="text-5xl mb-3">🗄️</div>
+                    <h3 class="font-bold text-lg text-orange-700">Contenedor MySQL</h3>
+                    <p class="text-sm text-gray-600">
+                    Almacena y gestiona los datos del proyecto.<br>
+                    El contenedor PHP se conecta usando credenciales seguras.
+                    </p>
+                </div>
+                </div>
+                <div class="text-center mt-8">
+                <p class="text-gray-700 text-sm max-w-2xl mx-auto">
+                    <b>Flujo:</b> Tu navegador envía la petición a Nginx, que dirige los archivos PHP al servicio PHP-FPM. Si el código PHP requiere consultar o guardar datos, PHP se comunica con MySQL, todo dentro de la red aislada de Docker.
+                </p>
+                </div>
             </div>
         </section>
 
@@ -100,6 +123,7 @@
                             <li><a href="#" data-file="dockerfile" class="block p-2 rounded-md text-gray-700 hover:bg-gray-100">Dockerfile</a></li>
                             <li><a href="#" data-file="nginx" class="block p-2 rounded-md text-gray-700 hover:bg-gray-100">nginx.conf</a></li>
                             <li><a href="#" data-file="php" class="block p-2 rounded-md text-gray-700 hover:bg-gray-100">app/index.php</a></li>
+                             <li><a href="#" data-file="conecta" class="block p-2 rounded-md text-gray-700 hover:bg-gray-100">app/conecta.php</a></li>
                         </ul>
                     </div>
                 </div>
@@ -112,7 +136,14 @@
                     <div id="explanation-display" class="w-full">
                         <!-- Content will be injected by JS -->
                     </div>
+
+</div>
+
+
                 </div>
+                <!-- Archivo: app/index.php -->
+
+
             </div>
         </section>
 
@@ -170,7 +201,6 @@
         const fileContents = {
             compose: {
                 code: `version: '3.8'
-
 services:
   nginx:
     image: nginx:stable-alpine
@@ -182,14 +212,40 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
-
   php:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: php-fpm
     volumes:
-      - ./app:/var/www/html`,
+      - ./app:/var/www/html
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: midb
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: usuario_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+  
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root   # Igual al definido en mysql
+volumes:
+  db_data:`,
                 explanation: `
                     <div class="explanation-card p-4 rounded-lg h-full">
                         <h4 class="font-bold text-lg mb-2 text-gray-900">docker-compose.yml</h4>
@@ -208,7 +264,11 @@ services:
 FROM php:8.3-fpm-alpine
 
 # Instala extensiones de PHP necesarias
-RUN docker-php-ext-install pdo_mysql opcache`,
+RUN docker-php-ext-install pdo_mysql opcache
+
+RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-enable pdo_mysql`,
+
                 explanation: `
                     <div class="explanation-card p-4 rounded-lg h-full">
                         <h4 class="font-bold text-lg mb-2 text-gray-900">Dockerfile</h4>
@@ -265,6 +325,43 @@ echo "La versión de PHP es: " . phpversion();
                         </ul>
                     </div>
                 `
+            },
+            conecta:{
+                  code:`<?php
+                $host = 'mysql-db';       // Nombre del servicio definido en docker-compose
+                $db   = 'midb';
+                $user = 'usuario';
+                $pass = 'usuariopassword';
+                $charset = 'utf8mb4';
+
+                $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+                try {
+                    $pdo = new PDO($dsn, $user, $pass, [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    ]);
+                    echo "¡Conexión exitosa a MySQL desde Docker!<br>";
+
+                    // Ejemplo simple: crea tabla y muestra datos
+                    $pdo->exec("CREATE TABLE IF NOT EXISTS test (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(255))");
+                    $pdo->exec("INSERT INTO test (nombre) VALUES ('Alumno')");
+                    foreach($pdo->query('SELECT * FROM test') as $fila) {
+                        echo "{$fila['id']} - {$fila['nombre']}<br>";
+                    }
+                } catch (PDOException $e) {
+                    echo 'Error de conexión: ' . $e->getMessage();
+                }?>`,
+            explanation: ` <div class="explanation-card p-4 rounded-lg h-full">
+                            <h4 class="font-bold text-lg mb-2 text-gray-900">app/conecta.php <span style="color: #2563eb; font-weight: 500;">+ MySQL</span></h4>
+                            <ul class="text-sm space-y-3 text-gray-800" style="padding-left:16px;">
+                                <li>Este archivo muestra cómo conectar PHP con MySQL en Docker usando <b>PDO</b>, una extensión moderna orientada a objetos.</li>
+                                <li>La variable <code>$host</code> debe coincidir con el nombre del servicio del contenedor MySQL definido en <code>docker-compose.yml</code>.</li>
+                                <li>Al conectarse, se crea y rellena una tabla <code>test</code> solo para verificar que todo funciona.</li>
+                                <li>Si hay error, se muestra el mensaje. Así podrás saber si hay problemas de conexión o permisos.</li>
+                                <li>Recuerda editar usuario/contraseña/base de datos para adaptarlo a tu configuración real.</li>
+                            </ul>
+                            </div>  `
             }
         };
 

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHP 8.3 & MySQL con PDO - Acceso a Bases de Datos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+<link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .code-block { position: relative; background: #f9fafb; border-radius: 8px; padding: 12px; border: 1px solid #e2e8f0; margin-bottom: 1.5em; }
+    .btn-copiar {
+      position: absolute; top: 12px; right: 12px;
+      background: #2563eb; color: #fff; border: none; border-radius: 4px; padding: 4px 10px; font-size: 0.9em;
+      cursor: pointer; opacity: .85; transition: background .2s;
+    }
+    .btn-copiar:hover, .btn-copiar.copiado { background: #1d4ed8; }
+  </style>
+</head>
+<body class="bg-sky-50 text-gray-800">
+  <!-- Cabecera -->
+  <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div class="flex items-center">
+        <a  href="../index.html" class="text-xl font-bold text-sky-600">Guía de PHP 8.3</a>
+      </div>
+    </nav>
+  </header>
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+    <!-- Índice lateral -->
+    <aside id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-white z-40 shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out lg:sticky lg:top-20 lg:w-1/4 lg:h-fit lg:translate-x-0 lg:bg-transparent lg:shadow-none">            <nav class="sidebar p-6 rounded-xl shadow-md border border-sky-200">
+      <h3 class="text-lg font-bold mb-4 text-sky-800">Contenido</h3>
+      <ul class="space-y-2">
+        <li><a href="#intro" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Introducción</a></li>
+        <li><a href="#pdo" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">¿Por qué usar PDO?</a></li>
+        <li><a href="#conexion" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Conexión a MySQL con PDO</a></li>
+        <li><a href="#crud" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Operaciones CRUD</a></li>
+        <li><a href="#crud-parametrizado" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">CRUD con consultas parametrizadas</a></li>
+        <li><a href="#errores" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Gestión de errores y buenas prácticas</a></li>
+        <li><a href="#funciones-utiles-pdo" class="block p-2 rounded-md font-medium text-gray-600 hover:bg-sky-100">Funciones útiles en PDO</a></li>
+        <li>
+        <a href="#buenas-practicas" class="block p-2 rounded-md font-medium text-gray-700 hover:bg-sky-100 font-semibold">
+            Buenas prácticas
+        </a>
+        <ul class="ml-3 pl-2 border-l border-sky-100 mt-2 space-y-1">
+            <li><a href="#bp-prepared" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Prepared statements</a></li>
+            <li><a href="#bp-excepciones" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Gestión de excepciones y errores</a></li>
+            <li><a href="#bp-credenciales" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Seguridad en credenciales</a></li>
+            <li><a href="#bp-cierre" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Cierre de conexión</a></li>
+            <li><a href="#bp-fetch" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Modos de fetch</a></li>
+            <li><a href="#bp-tablas" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Diseño de tablas</a></li>
+            <li><a href="#bp-portabilidad" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Portabilidad</a></li>
+            <li><a href="#bp-validacion" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Validación y saneado</a></li>
+            <li><a href="#bp-transacciones" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Transacciones</a></li>
+            <li><a href="#bp-recursos" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Recursos útiles</a></li>
+        </ul>
+</li>
+
+      </ul>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="w-full">
+      <!-- Introducción -->
+      <section id="intro" class="mb-8">
+        <h1 class="text-4xl font-bold text-sky-900 mb-6">Acceso a bases de datos en PHP 8.3 con PDO</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
+          <p class="text-lg">La manera más moderna, potente y segura de conectarse a bases de datos en <b>PHP 8.3</b> es usando la extensión <b>PDO</b> ("PHP Data Objects"). Esta interfaz permite trabajar con diversas bases (MySQL, MariaDB, SQLite, PostgreSQL...), utiliza <b>parámetros y prepared statements</b> y facilita migrar proyectos a otros motores sin cambiar el grueso del código.</p>
+        </div>
+      </section>
+
+      <!-- ¿Por qué PDO? -->
+      <section id="pdo" class="mb-10">
+        <h2 class="text-2xl font-bold text-gray-800 mt-6 mb-3 border-b pb-2">¿Por qué usar PDO?</h2>
+        <ul class="list-disc list-inside space-y-2 mb-4 text-gray-800">
+          <li>Compatible con muchos servidores de bases de datos, no solo MySQL.</li>
+          <li>Permite <b>prepared statements</b> para evitar inyecciones SQL.</li>
+          <li>Gestión moderna de errores con excepciones (<code>try...catch</code>).</li>
+          <li>API orientada a objetos, más limpia y flexible.</li>
+          <li>Recomendado en todas las versiones modernas de PHP (MySQLi es específico de MySQL y no tan portable).</li>
+        </ul>
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-4 mb-4 rounded-md" role="alert">
+          <b>Nota:</b> <span>Las extensiones <code>mysql_*</code> están totalmente obsoletas y <b>NUNCA</b> se deben usar en proyectos nuevos.</span>
+        </div>
+      </section>
+
+      <!-- Conexión básica con PDO -->
+      <section id="conexion" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mt-6 mb-3 border-b pb-2">Conexión a MySQL con PDO (PHP 8.3)</h2>
+        <div class="mb-4">El siguiente ejemplo muestra la forma <b>más óptima, limpia y segura</b> para conectarse a una base de datos MySQL desde PHP usando PDO:</div>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$host = 'localhost';
+$db   = 'nombre_base';
+$user = 'usuario';
+$pass = 'contraseña';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES =&gt; false,
+    ]);
+    echo "¡Conexión exitosa!";
+} catch (PDOException $e) {
+    echo 'Error de conexión: ' . $e-&gt;getMessage();
+}
+?&gt;
+</code></pre></div>
+        <ul class="list-disc list-inside text-sm text-gray-700 mb-2">
+          <li>Siempre usa <b>try/catch</b> para manejar los posibles errores.</li>
+          <li>El DSN se puede adaptar para otros motores solo cambiando el inicio ("mysql:...").</li>
+        </ul>
+      </section>
+
+      <!-- CRUD Básico -->
+      <section id="crud" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-3 border-b pb-2">Operaciones CRUD con PDO</h2>
+        <h3 class="text-lg font-semibold mt-4 mb-2">1. Crear una tabla</h3>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$sql = "CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB";
+$pdo-&gt;exec($sql);
+?&gt;
+</code></pre></div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-2">2. Insertar registros</h3>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo-&gt;prepare("INSERT INTO usuarios (nombre, email) VALUES (?, ?)");
+$stmt-&gt;execute(['Ana', 'ana@ejemplo.com']);
+echo "Registro insertado con ID: " . $pdo-&gt;lastInsertId();
+?&gt;
+</code></pre></div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-2">3. Consultar datos (SELECT)</h3>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo-&gt;query("SELECT id, nombre, email FROM usuarios");
+while ($fila = $stmt-&gt;fetch()) {
+    echo "{$fila['id']} - {$fila['nombre']} ({$fila['email']})&lt;br&gt;";
+}
+?&gt;
+</code></pre></div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-2">4. Actualizar datos</h3>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo-&gt;prepare("UPDATE usuarios SET nombre = ? WHERE id = ?");
+$stmt-&gt;execute(['Ana Actualizada', 1]);
+echo "Filas modificadas: " . $stmt-&gt;rowCount();
+?&gt;
+</code></pre></div>
+
+        <h3 class="text-lg font-semibold mt-6 mb-2">5. Eliminar registros</h3>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo-&gt;prepare("DELETE FROM usuarios WHERE id = ?");
+$stmt-&gt;execute([1]);
+echo "Filas eliminadas: " . $stmt-&gt;rowCount();
+?&gt;
+</code></pre></div>
+      </section>
+      <!--CRUD parametrizado-->
+      <section id="crud-parametrizado" class="mb-10">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">CRUD con consultas parametrizadas (PDO)</h2>
+  
+  <!-- INSERT -->
+  <h3 class="text-lg font-semibold mt-8 mb-2 text-sky-700">Insertar registro</h3>
+  <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$nombre = "Ana";
+$email = "ana@ejemplo.com";
+$salario = 1300.50;
+
+$stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, salario) VALUES (?, ?, ?)");
+$stmt->execute([$nombre, $email, $salario]);
+echo "Registro insertado con ID: " . $pdo->lastInsertId();
+?&gt;
+</code></pre></div>
+  <p class="text-sm text-gray-700 mb-6">Protege contra inyecciones SQL y permite insertar valores dinámicos, usando placeholders <code>?</code> en la sentencia.</p>
+
+  <!-- SELECT -->
+  <h3 class="text-lg font-semibold mt-8 mb-2 text-sky-700">Consultar registros</h3>
+  <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$salarioMin = 1200;
+$stmt = $pdo->prepare("SELECT id, nombre, email, salario FROM usuarios WHERE salario &gt; ?");
+$stmt->execute([$salarioMin]);
+while ($fila = $stmt->fetch()) {
+    echo "{$fila['nombre']} ({$fila['email']}) - Salario: {$fila['salario']}<br>";
+}
+?&gt;
+</code></pre></div>
+  <p class="text-sm text-gray-700 mb-6">Consulta segura filtrando por salario, el parámetro <code>$salarioMin</code> lo puede poner el usuario.</p>
+  
+   <!-- UPDATE complejo -->
+  <h3 class="text-lg font-semibold mt-8 mb-2 text-sky-700">Actualizar usuario (múltiples campos)</h3>
+  <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$id = 5;
+$nuevoNombre = "Juan Actualizado";
+$nuevoEmail = "juan.nuevo@example.com";
+$nuevoSalario = 2200.50;
+
+// Consulta previa (opcional)
+$stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ?");
+$stmt->execute([$id]);
+$usuario = $stmt->fetch();
+
+if ($usuario) {
+    $stmt = $pdo->prepare("
+        UPDATE usuarios SET
+            nombre = :nombre,
+            email = :email,
+            salario = :salario
+        WHERE id = :id
+    ");
+    $stmt->execute([
+        ':nombre' => $nuevoNombre,
+        ':email'  => $nuevoEmail,
+        ':salario'=> $nuevoSalario,
+        ':id'     => $id
+    ]);
+    if ($stmt->rowCount() > 0) {
+        echo "Actualización realizada correctamente.";
+    } else {
+        echo "No se realizaron cambios.";
+    }
+} else {
+    echo "El usuario no existe.";
+}
+?&gt;
+</code></pre></div>
+  <p class="text-sm text-gray-700 mb-6">Actualiza múltiples campos por el <code>id</code> de usuario, usando parámetros para todos.</p>
+
+  <!-- DELETE -->
+  <h3 class="text-lg font-semibold mt-8 mb-2 text-sky-700">Eliminar registro</h3>
+  <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$id = 3;
+$stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
+$stmt->execute([$id]);
+echo "Filas borradas: " . $stmt->rowCount();
+?&gt;
+</code></pre></div>
+  <p class="text-sm text-gray-700 mb-6">Borra el usuario que coincida con el <code>id</code> indicado. Siempre seguro con placeholders.</p>
+</section>
+
+
+
+      <!-- Errores y Buenas Prácticas -->
+      <section id="errores" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-3 border-b pb-2">Gestión de errores y recomendaciones</h2>
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md mb-4">
+          <b>Consejos:</b>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Prepara siempre las consultas usando <b>prepared statements</b> (<code>$pdo->prepare</code>).</li>
+            <li>No muestres los errores exactos en producción, solo los generales.</li>
+            <li>No guardes contraseñas en texto plano. Usa <code>password_hash</code> y <code>password_verify</code> para almacenarlas y verificarlas.</li>
+            <li>Cierra la conexión (destruye el objeto) cuando termines: <code>$pdo = null;</code>.</li>
+          </ul>
+        </div>
+      </section>
+
+    <section id="funciones-utiles-pdo" class="mb-10">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Funciones útiles en PDO y consultas</h2>
+  
+  <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
+    <ul class="space-y-4 text-gray-800">
+      <li>
+        <b><code>rowCount()</code></b><br>
+        <span class="text-sm">Devuelve el número de filas afectadas por la última consulta <b>INSERT</b>, <b>UPDATE</b> o <b>DELETE</b> realizada con ese statement.<br>
+        Muy útil para saber si una actualización o borrado funcionó.</span>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
+$stmt->execute([$id]);
+if ($stmt->rowCount() > 0) {
+    echo "Usuario eliminado.";
+} else {
+    echo "No existía ningún usuario con ese id.";
+}
+?&gt;
+</code></pre></div>
+      </li>
+      <li>
+        <b><code>lastInsertId()</code></b><br>
+        <span class="text-sm">Después de un <b>INSERT</b> en una tabla con clave primaria AUTO_INCREMENT, devuelve el id asignado al nuevo registro.</span>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, salario) VALUES (?, ?, ?)");
+$stmt->execute([$nombre, $email, $salario]);
+echo "ID nuevo usuario: " . $pdo->lastInsertId();
+?&gt;
+</code></pre></div>
+      </li>
+      <li>
+        <b><code>fetch()</code>, <code>fetchAll()</code></b><br>
+        <span class="text-sm">Permiten recuperar los resultados de un <b>SELECT</b>. <code>fetch()</code> obtiene solo una fila, <code>fetchAll()</code> recupera todas en un array.</span>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->prepare("SELECT * FROM usuarios");
+$stmt->execute();
+$fila = $stmt->fetch();        // Una sola fila
+$todos = $stmt->fetchAll();    // Todas las filas (array)
+?&gt;
+</code></pre></div>
+      </li>
+      <li>
+        <b><code>errorInfo()</code></b><br>
+        <span class="text-sm">Devuelve información sobre el último error ocurrido con la consulta o conexión.<br>Indicado para depuración avanzada.</span>
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+if (!$stmt->execute([$id])) {
+    print_r($stmt->errorInfo());
+}
+?&gt;
+</code></pre></div>
+      </li>
+    </ul>
+    <div class="mt-6 p-4 bg-sky-100 rounded-md text-gray-800 text-sm border-l-4 border-sky-500">
+      <b>Más funciones útiles:</b> Revisa la <a href="https://www.php.net/manual/es/class.pdo.php" class="underline text-sky-700" target="_blank">documentación oficial de PDO</a> para ver todos los métodos disponibles, ejemplos y buenas prácticas.
+    </div>
+  </div>
+</section>  
+<section id="buenas-practicas" class="mb-16">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Buenas Prácticas al trabajar con PHP y MySQL (PDO)</h2>
+
+  <!-- 1. Uso correcto de prepared statements -->
+<h3 id="bp-prepared" class="text-lg font-semibold mt-6 mb-2 text-sky-700">1. Uso correcto de prepared statements</h3>
+  <div class="bg-sky-50 border-l-4 border-sky-400 p-4 rounded-lg mb-6">
+    <b>1. Siempre usa <span class="text-sky-800">prepared statements</span> en tus consultas SQL:</b>
+    <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+      <li>Evita la concatenación de variables directamente en las sentencias.</li>
+      <li>Ejemplo seguro:
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+// Inseguro: $sql = "SELECT * FROM usuarios WHERE email = '$email'";
+$sql = "SELECT * FROM usuarios WHERE email = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$email]);
+?&gt;
+</code></pre></div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 2. Manejo de errores -->
+<h3 id="bp-excepciones" class="text-lg font-semibold mt-6 mb-2 text-sky-700">2. Manejo de excepciones y errores</h3>
+ <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-6">
+  <b>2. Maneja siempre los errores con <code>try/catch</code>. Operaciones que pueden generar excepciones y tipos a gestionar:</b>
+  <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+    <li>
+      <b>Operaciones que pueden lanzar excepciones (tipo <code>PDOException</code>):</b>
+      <ul class="list-disc list-inside ml-5 mt-1">
+        <li>Creación de la conexión <code>new PDO()</code> (por error de credenciales, DSN incorrecto, base de datos no existente...)</li>
+        <li>Ejecutar <code>prepare()</code>, <code>execute()</code>, <code>query()</code> si el SQL está mal escrito, tabla o campo no existe, violación de restricciones (clave única, etc.).</li>
+        <li>Consultar datos si hay problemas de comunicación con la base de datos.</li>
+        <li>Comandos dentro de una transacción (<code>beginTransaction</code>, <code>commit</code>, <code>rollBack</code>).</li>
+      </ul>
+    </li>
+    <li>
+      <b>Tipos de excepciones a gestionar:</b>
+      <ul class="list-disc list-inside ml-5 mt-1">
+        <li><b>PDOException</b>: Exclusivo de PDO, siempre que haya un error en operaciones de base de datos.</li>
+        <li><b>Exception</b>: Puede gestionar cualquier excepción genérica si agrupas varios tipos.</li>
+      </ul>
+    </li>
+    <li>
+      <b>Ejemplo práctico:</b>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $pdo = new PDO($dsn, $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email) VALUES (?, ?)");
+    $stmt->execute(['Juan', 'juan@example.com']); // Aquí podría saltar excepción por email duplicado, etc.
+
+} catch (PDOException $e) {
+    // Errores de base de datos
+    echo "Error de base de datos: " . $e->getMessage();
+} catch (Exception $e) {
+    // Otros errores genéricos
+    echo "Error general: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+    </li>
+  </ul>
+  <div class="mt-4 p-3 rounded-md bg-yellow-100 text-yellow-900 text-sm border-l-2 border-yellow-400">
+    <b>Consejo:</b> En desarrollo, muestra el mensaje completo para depurar. En producción, muestra solo un texto genérico y registra el error en un log seguro.
+  </div>
+</div>
+<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-6">
+  <b>Ejemplos de operaciones que generan excepciones en PDO</b>
+  <ul class="list-disc list-inside space-y-4 mt-4">
+    <li>
+      <b>1. Error de conexión (credenciales incorrectas, base no existe):</b>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=noexiste", "wronguser", "wrongpass");
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+      <span class="text-yellow-800 text-xs">Mensaje típico: <i>"SQLSTATE[HY000] [1049] Base de datos desconocida 'noexiste'"</i></span>
+    </li>
+    <li>
+      <b>2. SQL mal formado (error de sintaxis):</b>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $stmt = $pdo->query("SELEC nombre FROM usuarios"); // error 'SELECT'
+} catch (PDOException $e) {
+    echo "Error en consulta SQL: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+      <span class="text-yellow-800 text-xs">Mensaje típico: <i>"SQLSTATE[42000]: Error de sintaxis cerca de 'SELEC nombre...'"</i></span>
+    </li>
+    <li>
+      <b>3. Intentar insertar un registro que viola una restricción única (duplicado):</b>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $stmt = $pdo->prepare("INSERT INTO usuarios (email) VALUES (?)");
+    $stmt->execute(['existing@email.com']); // email ya existe, UNIQUE KEY
+} catch (PDOException $e) {
+    echo "Error de restricción: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+      <span class="text-yellow-800 text-xs">Mensaje típico: <i>"SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry... for key 'email'"</i></span>
+    </li>
+    <li>
+      <b>4. Acceder a una tabla o campo que no existen:</b>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $stmt = $pdo->query("SELECT campoqueNoExiste FROM usuarios");
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+      <span class="text-yellow-800 text-xs">Mensaje típico: <i>"SQLSTATE[42S22]: Column not found: 1054 Unknown column..."</i></span>
+    </li>
+    <li>
+      <b>5. Fallos durante transacciones (commit/rollback):</b>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $pdo->beginTransaction();
+    $pdo->exec("UPDATE usuarios SET email = 'fail@email.com' WHERE id = 1");
+    // Aquí puede ocurrir cualquier error de datos, etc.
+    $pdo->commit();
+} catch (Exception $e) {
+    $pdo->rollBack();
+    echo "Error durante la transacción: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+    </li>
+  </ul>
+  <div class="mt-4 p-3 rounded-md bg-yellow-100 text-yellow-900 text-sm border-l-2 border-yellow-400">
+    <b>Recuerda:</b> Para que PDO lance excepciones, siempre configura <code>PDO::ATTR_ERRMODE</code> a <code>PDO::ERRMODE_EXCEPTION</code>.<br>
+    <span>En producción, nunca muestres el mensaje completo al usuario final. Registra los errores en un log para su análisis.</span>
+  </div>
+</div>
+
+
+  <!-- 3. Seguridad de credenciales sin framework -->
+<h3 id="bp-credenciales" class="text-lg font-semibold mt-6 mb-2 text-sky-700">3. Seguridad en el manejo de credenciales</h3>
+  <div class="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-lg mb-6">
+    <b>3. Nunca incluyas credenciales reales en tu código fuente.</b>
+    <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+      <li>Guarda contraseñas y datos sensibles en ficheros fuera del directorio público (<code>config.php</code> o variables de entorno).</li>
+      <li>Mantén tus archivos <code>config.php</code> fuera del alcance de los navegadores y <b>no los subas a repositorios públicos</b>.</li>
+    </ul>
+  </div>
+
+  <!-- 4. Cierre de conexiones -->
+<h3 id="bp-cierre" class="text-lg font-semibold mt-6 mb-2 text-sky-700">4. Cierre de la conexión a base de datos</h3>
+<div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg mb-6">
+  <b>4. Cierre de la conexión a base de datos con PDO</b>
+  <p class="mt-2 text-gray-700">Cuando ya no necesitas realizar más consultas, puedes liberar la conexión simplemente asignando <code>$pdo = null;</code>. Aunque PHP destruye el objeto automáticamente al terminar el script, hacerlo explícitamente es buena práctica en scripts largos o con muchas conexiones.</p>
+  <div class="code-block"><pre><code class="language-php">
+&lt;?php
+// Crear conexión PDO al principio
+$pdo = new PDO($dsn, $usuario, $contraseña);
+
+// ... realizar consultas ...
+
+// Cerrar la conexión explícitamente
+$pdo = null;
+?&gt;
+</code></pre></div>
+</div>
+
+
+  <!-- 5. Modos de fetch en PDO -->
+<h3 id="bp-fetch" class="text-lg font-semibold mt-6 mb-2 text-sky-700">5. Modos de obtención de resultados en PDO (<code>fetch modes</code>)</h3>
+  <div class="bg-blue-50 border-l-4 border-blue-300 p-4 rounded-lg mb-6">
+  <b>5. Modos de obtención de resultados en PDO (<code>fetch modes</code>)</b>
+  <p class="mt-2 text-gray-700">
+    Cuando consultamos datos con PDO, <b>por defecto</b> el modo es <code>PDO::FETCH_BOTH</code> (puedes acceder por índice y por nombre de campo). Sin embargo, en buenas prácticas usamos otros modos según la necesidad:
+  </p>
+  <ul class="mt-3 space-y-2 text-gray-800">
+    <li>
+      <b><code>PDO::FETCH_ASSOC</code> (recomendado):</b>  
+      Devuelve cada fila como un <b>array asociativo</b> usando los nombres de campo.<br>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->query("SELECT * FROM usuarios");
+while($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo $fila['nombre'];  // Acceso por nombre de columna
+}
+?&gt;
+</code></pre></div>
+    </li>
+    <li>
+      <b><code>PDO::FETCH_OBJ</code>:</b>  
+      Devuelve la fila como un <b>objeto anónimo</b>, accediendo con <code>-></code>.<br>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->query("SELECT * FROM usuarios");
+while($obj = $stmt->fetch(PDO::FETCH_OBJ)) {
+    echo $obj->nombre;
+}
+?&gt;
+</code></pre></div>
+    </li>
+    <li>
+      <b><code>PDO::FETCH_NUM</code>:</b>  
+      Devuelve la fila como <b>array numérico</b> (índices 0, 1, 2...), útil cuando te da igual el nombre del campo.<br>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->query("SELECT id, nombre FROM usuarios");
+while($fila = $stmt->fetch(PDO::FETCH_NUM)) {
+    echo $fila[1]; // nombre
+}
+?&gt;
+</code></pre></div>
+    </li>
+    <li>
+      <b><code>PDO::FETCH_BOTH</code> (<span class="text-sm text-blue-700 font-semibold">modo por defecto</span>):</b>  
+      Permite acceso por nombre o índice; pero puede ser más confuso y rara vez se recomienda.<br>
+      <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$stmt = $pdo->query("SELECT id, nombre FROM usuarios");
+$fila = $stmt->fetch(PDO::FETCH_BOTH);
+echo $fila['nombre']; // o $fila[1]
+?&gt;
+</code></pre></div>
+    </li>
+  </ul>
+  <p class="mt-4 text-sm text-blue-800">
+    Si quieres establecer un modo por defecto distinto en todos tus resultados, puedes hacerlo así tras crear la conexión:
+    <div class="code-block"><pre><code class="language-php">
+&lt;?php
+$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+?&gt;
+</code></pre></div>
+  </p>
+</div>
+<div class="overflow-x-auto mb-6 mt-4">
+  <table class="min-w-full text-sm text-left border border-blue-200 rounded-md">
+    <thead>
+      <tr class="bg-blue-100 text-blue-900">
+        <th class="py-2 px-3 border-b">Modo</th>
+        <th class="py-2 px-3 border-b">Constante</th>
+        <th class="py-2 px-3 border-b">Devuelve</th>
+        <th class="py-2 px-3 border-b">Acceso</th>
+        <th class="py-2 px-3 border-b">Uso habitual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="bg-white">
+        <td class="py-2 px-3 border-b font-semibold">Por defecto</td>
+        <td class="py-2 px-3 border-b"><code>PDO::FETCH_BOTH</code></td>
+        <td class="py-2 px-3 border-b">Array asociativo y numérico</td>
+        <td class="py-2 px-3 border-b"><code>$fila['columna']</code>, <code>$fila[0]</code></td>
+        <td class="py-2 px-3 border-b">Cuando necesitas ambos accesos; poco utilizado por claridad</td>
+      </tr>
+      <tr class="bg-blue-50">
+        <td class="py-2 px-3 border-b font-semibold">Asociativo</td>
+        <td class="py-2 px-3 border-b"><code>PDO::FETCH_ASSOC</code></td>
+        <td class="py-2 px-3 border-b">Array asociativo</td>
+        <td class="py-2 px-3 border-b"><code>$fila['columna']</code></td>
+        <td class="py-2 px-3 border-b">Recomendado por claridad y legibilidad</td>
+      </tr>
+      <tr class="bg-white">
+        <td class="py-2 px-3 border-b font-semibold">Numérico</td>
+        <td class="py-2 px-3 border-b"><code>PDO::FETCH_NUM</code></td>
+        <td class="py-2 px-3 border-b">Array numérico</td>
+        <td class="py-2 px-3 border-b"><code>$fila[0]</code></td>
+        <td class="py-2 px-3 border-b">Útil si solo importa el orden de columnas</td>
+      </tr>
+      <tr class="bg-blue-50">
+        <td class="py-2 px-3 border-b font-semibold">Objeto</td>
+        <td class="py-2 px-3 border-b"><code>PDO::FETCH_OBJ</code></td>
+        <td class="py-2 px-3 border-b">Objeto anónimo</td>
+        <td class="py-2 px-3 border-b"><code>$obj->columna</code></td>
+        <td class="py-2 px-3 border-b">Cuando prefieres acceso tipo objeto</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="block mt-2 text-xs text-blue-700">
+    <b>Consejo:</b> La mejor opción para la mayoría de casos es <code>PDO::FETCH_ASSOC</code>.
+  </span>
+</div>
+
+
+  <!-- 6. Diseño de modelo de datos -->
+<h3 id="bp-diseno" class="text-lg font-semibold mt-6 mb-2 text-sky-700">6. Diseño del modelo de datos y tablas</h3>
+  <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-lg mb-6">
+    <b>6. Cuida el diseño de tus tablas y bases de datos:</b>
+    <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+      <li>Incluye siempre claves primarias y, si procede, auto-increment.</li>
+      <li>Usa tipos de dato adecuados, evita campos nulos innecesarios y normaliza tus tablas.</li>
+    </ul>
+  </div>
+
+  <!-- 7. Portabilidad y ventajas de PDO -->
+<h3 id="bp-portabilidad" class="text-lg font-semibold mt-6 mb-2 text-sky-700">7. Portabilidad y ventajas de PDO</h3>
+  <div class="bg-cyan-50 border-l-4 border-cyan-400 p-4 rounded-lg mb-6">
+  <b>7. Portabilidad y ventajas de PDO</b>
+  <p class="mt-2 text-gray-700">
+    Una de las mayores ventajas de usar <b>PDO</b> es la posibilidad de cambiar el motor de base de datos (MySQL, MariaDB, SQLite, PostgreSQL, etc.) con apenas modificar el DSN y las credenciales.<br>
+    El resto de tu código (consulta, fetch, manejo de resultados) puede mantenerse prácticamente igual.
+  </p>
+  <div class="mb-3 text-sm">
+    <b>Ejemplo: Cambiar de MySQL a SQLite</b>
+  </div>
+  <div class="code-block"><pre><code class="language-php">
+&lt;?php
+// Conexión a MySQL
+$dsn = "mysql:host=localhost;dbname=empresa;charset=utf8mb4";
+$pdo = new PDO($dsn, $usuario, $contraseña);
+
+// Conexión a SQLite (sólo cambiar DSN, el resto igual)
+$dsn = "sqlite:/ruta/absoluta/empresa.db";
+$pdo = new PDO($dsn);
+// El resto de tus consultas siguen igual
+?&gt;
+</code></pre></div>
+  <p class="mt-2 text-xs text-cyan-700">
+    Solo debes vigilar ligeras diferencias en tipos y funciones SQL según el motor, pero el acceso y manejo en PHP se mantiene idéntico gracias a PDO.
+  </p>
+</div>
+
+
+  <!-- 8. Validación y saneado -->
+<h3 id="bp-validacion" class="text-lg font-semibold mt-6 mb-2 text-sky-700">8. Validación y saneado de datos</h3>
+  <div class="bg-pink-50 border-l-4 border-pink-400 p-4 rounded-lg mb-6">
+    <b>8. Valida y sanea SIEMPRE los datos recibidos antes de usarlos en consultas.</b>
+    <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+      <li>Comprueba tipos, rangos y formatos antes de guardar en la base de datos.</li>
+      <li>Usa funciones como <code>filter_var</code> para emails, enteros, etc.</li>
+    </ul>
+  </div>
+
+  <!-- 9. Gestión de transacciones -->
+<h3 id="bp-transacciones" class="text-lg font-semibold mt-6 mb-2 text-sky-700">9. Gestión de transacciones</h3>
+  <div class="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-lg mb-6">
+    <b>9. Usa transacciones cuando debas realizar varias operaciones relacionadas:</b>
+    <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+      <li>Ejemplo típico: registros vinculados, actualizaciones múltiples o escenarios donde todo debe hacerse o nada debe guardarse.</li>
+      <li>Ejemplo:
+        <div class="code-block"><pre><code class="language-php">
+&lt;?php
+try {
+    $pdo->beginTransaction();
+    // ...varias consultas
+    $pdo->commit();
+} catch (Exception $e) {
+    $pdo->rollBack();
+    echo "Error en la transacción: " . $e->getMessage();
+}
+?&gt;
+</code></pre></div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 10. Recursos y enlaces útiles -->
+<h3 id="bp-recursos" class="text-lg font-semibold mt-6 mb-2 text-sky-700">10. Recursos y enlaces útiles</h3>
+  <div class="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg mb-3">
+    <b>10. Más recursos útiles:</b>
+    <ul class="list-disc list-inside space-y-1 text-gray-800 mt-2">
+      <li>
+        <a href="https://www.php.net/manual/es/book.pdo.php" target="_blank" class="text-sky-700 underline">Manual oficial de PDO en PHP.net</a>
+      </li>
+      <li>
+        <a href="https://devhints.io/mysql" target="_blank" class="text-sky-700 underline">Cheat sheet SQL</a>
+      </li>
+      <li>
+        <a href="https://www.php.net/manual/es/pdo.constants.php" target="_blank" class="text-sky-700 underline">Constantes de PDO</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+    </main>
+  </div>
+    <footer style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px 20px; border-top: 1px solid #dee2e6; margin-top: 3rem;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="flex: 1 1 100%; margin-bottom: 20px;">
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Este documento se ha realizado por Marin Capilla Herrero. Publicada bajo licencia</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Creative Commons Atribución-Reconocimiento-CompartirIgual 4.0 Internacional.</p>
+                <p style="margin: 5px 0; color: #555; font-size: 0.9em;">Las modificaciones son permitidas siempre que sean mencionadas, la licencia no se puede modificar</p>
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px;"><img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="Licencia Creative Commons" style="height: 31px; width: 88px;"></a>
+            </div>
+        </div>
+    </footer>
+  <!-- Scripts: Highlight.js, Copiar código -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.code-block').forEach(function(bloque) {
+        const btnCopiar = document.createElement('button');
+        btnCopiar.className = "btn-copiar";
+        btnCopiar.textContent = "Copiar";
+        bloque.appendChild(btnCopiar);
+
+        btnCopiar.addEventListener('click', function() {
+          const codeElement = bloque.querySelector('code');
+          let codigoACopiar = codeElement.textContent || codeElement.innerText;
+          navigator.clipboard.writeText(codigoACopiar).then(function() {
+            btnCopiar.textContent = "¡Copiado!";
+            btnCopiar.classList.add("copiado");
+            setTimeout(function() {
+              btnCopiar.textContent = "Copiar";
+              btnCopiar.classList.remove("copiado");
+            }, 2000);
+          }, function(err) {
+            btnCopiar.textContent = "Error";
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

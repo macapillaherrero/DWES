@@ -1,0 +1,11 @@
+<!-- Ejercicios -->
+      <section id="ejercicios" class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-3 border-b pb-2">Ejercicios propuestos</h2>
+        <ol class="list-decimal list-inside space-y-3 text-lg">
+          <li>Crea una base de datos llamada <b>empresa</b> y una tabla <b>empleados (id, nombre, email, salario)</b>. Inserta varios empleados con diferentes salarios.</li>
+          <li>Haz un formulario para añadir empleados y otro para buscar los empleados cuyo salario es mayor que una cantidad dada, mostrando los resultados en pantalla.</li>
+          <li>Amplía el proyecto para actualizar el email o el salario de un empleado concreto (por su id) y para borrar empleados.</li>
+          <li>Haz que el acceso a operaciones de borrado y actualización requiera una contraseña de administrador que compares con <code>password_verify</code> en la base de datos.</li>
+          <li>Extra: Redacta una función reutilizable <b>conexionPDO($nombreBD)</b> que devuelva el objeto de conexión listo y gestione los errores adecuadamente.</li>
+        </ol>
+      </section>
