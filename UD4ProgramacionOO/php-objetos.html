@@ -120,11 +120,11 @@ class Example {
   private $color;
   
   public function __get($name) {
-    return $this->$color ?? null;
+    return $this->$name ?? null;
   }
   
   public function __set($name, $value) {
-    $this->$color = $value;
+    $this->$name = $value;
   }
 }
 $obj = new Example();
