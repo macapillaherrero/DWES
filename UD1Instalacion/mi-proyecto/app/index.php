@@ -17,6 +17,7 @@
    <a href="formularios/formulario-test.php">Formulario Test</a><br> 
    <a href="formularios/ejercicio-clase/formulario-clase.php">Formulario corregido en clase</a><br> 
    <a href="conectabd.php">Conexión a Bases de datos</a><br> 
+   <a href="recuperacion/index.php">recuperacion</a><br>
 
     <!-- Referencias y referencias múltiples -->
 
