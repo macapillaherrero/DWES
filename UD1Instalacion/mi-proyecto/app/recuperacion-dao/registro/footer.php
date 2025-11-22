@@ -1,0 +1,5 @@
+</body>
+<footer>
+    <p>&copy; 2025 Mi Proyecto</p>
+</footer>
+</html>
