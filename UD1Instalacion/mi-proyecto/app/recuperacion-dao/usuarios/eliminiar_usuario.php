@@ -7,25 +7,19 @@ ha hecho login previamente*/
 
     // Conexión a la base de datos
     include_once '../db/conecta.php';
+    include_once '../db/UsuarioDAO.php';
+    include_once '../db/Usuario.php';
+
+    $conexion = ConexionPDO::getInstance();
+    $pdo = $conexion->getPdo();
+    $usuarioDao = new UsuarioDAO($pdo);
 
     //Recibo el id del usuario a eliminar
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
 
-        //Preparar y ejecutar la consulta de eliminación
-        $stmt = $pdo->prepare('DELETE FROM usuarios WHERE id = ?');
-
-        //Comprobar que el usuario que quiero eliminar no es el mismo que está logueado
-        if ($id == $_SESSION['id']) {
-            echo "No puedes eliminar el usuario que está logueado actualmente.<br>";
-        }else {
-            $stmt->execute([$id]);
-            if ($stmt->rowCount()>0) {
-                echo "Usuario con ID " . htmlspecialchars($id) . " eliminado correctamente.<br>";
-            } else {
-               echo "Error al eliminar el usuario con ID " . htmlspecialchars($id) . ".<br>";
-            }
-        }
+        $usuarioDao->eliminar($id, $_SESSION['id']);
+       
     } else {
         echo "No se ha proporcionado un ID de usuario válido para eliminar.<br>";
     }

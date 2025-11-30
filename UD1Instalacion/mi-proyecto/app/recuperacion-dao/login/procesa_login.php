@@ -1,37 +1,37 @@
 <?php 
+session_start();
+
+require_once '../db/conecta.php';
+require_once '../db/Usuario.php';
+require_once '../db/UsuarioDAO.php';
+
+
+$conexion = ConexionPDO::getInstance();
+$pdo = $conexion->getPdo();
+
+$usuarioDao = new UsuarioDAO($pdo);
+
+
+$nombre = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = $_POST['nombre'];
-    $password = $_POST['password'];
+    $nombre = trim($_POST['nombre'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    try {
-      
-        // Conexión PDO
-        require_once '../db/conecta.php';
-        // Consulta para buscar usuario
-        $stmt = $pdo->prepare("SELECT id, pass FROM usuarios WHERE nombre = ?");
-        $stmt->execute([$nombre]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            // Verificar password con password_verify
-            if (password_verify($password, $user['pass'])) { // password_verify(passworddelformulario, passwordalmacenada);
-                session_start();
+    $usuario = $usuarioDao->buscarPorNombre($nombre);
 
-                $_SESSION['id'] = $user['id'];
-                $_SESSION['nombre'] = $nombre;
-                $_SESSION['fecha'] = date('Y-m-d H:i:s');
-                
-                header('Location: ../index.php');
-                // Redirigir o continuar proceso
-            } else {
-                header('Location: form_login.php?error=incorrecta');
-            }
+    if($usuario) {
+        if (password_verify($password, $usuario->password)) {
+            $_SESSION['id'] = $usuario->id;
+            $_SESSION['nombre'] = $usuario->nombre;
+            $_SESSION['fecha'] = $usuario->fecha;
+            header('Location: ../index.php');
+            exit();
         } else {
-            header('Location: form_login.php?error=noencotrado');
+            header('Location: form_login.php?error=incorrecta');
         }
-
-    } catch (PDOException $e) {
-        echo "Error en la base de datos: " . $e->getMessage();
+    }else {
+            header('Location: form_login.php?error=noencotrado');
     }
 }
 ?>

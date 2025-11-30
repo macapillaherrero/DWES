@@ -59,7 +59,7 @@ Se pretende crear un sistema básico de gestión de usuarios donde se pueda regi
 * **Entrega:** Comprime tu proyecto en un archivo `.zip` con el nombre `UD7_A2_TuNombreApellido.zip` y súbelo a la plataforma.
 
 <p>IES CAMP DE MORVEDRE</p>
-<p>Prof: <a  href="mailto:ma.capillaherrero@edu.gva.es"> ma.capillaherrero@edu.gva.es</a></p
+<p>Prof: <a  href="mailto:ma.capillaherrero@edu.gva.es"> ma.capillaherrero@edu.gva.es</a></p>
 
 
 
