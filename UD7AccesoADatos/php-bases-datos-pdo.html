@@ -47,6 +47,8 @@
             Buenas prácticas
         </a>
         <ul class="ml-3 pl-2 border-l border-sky-100 mt-2 space-y-1">
+            <li><a href="#dao" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Arquitectura de acceso a datos (DAO)</a></li>
+            <li><a href="#transacciones" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Transacciones</a></li>
             <li><a href="#bp-prepared" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Prepared statements</a></li>
             <li><a href="#bp-excepciones" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Gestión de excepciones y errores</a></li>
             <li><a href="#bp-credenciales" class="block p-1 rounded-md text-gray-500 hover:bg-sky-50">Seguridad en credenciales</a></li>
@@ -335,8 +337,230 @@ if (!$stmt->execute([$id])) {
     </div>
   </div>
 </section>  
-<section id="buenas-practicas" class="mb-16">
+<section id="dao">
   <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Buenas Prácticas al trabajar con PHP y MySQL (PDO)</h2>
+  <h2 id="bp-dao"class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Introducción al patrón DAO (Data Access Object)</h3>
+<p>
+Un <strong>DAO (Data Access Object)</strong> es una clase que centraliza el acceso a la base de datos, encapsulando la conexión y las consultas SQL. 
+Esto permite separar la lógica de acceso a datos del resto de la aplicación, mejorando la organización, mantenibilidad y reutilización del código.
+</p>
+<p><strong>Ventajas:</strong></p>
+<ul class="list-disc pl-5 mt-2 space-y-1">
+<li><strong>Separación de responsabilidades</strong>: La lógica de negocio no se mezcla con el código SQL.</li>
+<li><strong>Mantenibilidad</strong>: Cambios en la BD solo afectan al DAO correspondiente.</li>
+<li><strong>Reutilización</strong>: Los métodos del DAO pueden ser invocados desde diferentes partes del programa.</li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4 mb-2">Ejemplo básico de DAO con PDO</h4>
+<p>Este ejemplo muestra una clase <code>UsuarioDAO</code> que utiliza PDO para realizar operaciones CRUD seguras y ordenadas:</p>
+
+<pre class="code-block"><code class="language-php">
+class Conexion {
+    private static $pdo = null;
+
+    public static function getConexion() {
+        if (self::$pdo === null) {
+            $host = 'localhost';
+            $db = 'mi_base';
+            $user = 'usuario';
+            $pass = 'contraseña';
+            $charset = 'utf8mb4';
+
+            $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+            try {
+                self::$pdo = new PDO($dsn, $user, $pass, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]);
+            } catch (PDOException $e) {
+                die("Error de conexión: " . $e->getMessage());
+            }
+        }
+        return self::$pdo;
+    }
+}
+
+class UsuarioDAO {
+    private $pdo;
+
+    public function __construct() {
+        $this->pdo = Conexion::getConexion();
+    }
+
+    public function insertUsuario($nombre, $email, $salario) {
+        $sql = "INSERT INTO usuarios (nombre, email, salario) VALUES (?, ?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$nombre, $email, $salario]);
+        return $this->pdo->lastInsertId();
+    }
+
+    public function getUsuariosConSalarioMayorQue($salarioMin) {
+        $sql = "SELECT * FROM usuarios WHERE salario > ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$salarioMin]);
+        return $stmt->fetchAll();
+    }
+
+    public function updateUsuario($id, $nombre, $email, $salario) {
+        $sql = "UPDATE usuarios SET nombre = ?, email = ?, salario = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$nombre, $email, $salario, $id]);
+        return $stmt->rowCount();
+    }
+
+    public function deleteUsuario($id) {
+        $sql = "DELETE FROM usuarios WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->rowCount();
+    }
+}
+</code></pre>
+
+<p>
+Si mañana cambias el motor de base de datos, solo modificarías la clase <code>Conexion</code> (el DSN), y el resto del código permanece igual, aprovechando la portabilidad de PDO.
+Este patrón protege también de tener código SQL desordenado en toda la aplicación, un problema conocido como “código espagueti”.
+</p>
+<p>&nbsp;</p>
+<p>
+Frameworks modernos como Laravel utilizan patrones similares con sus propios ORM como Eloquent. Entender el DAO con PDO es fundamental para comprender cómo trabajan internamente estas herramientas.
+</p>
+
+
+<h3 id="bp-dao-avanzado" class="text-lg font-semibold mt-6 mb-2 text-sky-700">Manejo de errores en DAO</h3>
+<p>
+Es fundamental que los métodos del DAO manejen correctamente los errores para evitar que fallos en la base de datos quiebren la aplicación. 
+Dentro del DAO, se usan <code>try/catch</code> para capturar <code>PDOException</code> y así informar a la capa superior mediante excepciones personalizadas o valores que indiquen el fallo.
+</p>
+<p>
+Esto permite que la lógica de presentación o negocio decida qué hacer: mostrar un mensaje al usuario, registrar el error, etc.
+</p>
+
+<h4 class="text-md font-semibold mt-4 mb-2">Ejemplo de manejo de errores en método DAO</h4>
+<pre class="code-block"><code class="language-php">public function insertUsuario($nombre, $email, $salario) {
+    try {
+        $sql = "INSERT INTO usuarios (nombre, email, salario) VALUES (?, ?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$nombre, $email, $salario]);
+        return $this->pdo->lastInsertId();
+    } catch (PDOException $e) {
+        // Se puede lanzar una excepción propia o devolver false/null según convenga
+        throw new Exception("No se pudo insertar el usuario: " . $e->getMessage());
+    }
+}
+</code></pre>
+</section>
+<section id="transacciones">
+  <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 border-b pb-2">Transacciones</h2>
+<p>Una <strong>transacción</strong> es una secuencia de una o más operaciones sobre una base de datos que deben ejecutarse como una unidad indivisible. El objetivo es asegurar que todas las operaciones se completen con éxito o, en caso de fallo, ninguna de ellas se aplique, manteniendo así la base de datos en un estado consistente.</p>
+<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md mb-4">Por ejemplo, en una transferencia bancaria, si falla el abono en una cuenta, se cancela el débito en la otra.</div>
+<p>Las transacciones se gestionan mediante comandos como <code>BEGIN TRANSACTION</code> (para iniciar), <code>COMMIT</code> (para confirmar los cambios) y <code>ROLLBACK</code> (para deshacer los cambios en caso de error). Este mecanismo protege la base de datos frente a fallos parciales y situaciones de concurrencia, asegurando que los datos siempre reflejen una realidad válida y coherente.</p>
+
+<h3 class="text-xl font-semibold mt-6 mb-2">Propiedades de una transacción (ACID)</h3>
+<table class="min-w-full text-sm text-left border border-gray-300 rounded-md mb-6">
+  <thead>
+    <tr class="bg-gray-100 font-semibold text-gray-700">
+      <th class="py-2 px-4 border border-gray-300">Propiedad</th>
+      <th class="py-2 px-4 border border-gray-300">Significado breve</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="bg-white">
+      <td class="py-2 px-4 border border-gray-300 font-semibold">Atomicidad</td>
+      <td class="py-2 px-4 border border-gray-300">Todas las operaciones se ejecutan o ninguna lo hace</td>
+    </tr>
+    <tr class="bg-gray-50">
+      <td class="py-2 px-4 border border-gray-300 font-semibold">Consistencia</td>
+      <td class="py-2 px-4 border border-gray-300">El sistema pasa de un estado válido a otro</td>
+    </tr>
+    <tr class="bg-white">
+      <td class="py-2 px-4 border border-gray-300 font-semibold">Isolación</td>
+      <td class="py-2 px-4 border border-gray-300">No interfiere con otras transacciones simultáneas</td>
+    </tr>
+    <tr class="bg-gray-50">
+      <td class="py-2 px-4 border border-gray-300 font-semibold">Durabilidad</td>
+      <td class="py-2 px-4 border border-gray-300">Una vez confirmada, el cambio permanece</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="text-xl font-semibold mt-6 mb-2">Comandos clave</h3>
+<ul class="list-disc list-inside mb-6 text-gray-800">
+  <li><code>commit()</code>: Confirma los cambios realizados por la transacción, haciéndolos permanentes.</li>
+  <li><code>rollback()</code>: Revierte todos los cambios realizados durante la transacción actual, volviendo al estado anterior.</li>
+</ul>
+<p>Por defecto, muchas conexiones funcionan en modo <em>auto-commit</em>, lo que significa que cada operación se ejecuta y confirma automáticamente. Para usar transacciones de forma manual, se controla explícitamente:</p>
+<pre class="code-block"><code class="language-php">
+$pdo->beginTransaction();
+// varias consultas...
+$pdo->commit();
+</code></pre>
+
+<h3 class="text-xl font-semibold mt-6 mb-2">Manejo de excepciones en transacciones</h3>
+<p>El manejo de excepciones es fundamental para evitar que la base de datos quede en un estado inconsistente. Una transacción sin control de errores no es segura.</p>
+<p>Cuando realizamos varias operaciones dentro de una misma transacción (por ejemplo, una transferencia bancaria), pueden ocurrir errores como fallo de conexión, ID incorrecto o saldo insuficiente. Si no controlamos estos errores, la base de datos podría aplicar solo algunas operaciones y dejar datos parcialmente modificados.</p>
+<p>Para evitarlo, se debe usar un bloque <code>try/catch</code> donde:</p>
+<ul class="list-disc list-inside mb-6 text-gray-800">
+  <li>Se llama a <code>commit()</code> si todo sale bien.</li>
+  <li>Se llama a <code>rollback()</code> si ocurre cualquier excepción.</li>
+</ul>
+<pre class="code-block"><code class="language-php">
+try {
+    $pdo->beginTransaction();
+
+    // Consultas SQL. Por ejemplo:
+    // $stmt1->execute([$param1]);
+    // $stmt2->execute([$param2]);
+
+    $pdo->commit();
+} catch (Exception $e) {
+    $pdo->rollBack();
+    echo "Error en la transacción: " . $e->getMessage();
+}
+</code></pre>
+<p>Este patrón asegura la coherencia de los datos y previene estados corruptos en la base, cancelando la transacción completa en caso de error.</p>
+
+  <!-- 11. Uso de transacciones -->
+<h3 id="bp-transacciones" class="text-lg font-semibold mt-6 mb-2 text-sky-700">Uso de transacciones</h3>
+<p>
+Además, en operaciones que incluyen varias consultas relacionadas, usar transacciones asegura la integridad de los datos.
+Si alguna consulta falla, se revierte todo (rollback) para dejar la base en un estado coherente.
+</p>
+
+<h4 class="text-md font-semibold mt-4 mb-2">Ejemplo de transacciones en DAO</h4>
+<pre class="code-block"><code class="language-php">
+public function transferirSalario($idOrigen, $idDestino, $cantidad) {
+    try {
+        $this->pdo->beginTransaction();
+
+        // Quitar dinero del usuario origen
+        $sql1 = "UPDATE usuarios SET salario = salario - ? WHERE id = ?";
+        $stmt1 = $this->pdo->prepare($sql1);
+        $stmt1->execute([$cantidad, $idOrigen]);
+
+        // Añadir dinero al usuario destino
+        $sql2 = "UPDATE usuarios SET salario = salario + ? WHERE id = ?";
+        $stmt2 = $this->pdo->prepare($sql2);
+        $stmt2->execute([$cantidad, $idDestino]);
+
+        $this->pdo->commit();
+        return true;
+    } catch (PDOException $e) {
+        $this->pdo->rollBack();
+        throw new Exception("Error en la transferencia: " . $e->getMessage());
+    }
+}
+</code></pre>
+
+<p>
+Este patrón garantiza que o bien ambas actualizaciones se realizan, o ninguna, manteniendo la consistencia.
+Así, el DAO no solo accede a datos sino que también asegura las reglas de integridad transaccional.
+</p>
+<p>&nbsp;</p>
+</section>
+<section id="buenas-practicas" class="mb-16">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Otras buenas prácticas al trabajar con PHP y MySQL (PDO)</h2>
 
   <!-- 1. Uso correcto de prepared statements -->
 <h3 id="bp-prepared" class="text-lg font-semibold mt-6 mb-2 text-sky-700">1. Uso correcto de prepared statements</h3>
@@ -715,6 +939,8 @@ try {
     </ul>
   </div>
 </section>
+
+
 
     </main>
   </div>
